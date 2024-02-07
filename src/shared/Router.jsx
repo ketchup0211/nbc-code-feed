@@ -4,7 +4,7 @@ import SignUp from "pages/SignUp";
 const Router = () => {
   <BrowserRouter>
     <Routes>
-      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/" element={<SignUp />} />
     </Routes>
   </BrowserRouter>;
 };

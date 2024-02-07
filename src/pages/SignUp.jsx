@@ -1,7 +1,11 @@
 import { useState, useSelector, useDispatch, useContext } from "react";
 
 function SignUp() {
-  return <></>;
+  return (
+    <>
+      <p>hi</p>
+    </>
+  );
 }
 
 export default SignUp;
