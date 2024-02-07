@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SignUp from "../pages/SignUp";
 import MyPage from "../pages/MyPage";
 import Detail from "../pages/Detail";
@@ -15,6 +15,7 @@ const Router = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate replace to="/signup" />} />
       </Routes>
     </BrowserRouter>
   );
