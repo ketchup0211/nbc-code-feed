@@ -6,6 +6,7 @@ const MainContainer = styled.div`
   flex-direction: row;
   align-items: stretch;
   height: 100vh;
+  overflow: hidden;
 `;
 const AuthSidebar = styled.div`
   width: 450px;
@@ -16,7 +17,7 @@ const AuthSidebar = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  align-content: center;
+  justify-content: center;
   width: 100%;
   padding: 0px 20px;
 `;
@@ -27,23 +28,64 @@ const AuthContent = styled.div`
   text-align: center;
   margin: auto;
 `;
+
+const SubTitle = styled.h2`
+  margin-bottom: 40px;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: left;
+`;
+
+const HrDivider = styled.hr`
+  margin: 30px 0px;
+  border: none;
+  background-color: #e7e7e9;
+  color: #6e6d7a;
+  text-align: center;
+  overflow: visible;
+  height: 1px;
+  &::after {
+    content: "or";
+    display: inline-block;
+    position: relative;
+    top: -7px;
+    padding: 0 16px;
+    background-color: #fff;
+  }
+`;
+
+const Button = styled.button`
+  margin-bottom: 40px;
+`;
+
+const FontSmall = styled.p`
+  margin-top: 20px;
+  font-size: 12px;
+  font-weight: 400w;
+  color: #3d3d4e;
+`;
+
+const AuthLink = styled.p`
+  margin-top: 20px;
+  color: #3d3d4e;
+`;
 function SignUp() {
   return (
     <MainContainer>
       <AuthSidebar />
       <Content>
         <AuthContent>
-          <h2>Sign up to Code Feed</h2>
+          <SubTitle>Sign up to Code Feed</SubTitle>
           <button>Sign up with GitHub</button>
-          <hr />
-          <button>Continue with email</button>
-          <p>
+          <HrDivider></HrDivider>
+          <Button>Continue with email</Button>
+          <FontSmall>
             By creating account you agree with our Terms of Sevice, Privacy
             Policy, and our default Notification Settings.
-          </p>
-          <p>
+          </FontSmall>
+          <AuthLink>
             Already have an account? <a href="">Sign In</a>
-          </p>
+          </AuthLink>
         </AuthContent>
       </Content>
     </MainContainer>
