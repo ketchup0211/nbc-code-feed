@@ -1,4 +1,5 @@
 import { useState, useSelector, useDispatch, useContext } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const MainContainer = styled.div`
@@ -84,7 +85,7 @@ function SignUp() {
             Policy, and our default Notification Settings.
           </FontSmall>
           <AuthLink>
-            Already have an account? <a href="">Sign In</a>
+            Already have an account? <Link to="/login">Sign In</Link>
           </AuthLink>
         </AuthContent>
       </Content>
