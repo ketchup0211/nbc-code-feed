@@ -1,7 +1,13 @@
 import Router from "shared/Router";
+import GrobalStyle from "./GlobalStyle";
 
 function App() {
-  return <Router />;
+  return (
+    <>
+      <GrobalStyle />
+      <Router />
+    </>
+  );
 }
 
 export default App;
