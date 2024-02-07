@@ -19,4 +19,5 @@ const HomeAndModifyButton = styled.button`
     width: 100px;
     height: 35px;
     border-radius: 5px;
+    margin: 5px;
 `;

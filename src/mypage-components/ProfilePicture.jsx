@@ -18,7 +18,7 @@ export default function ProfilePicture() {
     <ProfileContainer>
       <ProfileImage src={image} alt="Profile" />
       <HiddenInput type="file" onChange={handleImageChange} ref={fileInput} />
-      <FileButton onClick={handleButtonClick}>프로필 이미지 선택</FileButton>
+      <FileButton onClick={handleButtonClick}>📷</FileButton>
     </ProfileContainer>
   )
 }
@@ -27,6 +27,7 @@ const ProfileContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin: 20px;
 `;
 const ProfileImage = styled.img`
   width: 150px;

@@ -20,4 +20,5 @@ const UserInfoContainer = styled.div`
 `;
 const UserInfoItem = styled.p`
     font-size: 1rem;
+    margin: 10px;
 `;

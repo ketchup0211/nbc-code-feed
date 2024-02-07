@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignUp from "pages/SignUp";
+import MyPage from "./pages/MyPage";
 
 const Router = () => {
+  return (
   <BrowserRouter>
     <Routes>
-      <Route path="/mypage" element={<SignUp />} />
+      <Route path="/mypage" element={<MyPage />} />
     </Routes>
-  </BrowserRouter>;
-};
+  </BrowserRouter>
+  )
+}
 
 export default Router;
