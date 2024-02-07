@@ -35,5 +35,8 @@ export default FilterCheck;
 const FilterCheckMain = styled.section`
   border: 1px solid black;
   margin: 5px;
-  height: 100px;
+  height: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 `;
