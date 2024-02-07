@@ -1,5 +1,7 @@
+import { Router } from "react-router-dom";
+
 function App() {
-  return <></>;
+  return <Router />;
 }
 
 export default App;
