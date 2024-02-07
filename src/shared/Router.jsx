@@ -1,12 +1,15 @@
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignUp from "pages/SignUp";
+import SignUp from "../pages/SignUp";
 
 const Router = () => {
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<SignUp />} />
-    </Routes>
-  </BrowserRouter>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<p>hello everyone</p>} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default Router;
