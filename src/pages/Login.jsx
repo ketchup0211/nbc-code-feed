@@ -1,4 +1,5 @@
-import { useState, useSelector, useContext, useDispatch } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const MainContainer = styled.div`
@@ -95,6 +96,21 @@ const Button = styled.button`
   cursor: pointer;
 `;
 function Login() {
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const updateInput = (event) => {
+    switch (event.target.name) {
+      case "login":
+        setLogin(event.target.value);
+        break;
+      case "password":
+        setPassword(event.target.value);
+        break;
+      default:
+        console.log("유효하지 않은 입력입니다.");
+        return;
+    }
+  };
   return (
     <MainContainer>
       <AuthSidebar />
@@ -104,11 +120,17 @@ function Login() {
           <button>Sign in with GitHub</button>
           <HrDivider></HrDivider>
           <AuthForm>
-            <Session>
+            <Session method="post">
               <FormField>
                 <FieldSet>
                   <Label> Username or Email</Label>
-                  <LoginInput type="text" />
+                  <LoginInput
+                    type="text"
+                    name="login"
+                    value={login}
+                    onChange={updateInput}
+                    autoComplete="off"
+                  />
                 </FieldSet>
                 <FieldSet>
                   <Label>
@@ -124,13 +146,19 @@ function Login() {
                       Forgot?
                     </a>
                   </Label>
-                  <LoginInput type="text" />
+                  <LoginInput
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={updateInput}
+                    autoComplete="off"
+                  />
                 </FieldSet>
               </FormField>
               <Button type="submit">Sign In</Button>
             </Session>
             <AuthLink>
-              Don't have an account? <a href="">Sign Up</a>
+              Don't have an account? <Link to="/signup">Sign Up</Link>
             </AuthLink>
           </AuthForm>
         </AuthContent>
