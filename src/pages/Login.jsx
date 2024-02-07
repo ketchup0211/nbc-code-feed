@@ -1,4 +1,4 @@
-import { useState, useSelector, useContext, useDispatch } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -120,7 +120,7 @@ function Login() {
           <button>Sign in with GitHub</button>
           <HrDivider></HrDivider>
           <AuthForm>
-            <Session>
+            <Session method="post">
               <FormField>
                 <FieldSet>
                   <Label> Username or Email</Label>
