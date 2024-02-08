@@ -8,10 +8,12 @@ import { auth, db } from "src/firebase";
 import { log } from "src/redux/modules/user";
 import { addTodos } from "src/redux/modules/postList";
 import { addDoc, collection } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const { post } = useSelector((state) => state.postList);
   const [content, setContent] = useState("");
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +31,7 @@ function Home() {
     const newTodo = { text: content, isDone: false };
     dispatch(addTodos([{ ...newTodo, id: crypto.randomUUID() }, ...post]));
     setContent("");
-    const collectionRef = collection(db, "todos");
+    const collectionRef = collection(db, "posts");
     await addDoc(collectionRef, newTodo);
   };
 
@@ -47,6 +49,7 @@ function Home() {
         />
         <button>등록</button>
       </form>
+      <button onClick={() => navigate("/detail")}>디테일 페이지로 이동</button>
     </>
   );
 }

@@ -8,10 +8,11 @@ import { addTodos } from "src/redux/modules/postList";
 function PostList() {
   const dispatch = useDispatch();
   const { post } = useSelector((state) => state.postList);
+  console.log(post);
 
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, "todos"));
+      const q = query(collection(db, "posts"));
       const querySnapshot = await getDocs(q);
 
       const initialTodos = [];
@@ -33,7 +34,10 @@ function PostList() {
       {post.map((e) => {
         return (
           <PostCard key={e.id}>
-            <p>{e.text}</p>
+            <p>{e.content}</p>
+            <p>{e.name}</p>
+            <p>{e.profile}</p>
+            <p>{e.title}</p>
           </PostCard>
         );
       })}

@@ -7,6 +7,9 @@ export default defineConfig({
   resolve: {
     alias: {
       src: "/src",
+      assets: "/src/assets",
+      pages: "/src/pages",
+      shared: "/src/shared",
     },
   },
 });
