@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import SignUpReducer from "../redux/modules/SignUpReducer";
-
+//LAST
 const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
