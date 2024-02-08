@@ -1,20 +1,50 @@
-import React from "react";
+import { ref, uploadBytes } from "firebase/storage";
+import React, { useState } from "react";
 import styled from "styled-components";
-
-const [isMoved, setMoved] = useState(false);
+import { storage } from "../firebaseConfig";
 
 function WriteDetail() {
+  const [selectedImg, setSelectedImg] = useState([]);
+  const [previewImg, setPreviewImg] = useState([]);
+
+  const handleImgSelect = (event) => {
+    const imageFile = event.target.files[0];
+    setSelectedImg(imageFile);
+
+    const fileRead = new FileReader(); //FileRear를 이용해서 이미지 프리뷰 생성
+    fileRead.onload = function () {
+      setPreviewImg(fileRead.result); // 프리뷰 이미지 설정
+    };
+    fileRead.readAsDataURL(event.target.files[0]); // 프리뷰 이미지 URL 읽어오기
+  };
+
+  const handleUpload = async () => {
+    const imageRef = ref(storage, "folder/file");
+    await uploadBytes(imageRef, selectedImg);
+  };
+
   return (
     <div>
       <Nav>
         <GoHome>CodeFeed</GoHome>
       </Nav>
       <UploadImageContainer>
-        <UploadBox htmlFor="">
-          <InputImage type="file" accept="image/jpg, image/jpeg, image/png" />
+        <UploadBox htmlFor="inputImage">
+          <InputImage
+            id="inputImage"
+            type="file"
+            accept="image/jpg, image/jpeg, image/png"
+            onChange={handleImgSelect}
+            onClick={handleUpload}
+          />
           <p>클릭 혹은 이미지를 이곳에 드래그하세요.</p>
         </UploadBox>
       </UploadImageContainer>
+      <div>
+        <div>
+          <PriviewImgBox alt="이미지 미리보기" src={previewImg} />
+        </div>
+      </div>
       <div>
         <InputTitle
           type="text"
@@ -41,8 +71,6 @@ function WriteDetail() {
 
 export default WriteDetail;
 
-// export const
-
 export const Nav = styled.nav`
   height: 100px;
   display: flex;
@@ -67,16 +95,7 @@ export const UploadImageContainer = styled.div`
 `;
 
 export const InputImage = styled.input`
-  display: flex;
-  margin: auto;
-  padding: 138px 58px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  position: absolute;
-  color: transparent;
-  top: 125px;
+  display: none;
 `;
 
 export const UploadBox = styled.label`
@@ -94,6 +113,12 @@ export const UploadBox = styled.label`
   cursor: pointer;
 `;
 
+export const PriviewImgBox = styled.img`
+  width: 180px;
+  display: flex;
+  margin: auto;
+`;
+
 export const InputTitle = styled.input`
   width: 50%;
   height: 50px;
@@ -106,7 +131,8 @@ export const InputTitle = styled.input`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
 `;
 
 export const InputContent = styled.textarea`
