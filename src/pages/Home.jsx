@@ -53,6 +53,8 @@ function Home() {
       <button onClick={() => navigate("/WriteDetail")}>
         작성 페이지로 이동
       </button>
+      <button onClick={() => navigate("/loginPage")}>로그인 페이지</button>
+      <button onClick={() => navigate("/mypage")}>마이페이지</button>
     </>
   );
 }

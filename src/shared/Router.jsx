@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "src/pages/Home";
 import Detail from "src/pages/Detail";
+import Home from "src/pages/Home";
+import Login from "src/pages/Login";
 import LoginPage from "src/pages/LoginPage";
-import MyPage from "../pages/MyPage";
-import WriteDetail from "pages/WriteDetail";
+import MyPage from "src/pages/Mypage";
+import SignUp from "src/pages/SignUp";
+import WriteDetail from "src/pages/WriteDetail";
 
 const Router = () => {
   return (
@@ -14,6 +16,8 @@ const Router = () => {
         <Route path="/WriteDetail" element={<WriteDetail />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/loginPage" element={<LoginPage />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

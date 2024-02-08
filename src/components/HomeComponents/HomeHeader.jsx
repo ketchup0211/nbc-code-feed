@@ -21,7 +21,7 @@ function HomeHeader() {
           </NavPage>
           <NavInformation>
             <input type="text" placeholder="검색" />
-            <LinkStyle to={"/loginPage"}>로그인</LinkStyle>
+            <LinkStyle to={"/sign-up"}>로그인</LinkStyle>
           </NavInformation>
         </NavList>
       </header>
