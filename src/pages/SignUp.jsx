@@ -2,6 +2,7 @@ import { env } from "process";
 import { useState, useSelector, useDispatch, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import SignUpReducer from "../redux/modules/SignUpReducer";
 
 const MainContainer = styled.div`
   display: flex;
@@ -118,10 +119,9 @@ const CheckBox = styled.input`
 `;
 function SignUp() {
   const [signUp, setSignUp] = useState(false);
-  const [name, setName] = useState("");
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { name, username, email, password } = useSelector(
+    (state) => state.SignUpReducer
+  );
   const handleEmailSignUp = (event) => {
     event.preventDefault();
     switch (event.target.name) {
