@@ -50,6 +50,9 @@ function Home() {
         <button>등록</button>
       </form>
       <button onClick={() => navigate("/detail")}>디테일 페이지로 이동</button>
+      <button onClick={() => navigate("/WriteDetail")}>
+        작성 페이지로 이동
+      </button>
     </>
   );
 }
