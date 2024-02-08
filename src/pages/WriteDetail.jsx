@@ -1,11 +1,62 @@
 import { ref, uploadBytes } from "firebase/storage";
 import React, { useState } from "react";
+import ReactQuill, { Quill } from "react-quill";
 import styled from "styled-components";
 import { storage } from "../firebaseConfig";
+import "react-quill/dist/quill.snow.css";
+// import { ImageResize } from "quill-image-resize-module-react";
+
+// Quill.register("modules/imageResize", ImageResize);
 
 function WriteDetail() {
   const [selectedImg, setSelectedImg] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
+  const [quillValue, setQuillValue] = useState("");
+  const toolbarOptions = [
+    ["link", "image", "video"],
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    ["blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+  ];
+
+  // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "align",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "background",
+    "color",
+    "link",
+    "image",
+    "video",
+    "width",
+  ];
+
+  const modules = {
+    toolbar: {
+      container: toolbarOptions,
+    },
+    // ImageResize: {
+    //   parchment: Quill.import("parchment"),
+    //   modules: ["Resize", "DisplaySize", "Toolbar"],
+    // },
+  };
+
+  const handleQuillChange = (editor) => {
+    setQuillValue(editor.getContents());
+  };
 
   const handleImgSelect = (event) => {
     const imageFile = event.target.files[0];
@@ -53,14 +104,23 @@ function WriteDetail() {
         />
       </div>
 
-      <div>
-        <InputContent
+      <QuillDiv>
+        {/* <InputContent
           name="contents"
           cols="100"
           rows="50"
           placeholder="내용을 입력해주세요."
-        ></InputContent>
-      </div>
+        ></InputContent> */}
+        <ReactQuill
+          style={{ height: "600px" }}
+          theme="snow"
+          modules={modules}
+          value={quillValue || ""}
+          onChange={handleQuillChange}
+          formats={formats}
+          toolbarOptions={toolbarOptions}
+        />
+      </QuillDiv>
 
       <DoneButtonDiv>
         <DoneButton>작성완료</DoneButton>
@@ -161,4 +221,12 @@ export const DoneButton = styled.button`
   color: white;
   margin: 20px auto;
   float: left;
+`;
+export const QuillDiv = styled.div`
+  width: 70%;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
 `;
