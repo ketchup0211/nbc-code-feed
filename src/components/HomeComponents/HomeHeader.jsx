@@ -13,7 +13,6 @@ function HomeHeader() {
     event.preventDefault();
     await signOut(auth);
   };
-  console.log(user.email);
   if (user === null)
     return (
       <header>
@@ -39,6 +38,7 @@ function HomeHeader() {
         <NavPage>
           <p>모든 게시글</p>
           <Link to={"/myPage"}>마이 페이지</Link>
+          <label>{user.displayName}</label>
         </NavPage>
         <NavInput>
           <input type="text" placeholder="검색" />

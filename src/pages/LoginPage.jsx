@@ -3,12 +3,14 @@ import { auth } from "src/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const navigate = useNavigate();
 
   const onChange = (event) => {
@@ -21,6 +23,9 @@ const LoginPage = () => {
     if (name === "password") {
       setPassword(value);
     }
+    if (name === "name") {
+      setName(value);
+    }
   };
 
   const signUp = async (event) => {
@@ -28,6 +33,9 @@ const LoginPage = () => {
     navigate("/");
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+      });
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -66,6 +74,16 @@ const LoginPage = () => {
             type="password"
             value={password}
             name="password"
+            onChange={onChange}
+            required
+          ></input>
+        </div>
+        <div>
+          <label>이름 : </label>
+          <input
+            type="text"
+            value={name}
+            name="name"
             onChange={onChange}
             required
           ></input>

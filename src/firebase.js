@@ -5,13 +5,14 @@ import { getAuth } from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDbf8VYwR7DMplFrymkJI44_VSKgKDpxZA",
-  authDomain: "newsfeed-project-311c1.firebaseapp.com",
-  projectId: "newsfeed-project-311c1",
-  storageBucket: "newsfeed-project-311c1.appspot.com",
-  messagingSenderId: "26063908254",
-  appId: "1:26063908254:web:5ad7ba3a715fb37e7cba8f",
+  apiKey: import.meta.env.VITE_SOME_API_KEY,
+  authDomain: import.meta.env.VITE_SOME_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_SOME_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_SOME_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_SOME_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_SOME_APP_ID,
 };
 
 // Initialize Firebase
