@@ -158,7 +158,7 @@ function Login() {
               <Button type="submit">Sign In</Button>
             </Session>
             <AuthLink>
-              Don't have an account? <Link to="/signup">Sign Up</Link>
+              Don't have an account? <Link to="/sign-up">Sign Up</Link>
             </AuthLink>
           </AuthForm>
         </AuthContent>
