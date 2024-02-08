@@ -1,6 +1,6 @@
 import { ref, uploadBytes } from "firebase/storage";
 import React, { useState } from "react";
-import ReactQuill, { Quill } from "react-quill";
+import ReactQuill from "react-quill";
 import styled from "styled-components";
 import { storage } from "../firebaseConfig";
 import "react-quill/dist/quill.snow.css";
