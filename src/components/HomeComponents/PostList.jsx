@@ -44,7 +44,6 @@ function PostList() {
 export default PostList;
 
 const PostListMain = styled.main`
-  border: 1px solid black;
   min-height: 400px;
   height: auto;
   margin: 5px;
