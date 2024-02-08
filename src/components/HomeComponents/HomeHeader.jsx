@@ -18,8 +18,7 @@ function HomeHeader() {
       <header>
         <NavList>
           <NavPage>
-            <p>모든 게시글</p>
-            <Link to={"/myPage"}>마이 페이지</Link>
+            <label>CodeFeed</label>
           </NavPage>
           <NavInput>
             <input type="text" placeholder="검색" />
@@ -36,12 +35,13 @@ function HomeHeader() {
     <header>
       <NavList>
         <NavPage>
-          <p>모든 게시글</p>
-          <Link to={"/myPage"}>마이 페이지</Link>
-          <label>{user.displayName}</label>
+          <label>CodeFeed</label>
         </NavPage>
         <NavInput>
-          <input type="text" placeholder="검색" />
+          <input type="text" placeholder="Search..." />
+          <Link to={"/myPage"} style={{ textDecoration: "none" }}>
+            <label>{user.displayName}</label>
+          </Link>
           <Button content={"로그아웃"} width={"90"} onClick={logOut} />
         </NavInput>
       </NavList>
@@ -55,7 +55,6 @@ const NavList = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid black;
   margin: 5px;
   padding: 5px;
   width: 99%;
@@ -71,8 +70,21 @@ const NavPage = styled.ul`
 
 const NavInput = styled.ul`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 5%;
-  width: 50%;
+  width: 100%;
   margin: 10px;
+  & label {
+    cursor: pointer;
+    color: black;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+  & input {
+    border: none;
+    background-color: whitesmoke;
+    height: 40px;
+    border-radius: 25px;
+    padding: 10px;
+  }
 `;
