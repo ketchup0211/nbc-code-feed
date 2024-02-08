@@ -1,20 +1,21 @@
 import styled from "styled-components";
+import EditButton from "./common/EditButton";
 
-export default function UserInfo ({ name, email, link, phoneNumber }) {
+export default function UserInfo ({ name, email, phoneNumber }) {
 
     return (
         <UserInfoContainer>
-            <UserInfoItem>이름 : {name}</UserInfoItem>
-            <UserInfoItem>E-mail : {email}</UserInfoItem>
-            <UserInfoItem>Link : <a href={link}/>{link}</UserInfoItem>
-            <UserInfoItem>전화번호 : {phoneNumber}</UserInfoItem>
+            <UserInfoItem>{name}</UserInfoItem>
+            <UserInfoItem>{email}</UserInfoItem>
+            <UserInfoItem>{phoneNumber}</UserInfoItem>
+            <EditButton></EditButton>
         </UserInfoContainer>
     )
 }
 
 const UserInfoContainer = styled.div`
-    display: flex;
-    align-items: center;
+    display: inline-flex;
+    align-items: start;
     flex-direction: column;
     background-color: #f9f1d9;
 `;

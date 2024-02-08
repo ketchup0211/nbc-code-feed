@@ -9,7 +9,6 @@ export default function MyPage() {
     const userInfo = {
         name: '이지은',
         email: 'lge9380@naver.com',
-        link: 'https://naver.com',
         phoneNumber: '010-1111-1111'
     };
 
@@ -21,8 +20,8 @@ export default function MyPage() {
                 <SubContainer>
                     <ProfilePicture />
                     <UserInfo {...userInfo} />
-                    <Post />
                 </SubContainer>
+                <Post />
             </MyPageContainer>
         </>
     )
@@ -32,5 +31,7 @@ const MyPageContainer = styled.div`
 
 `;
 const SubContainer = styled.div`
-    
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;

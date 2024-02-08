@@ -3,12 +3,12 @@ import styled from "styled-components";
 export default function Post () {
 
     const posts = [
-        { id: 1, image: 'url-to-image-1'},
-        { id: 2, image: 'url-to-image-2'},
-        { id: 3, image: 'url-to-image-3'},
-        { id: 4, image: 'url-to-image-4'},
-        { id: 5, image: 'url-to-image-5'},
-        { id: 6, image: 'url-to-image-6'},
+        { id: 1, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
+        { id: 2, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
+        { id: 3, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
+        { id: 4, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
+        { id: 5, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
+        { id: 6, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
     ];
 
     return (
@@ -23,12 +23,14 @@ export default function Post () {
 const PostContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    background-color: #ffd4d4;
+    flex-shrink: 0;
+    width: 100%;
 `;
 const PostItem = styled.div`
     width: 100%;
     padding-top: 100%;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 `;
