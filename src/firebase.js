@@ -1,23 +1,21 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDg_EgfN9FlBXyAd-JcUlHMvTEkAjiuqOQ",
-  authDomain: "newsfeed-team-project.firebaseapp.com",
-  projectId: "newsfeed-team-project",
-  storageBucket: "newsfeed-team-project.appspot.com",
-  messagingSenderId: "177276772419",
-  appId: "1:177276772419:web:92f1b3598e651e6586b4f6",
-  measurementId: "G-FTM19B9D8D",
+  apiKey: "AIzaSyCN4MQ0FqABXjMsuuiKX9u6wFY1z9-vl6o",
+  authDomain: "code-feed-b2a51.firebaseapp.com",
+  projectId: "code-feed-b2a51",
+  storageBucket: "code-feed-b2a51.appspot.com",
+  messagingSenderId: "156601940351",
+  appId: "1:156601940351:web:e040c803816d7aff84824a",
+  measurementId: "G-0G63DPNV85"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const storage = getStorage(app);
-export const db = getFirestore(app);
+export const analytics = getAnalytics(app);
