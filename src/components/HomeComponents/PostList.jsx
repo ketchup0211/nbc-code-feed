@@ -8,7 +8,6 @@ import { addTodos } from "src/redux/modules/postList";
 function PostList() {
   const dispatch = useDispatch();
   const { post } = useSelector((state) => state.postList);
-  console.log(post);
 
   useEffect(() => {
     const fetchData = async () => {
