@@ -1,6 +1,9 @@
-import { createStore, combineReducers } from "redux";
+import { combineReducers, createStore } from "redux";
+import users from "src/redux/modules/user";
 
-const rootReducer = combineReducers();
+const rootReducer = combineReducers({
+  users,
+});
 
 const store = createStore(rootReducer);
 

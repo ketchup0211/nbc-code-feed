@@ -1,5 +1,5 @@
-import Router from "shared/Router";
-import GrobalStyle from "./GlobalStyle";
+import Router from "/src/shared/Router";
+import GrobalStyle from "/src/GlobalStyle";
 
 function App() {
   return (
