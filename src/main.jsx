@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom/client";
 import "./reset.css";
-import MyPage from "./pages/MyPage";
+import App from "./App";
 
-
-ReactDOM.createRoot(document.getElementById("root")).render(<MyPage />);
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);

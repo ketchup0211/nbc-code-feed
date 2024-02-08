@@ -1,11 +1,11 @@
-import { collection, getDocs, query } from "firebase/firestore";
+// import { collection, getDocs, query } from "firebase/firestore";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 레드벨벳 from "../assets/img/레드벨벳.jpg";
 import wendy from "../assets/img/wendy.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { db } from "../firebase";
+// import { db } from "../firebaseKSH";
 
 function Detail() {
   const navigate = useNavigate();
