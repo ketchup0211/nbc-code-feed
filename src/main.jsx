@@ -1,7 +1,14 @@
 import ReactDOM from "react-dom/client";
-import "./reset.css";
-//import MyPage from "./pages/MyPage";
-import Detail from "./pages/Detail";
 
+import React from "react";
+import App from "./App.jsx";
+import { Provider } from "react-redux";
+import store from "./redux/config/store.js";
 
-ReactDOM.createRoot(document.getElementById("root")).render(<Detail />);
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);
