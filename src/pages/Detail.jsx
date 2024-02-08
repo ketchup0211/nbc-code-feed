@@ -5,7 +5,8 @@ import wendy from "../assets/img/wendy.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-// import { db } from "../firebaseKSH";
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "src/firebase";
 
 function Detail() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function Detail() {
   useEffect(() => {
     const fetchData = async () => {
       // collection 이름이 todos인 collection의 모든 document를 가져옵니다.
-      const q = query(collection(db, "work"));
+      const q = query(collection(db, "posts"));
       const querySnapshot = await getDocs(q);
 
       const initialTodos = [];

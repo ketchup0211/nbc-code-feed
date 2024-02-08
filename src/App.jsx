@@ -1,11 +1,11 @@
-import { GlobalStyle } from "shared/GlobalStyled";
-import Router from "shared/Router";
+import Router from "/src/shared/Router";
+import GrobalStyle from "/src/GlobalStyle";
 
 function App() {
   return (
     <>
+      <GrobalStyle />
       <Router />
-      <GlobalStyle />
     </>
   );
 }

@@ -5,24 +5,34 @@ const SET_PASSWORD = "SET_PASSWORD";
 const SET_AGREE = "SET_AGREE";
 
 export const setName = (name) => {
-  type: SET_NAME;
-  payload: name;
+  return {
+    type: SET_NAME,
+    payload: name,
+  };
 };
 export const setUserName = (userName) => {
-  type: SET_USERNAME;
-  payload: userName;
+  return {
+    type: SET_USERNAME,
+    payload: userName,
+  };
 };
 export const setEmail = (email) => {
-  type: SET_EMAIL;
-  payload: email;
+  return {
+    type: SET_EMAIL,
+    payload: email,
+  };
 };
 export const setPassword = (password) => {
-  type: SET_PASSWORD;
-  payload: password;
+  return {
+    type: SET_PASSWORD,
+    payload: password,
+  };
 };
 export const setAgree = (agree) => {
-  type: SET_AGREE;
-  payload: agree;
+  return {
+    type: SET_AGREE,
+    payload: agree,
+  };
 };
 
 const initialState = {

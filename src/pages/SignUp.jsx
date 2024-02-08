@@ -1,9 +1,7 @@
-import { env } from "process";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import SignUpReducer from "../redux/modules/SignUpReducer";
 //LAST
 const MainContainer = styled.div`
   display: flex;
@@ -197,7 +195,7 @@ function SignUp() {
                   >
                     <CheckBox id="user-agree" type="checkbox" />
                     <Label for="user-agree" style={{ margin: "0px" }}>
-                      I agree with Code Feed's
+                      I agree with Code Feeds
                     </Label>
                   </FieldSet>
                 </FormField>
