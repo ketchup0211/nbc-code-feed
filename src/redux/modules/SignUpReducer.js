@@ -2,6 +2,7 @@ const SET_NAME = "SET_NAME";
 const SET_USERNAME = "SET_USERNAME";
 const SET_EMAIL = "SET_EMAIL";
 const SET_PASSWORD = "SET_PASSWORD";
+const SET_AGREE = "SET_AGREE";
 
 export const setName = (name) => {
   type: SET_NAME;
@@ -19,12 +20,17 @@ export const setPassword = (password) => {
   type: SET_PASSWORD;
   payload: password;
 };
+export const setAgree = (agree) => {
+  type: SET_AGREE;
+  payload: agree;
+};
 
 const initialState = {
   name: "",
   username: "",
   email: "",
   password: "",
+  agree: false,
 };
 
 const SignUpReducer = (state = initialState, action) => {
@@ -48,6 +54,11 @@ const SignUpReducer = (state = initialState, action) => {
       return {
         ...state,
         password: state.payload,
+      };
+    case SET_AGREE:
+      return {
+        ...state,
+        agree: state.payload,
       };
     default:
       return state;

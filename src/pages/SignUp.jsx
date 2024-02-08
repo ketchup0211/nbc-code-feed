@@ -1,5 +1,6 @@
 import { env } from "process";
-import { useState, useSelector, useDispatch, useContext } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import SignUpReducer from "../redux/modules/SignUpReducer";
@@ -158,14 +159,14 @@ function SignUp() {
                   <FormField>
                     <FieldSet>
                       <Label for="name">Name</Label>
-                      <SignUpInput id="name" />
+                      <SignUpInput id="name" value={name} />
                     </FieldSet>
                   </FormField>
                   <FormField>
                     <FieldSet>
                       <FieldSet>
                         <Label for="username">Username</Label>
-                        <SignUpInput id="username" />
+                        <SignUpInput id="username" value={username} />
                       </FieldSet>
                     </FieldSet>
                   </FormField>
@@ -173,7 +174,7 @@ function SignUp() {
                 <FormField>
                   <FieldSet>
                     <Label for="email">Email</Label>
-                    <SignUpInput id="email" />
+                    <SignUpInput id="email" value={email} />
                   </FieldSet>
                 </FormField>
                 <FormField>
@@ -183,6 +184,7 @@ function SignUp() {
                       id="password"
                       type="password"
                       placeholder="6+characters"
+                      value={password}
                     />
                   </FieldSet>
                 </FormField>
