@@ -7,11 +7,11 @@ export default function EditButton() {
 }
 
 const EditingButton = styled.button`
-    background-color: white;
+    background-color: #f4f4f3;
     width: 100px;
     height: 35px;
     border-radius: 30px;
     border: 0.1px solid black;
-    margin: 5px;
+    border: none;
     cursor: pointer;
 `;

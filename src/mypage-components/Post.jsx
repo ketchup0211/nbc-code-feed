@@ -23,7 +23,7 @@ export default function Post () {
 const PostContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    background-color: #ffd4d4;
+    background-color: #faecec;
     flex-shrink: 0;
     width: 100%;
 `;

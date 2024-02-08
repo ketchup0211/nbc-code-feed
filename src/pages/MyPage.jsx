@@ -4,12 +4,12 @@ import TodTob from "../mypage-components/TobTab"
 import ProfilePicture from "../mypage-components/ProfilePicture"
 import UserInfo from "../mypage-components/UserInfo"
 import Post from "../mypage-components/Post"
+import PostTab from "../mypage-components/PostTab"
 
 export default function MyPage() {
     const userInfo = {
         name: '이지은',
-        email: 'lge9380@naver.com',
-        phoneNumber: '010-1111-1111'
+        email: 'lge9380@naver.com'
     };
 
     return (
@@ -21,6 +21,7 @@ export default function MyPage() {
                     <ProfilePicture />
                     <UserInfo {...userInfo} />
                 </SubContainer>
+                <PostTab />
                 <Post />
             </MyPageContainer>
         </>
@@ -34,4 +35,5 @@ const SubContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 40px;
 `;

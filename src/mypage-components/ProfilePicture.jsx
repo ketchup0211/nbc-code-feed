@@ -14,11 +14,11 @@ const ProfileContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #ffd4d4;
+  margin: 20px;
 `;
 const ProfileImage = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
 
 `;

@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import EditButton from "./common/EditButton";
 
-export default function UserInfo ({ name, email, phoneNumber }) {
+export default function UserInfo ({ name, email }) {
 
     return (
         <UserInfoContainer>
-            <UserInfoItem>{name}</UserInfoItem>
-            <UserInfoItem>{email}</UserInfoItem>
-            <UserInfoItem>{phoneNumber}</UserInfoItem>
+            <NameItem>{name}</NameItem>
+            <EmailItem>{email}</EmailItem>
             <EditButton></EditButton>
         </UserInfoContainer>
     )
@@ -17,9 +16,13 @@ const UserInfoContainer = styled.div`
     display: inline-flex;
     align-items: start;
     flex-direction: column;
-    background-color: #f9f1d9;
 `;
-const UserInfoItem = styled.p`
+const NameItem = styled.p`
+    font-size: 2rem;
+    margin-bottom: 15px;
+`;
+const EmailItem = styled.p`
     font-size: 1rem;
-    margin: 10px;
+    margin-bottom: 15px;
+    margin-left: 5px;
 `;
