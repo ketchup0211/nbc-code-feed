@@ -1,7 +1,9 @@
 import { combineReducers, createStore } from "redux";
-import users from "src/redux/modules/user";
+import users from "../modules/user";
+import postList from "../modules/postList";
 
 const rootReducer = combineReducers({
+  postList,
   users,
 });
 
