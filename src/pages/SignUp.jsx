@@ -1,7 +1,5 @@
-import { useState, useSelector, useDispatch, useContext } from "react";
-
 function SignUp() {
-  return <></>;
+  return <div>SignUp</div>;
 }
 
 export default SignUp;

@@ -1,12 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignUp from "pages/SignUp";
-
+import SignUp from "../pages/SignUp";
+import Detail from "../pages/Detail";
+import Home from "../pages/Home";
+import WriteDetail from "pages/WriteDetail";
 const Router = () => {
-  <BrowserRouter>
-    <Routes>
-      <Route path="/sign-up" element={<SignUp />} />
-    </Routes>
-  </BrowserRouter>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/detail" element={<Detail />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/write-detail" element={<WriteDetail />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default Router;
