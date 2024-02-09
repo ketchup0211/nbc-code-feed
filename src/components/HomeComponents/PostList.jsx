@@ -74,14 +74,14 @@ function PostList() {
 
 export default PostList;
 
-const PostListMain = styled.main`
+const PostListMain = styled.ol`
   min-height: 400px;
   height: auto;
-  margin: 5px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-content: center;
+  margin-left: 5%;
+  display: grid;
+  grid-gap: 36px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  list-style: none;
 `;
 
 const PostCard = styled.div`
