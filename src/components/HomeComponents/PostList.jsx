@@ -4,9 +4,11 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodos } from "src/redux/modules/postList";
+import { Link, useParams } from "react-router-dom";
 
 function PostList() {
   const dispatch = useDispatch();
+  const { id } = useParams();
   const { post } = useSelector((state) => state.postList);
 
   useEffect(() => {
@@ -26,20 +28,46 @@ function PostList() {
       dispatch(addTodos(initialTodos));
     };
     fetchData();
-  }, [dispatch]);
+  }, []);
+
   if (post === null) return <div>포스트가 없습니다.</div>;
+  if (id === undefined)
+    return (
+      <PostListMain>
+        {post.map((e) => {
+          return (
+            <LinkStyle key={e.id} to={`/detail/${e.id}`}>
+              <PostCard>
+                <div>
+                  <img src={e.image} />
+                  <span>{e.title}</span>
+                </div>
+                <p>{e.name}</p>
+              </PostCard>
+            </LinkStyle>
+          );
+        })}
+      </PostListMain>
+    );
   return (
     <PostListMain>
-      {post.map((e) => {
-        return (
-          <PostCard key={e.id}>
-            <p>{e.content}</p>
-            <p>{e.name}</p>
-            <p>{e.profile}</p>
-            <p>{e.title}</p>
-          </PostCard>
-        );
-      })}
+      {post
+        .filter((i) => {
+          return i.language === id;
+        })
+        .map((e) => {
+          return (
+            <LinkStyle key={e.id} to={`/detail/${e.id}`}>
+              <PostCard>
+                <div>
+                  <img src={e.image} />
+                  <span>{e.title}</span>
+                </div>
+                <p>{e.name}</p>
+              </PostCard>
+            </LinkStyle>
+          );
+        })}
     </PostListMain>
   );
 }
@@ -61,8 +89,34 @@ const PostCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
-  width: 200px;
-  height: 150px;
+  width: 315px;
+  height: 236px;
   margin: 5px;
+  & span {
+    position: relative;
+    bottom: 100%;
+    height: 99%;
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    border-radius: 12px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  & img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+  }
+  :hover {
+    & span {
+      visibility: visible;
+    }
+  }
+`;
+
+const LinkStyle = styled(Link)`
+  text-decoration: none;
+  color: black;
 `;
