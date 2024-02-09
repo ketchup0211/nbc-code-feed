@@ -9,6 +9,7 @@ import { log } from "src/redux/modules/user";
 import { addTodos } from "src/redux/modules/postList";
 import { addDoc, collection } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import FileUpload from "src/components/HomeComponents/test/FileUpload";
 
 function Home() {
   const { post } = useSelector((state) => state.postList);
@@ -55,6 +56,8 @@ function Home() {
       </button>
       <button onClick={() => navigate("/loginPage")}>로그인 페이지</button>
       <button onClick={() => navigate("/mypage")}>마이페이지</button>
+      <button onClick={() => navigate("/")}>전체게시글</button>
+      <FileUpload />
     </>
   );
 }
