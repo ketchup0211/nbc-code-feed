@@ -24,7 +24,6 @@ function Detail() {
       // doc.id의 경우 따로 지정하지 않는 한 자동으로 생성되는 id입니다.
       // doc.data()를 실행하면 해당 document의 데이터를 가져올 수 있습니다.
       querySnapshot.forEach((doc) => {
-        console.log(doc);
         initialTodos.push({ id: doc.id, ...doc.data() });
       });
 
@@ -38,7 +37,6 @@ function Detail() {
   return (
     <>
       {contents.map((item) => {
-        console.log(item.imgFile);
         return (
           <Container key={item.id}>
             <Title>{item.title}</Title>
