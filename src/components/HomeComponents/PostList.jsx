@@ -39,7 +39,7 @@ function PostList() {
             <LinkStyle key={e.id} to={`/detail/${e.id}`}>
               <PostCard>
                 <div>
-                  <img src={e.image} />
+                  <img src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
                 </div>
                 <p>{e.name}</p>
@@ -60,7 +60,7 @@ function PostList() {
             <LinkStyle key={e.id} to={`/detail/${e.id}`}>
               <PostCard>
                 <div>
-                  <img src={e.image} />
+                  <img src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
                 </div>
                 <p>{e.name}</p>
@@ -96,13 +96,15 @@ const PostCard = styled.div`
     position: relative;
     bottom: 100%;
     height: 99%;
-    visibility: hidden;
+    opacity: 0;
+    visibility: none;
     display: flex;
     justify-content: center;
     align-items: flex-end;
     border-radius: 12px;
     color: white;
     background-color: rgba(0, 0, 0, 0.4);
+    transition: all 0.25s ease-in-out;
   }
   & img {
     width: 100%;
@@ -111,6 +113,7 @@ const PostCard = styled.div`
   }
   :hover {
     & span {
+      opacity: 1;
       visibility: visible;
     }
   }
