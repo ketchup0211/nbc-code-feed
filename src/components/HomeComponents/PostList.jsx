@@ -1,15 +1,15 @@
 import styled from "styled-components";
+import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodos } from "src/redux/modules/postList";
-import { Link, useParams } from "react-router-dom";
 
 function PostList() {
-  const dispatch = useDispatch();
-  const { id } = useParams();
   const { post } = useSelector((state) => state.postList);
+  const { id } = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +28,7 @@ function PostList() {
       dispatch(addTodos(initialTodos));
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   if (post === null) return <div>포스트가 없습니다.</div>;
   if (id === undefined)
