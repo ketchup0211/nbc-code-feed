@@ -1,17 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "src/components/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "src/firebase";
 import { signOut } from "firebase/auth";
+import { checkSearch } from "src/redux/modules/search";
 
 function HomeHeader() {
   const { user } = useSelector((state) => state.users);
+  const search = useSelector((state) => state.search);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logOut = async (event) => {
     event.preventDefault();
     await signOut(auth);
   };
+
+  const inputChcange = (e) => {
+    dispatch(checkSearch(e.target.value));
+  };
+
   if (user === null)
     return (
       <header>
@@ -20,7 +29,19 @@ function HomeHeader() {
             <label>CodeFeed</label>
           </NavPage>
           <NavInformation>
-            <input type="text" placeholder="검색" />
+            <form>
+              <input
+                type="text"
+                placeholder="검색"
+                value={search}
+                onChange={inputChcange}
+              />
+              <Button
+                content={"검색하기"}
+                width={"100"}
+                onClick={() => navigate("/searchResult")}
+              />
+            </form>
             <LinkStyle to={"/sign-up"}>로그인</LinkStyle>
           </NavInformation>
         </NavList>
@@ -33,7 +54,19 @@ function HomeHeader() {
           <label>CodeFeed</label>
         </NavPage>
         <NavInformation>
-          <input type="text" placeholder="Search..." />
+          <form>
+            <input
+              type="text"
+              placeholder="검색"
+              value={search}
+              onChange={inputChcange}
+            />
+            <Button
+              content={"검색하기"}
+              width={"100"}
+              onClick={() => navigate("/searchResult")}
+            />
+          </form>
           <div>
             <LinkStyle to={"/myPage"}>
               <ProfileName>{user.displayName}</ProfileName>
