@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "src/redux/modules/postList";
+import { LinkStyle } from "src/util/LinkStyle";
 
 function PostList() {
   const { post } = useSelector((state) => state.postList);
@@ -117,9 +118,4 @@ const PostCard = styled.div`
       visibility: visible;
     }
   }
-`;
-
-const LinkStyle = styled(Link)`
-  text-decoration: none;
-  color: black;
 `;
