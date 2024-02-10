@@ -13,7 +13,7 @@ export default Button;
 const Btn = styled.button`
   border: none;
   background-color: white;
-  font-size: 10px;
+  font-size: 12px;
   width: ${(props) => (props.$width ? `${props.$width}px` : "30px")};
   cursor: pointer;
 `;

@@ -23,7 +23,7 @@ export default Input;
 
 const InputStyle = styled.input`
   position: relative;
-  bottom: 40px;
+  bottom: 30px;
   margin: 0px 35% 0px 35%;
   width: 30%;
   height: 50px;
