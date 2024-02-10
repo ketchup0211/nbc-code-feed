@@ -1,12 +1,14 @@
 import CheckPost from "src/components/searchResultComponents/CheckPost";
-import HeadImage from "src/components/searchResultComponents/HeadImage";
 import Input from "src/components/searchResultComponents/Input";
 import styled from "styled-components";
+import SerchImage from "src/components/searchResultComponents/SerchImage";
+import SerchHead from "src/components/searchResultComponents/SerchHead";
 
 function SearchResult() {
   return (
     <Background>
-      <HeadImage />
+      <SerchHead />
+      <SerchImage />
       <Input />
       <CheckPost />
     </Background>
