@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodos } from "src/redux/modules/postList";
+import { addPost } from "src/redux/modules/postList";
 
 function PostList() {
   const { post } = useSelector((state) => state.postList);
@@ -25,7 +25,7 @@ function PostList() {
         };
         initialTodos.push(data);
       });
-      dispatch(addTodos(initialTodos));
+      dispatch(addPost(initialTodos));
     };
     fetchData();
   }, [dispatch]);
