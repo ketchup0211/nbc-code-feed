@@ -6,11 +6,11 @@ import HomeHeader from "src/components/HomeComponents/HomeHeader";
 import PostList from "src/components/HomeComponents/PostList";
 import { auth, db } from "src/firebase";
 import { log } from "src/redux/modules/user";
-import { addTodos } from "src/redux/modules/postList";
 import { addDoc, collection } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import FileUpload from "src/components/HomeComponents/test/FileUpload";
 import styled from "styled-components";
+import { addPost } from "src/redux/modules/postList";
 
 function Home() {
   const { post } = useSelector((state) => state.postList);
@@ -31,7 +31,7 @@ function Home() {
   const addTodo = async (event) => {
     event.preventDefault();
     const newTodo = { text: content, isDone: false };
-    dispatch(addTodos([{ ...newTodo, id: crypto.randomUUID() }, ...post]));
+    dispatch(addPost([{ ...newTodo, id: crypto.randomUUID() }, ...post]));
     setContent("");
     const collectionRef = collection(db, "posts");
     await addDoc(collectionRef, newTodo);
@@ -70,5 +70,5 @@ function Home() {
 export default Home;
 
 const TestDiv = styled.div`
-  /* display: none; */
+  display: none;
 `;
