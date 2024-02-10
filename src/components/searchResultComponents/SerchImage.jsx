@@ -1,14 +1,11 @@
 import styled from "styled-components";
 import serchImage from "src/assets/img/searchImage.jpg";
-import { LinkStyle } from "src/util/LinkStyle";
 function SerchImage() {
   return (
     <header>
       <HeadPosition>
-        <LinkStyle to={"/"}>
-          <TitleStyle>Search CodeFeed</TitleStyle>
-          <ImageStyle src={serchImage} />
-        </LinkStyle>
+        <TitleStyle>Search CodeFeed</TitleStyle>
+        <ImageStyle src={serchImage} />
       </HeadPosition>
     </header>
   );
@@ -18,7 +15,6 @@ export default SerchImage;
 
 const HeadPosition = styled.div`
   position: relative;
-  bottom: 1vh;
 `;
 
 const TitleStyle = styled.h1`
@@ -34,5 +30,5 @@ const TitleStyle = styled.h1`
 
 const ImageStyle = styled.img`
   width: 100%;
-  opacity: 0.3;
+  opacity: 0.2;
 `;
