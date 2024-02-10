@@ -1,8 +1,9 @@
-const ADDTODOS = "ADDTODOS";
+const ADDPOST = "ADDPOST";
+// const SEARCHPOST = "SEARCHPOST";
 
-export const addTodos = (payload) => {
+export const addPost = (payload) => {
   return {
-    type: ADDTODOS,
+    type: ADDPOST,
     payload,
   };
 };
@@ -12,7 +13,7 @@ const initialState = {
 
 const postList = (state = initialState, action) => {
   switch (action.type) {
-    case ADDTODOS:
+    case ADDPOST:
       return {
         ...state,
         post: action.payload,
