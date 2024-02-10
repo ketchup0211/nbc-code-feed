@@ -8,13 +8,13 @@ function FilterCheck() {
     <FilterCheckMain>
       {language.map((e) => {
         return (
-          <LinkStyle
+          <FilterLinkStyle
             to={`/${e.language}`}
             key={e.id}
             $backgroundColor={id === e.language ? "whitesmoke" : "white"}
           >
             <label>{e.language}</label>
-          </LinkStyle>
+          </FilterLinkStyle>
         );
       })}
     </FilterCheckMain>
@@ -31,7 +31,7 @@ const FilterCheckMain = styled.section`
   align-items: center;
 `;
 
-const LinkStyle = styled(Link)`
+const FilterLinkStyle = styled(Link)`
   text-decoration: none;
   color: black;
   background-color: ${(props) => props.$backgroundColor};
