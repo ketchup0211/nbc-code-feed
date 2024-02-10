@@ -1,9 +1,9 @@
 import { collection, getDocs, query } from "firebase/firestore";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { db } from "src/firebase";
 import { addPost } from "src/redux/modules/postList";
+import { LinkStyle } from "src/util/LinkStyle";
 import styled from "styled-components";
 
 function CheckPost() {
@@ -122,9 +122,4 @@ const PostCard = styled.div`
       visibility: visible;
     }
   }
-`;
-
-const LinkStyle = styled(Link)`
-  text-decoration: none;
-  color: black;
 `;
