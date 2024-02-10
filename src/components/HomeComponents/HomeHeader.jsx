@@ -29,18 +29,14 @@ function HomeHeader() {
             <label>CodeFeed</label>
           </NavPage>
           <NavInformation>
-            <form>
+            <form onSubmit={() => navigate("/searchResult")}>
               <input
                 type="text"
                 placeholder="검색"
                 value={search}
                 onChange={inputChcange}
               />
-              <Button
-                content={"검색하기"}
-                width={"100"}
-                onClick={() => navigate("/searchResult")}
-              />
+              <Button content={"검색하기"} width={"100"} />
             </form>
             <LinkStyle to={"/sign-up"}>로그인</LinkStyle>
           </NavInformation>
