@@ -1,11 +1,9 @@
-import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import HomeHeader from "src/components/HomeComponents/HomeHeader";
 import PostList from "src/components/HomeComponents/PostList";
-import { auth, db } from "src/firebase";
-import { log } from "src/redux/modules/user";
+import { db } from "src/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import FileUpload from "src/components/HomeComponents/test/FileUpload";
@@ -17,12 +15,6 @@ function Home() {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      dispatch(log(user));
-    });
-  }, [dispatch]);
 
   const onchangeHandler = () => {
     setContent(event.target.value);

@@ -1,16 +1,25 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "src/components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "src/firebase";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { checkSearch } from "src/redux/modules/search";
+import { useEffect } from "react";
+import { log } from "src/redux/modules/user";
+import { LinkStyle } from "src/util/LinkStyle";
 
 function HomeHeader() {
   const { user } = useSelector((state) => state.users);
   const search = useSelector((state) => state.search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      dispatch(log(user));
+    });
+  }, [dispatch]);
 
   const logOut = async (event) => {
     event.preventDefault();
@@ -47,7 +56,9 @@ function HomeHeader() {
     <header>
       <NavList>
         <NavPage>
-          <label>CodeFeed</label>
+          <LinkStyle to={"/"}>
+            <label>CodeFeed</label>
+          </LinkStyle>
         </NavPage>
         <NavInformation>
           <form>
@@ -108,11 +119,4 @@ const NavInformation = styled.ul`
 
 const ProfileName = styled.label`
   cursor: pointer;
-`;
-
-const LinkStyle = styled(Link)`
-  color: black;
-  text-decoration: none;
-  white-space: nowrap;
-  font-size: 15px;
 `;
