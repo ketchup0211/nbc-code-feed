@@ -36,7 +36,7 @@ function WriteDetail() {
         <GoHome>CodeFeed</GoHome>
       </Nav>
       <FilterCheck />
-      <UploadImageContainer>
+      {/* <UploadImageContainer>
         <UploadBox htmlFor="inputImage">
           <InputImage
             id="inputImage"
@@ -47,27 +47,31 @@ function WriteDetail() {
           />
           <p>클릭 혹은 이미지를 이곳에 드래그하세요.</p>
         </UploadBox>
-      </UploadImageContainer>
-      <div>
+      </UploadImageContainer> */}
+      {/* <div>
         <div>
           <PriviewImgBox alt="이미지 미리보기" src={previewImg} />
         </div>
-      </div>
+      </div> */}
       <div>
-        <InputTitle
-          type="text"
-          name="title"
-          placeholder="프로젝트의 제목을 입력해주세요."
-        />
+        <div>
+          <InputTitle
+            type="text"
+            name="title"
+            placeholder="프로젝트의 제목을 입력해주세요."
+          />
+        </div>
+        <QuillDiv>
+          <QuillComponent
+            value={quillValue || ""}
+            onChange={handleQuillChange}
+          />
+        </QuillDiv>
+
+        <DoneButtonDiv>
+          <DoneButton>작성완료</DoneButton>
+        </DoneButtonDiv>
       </div>
-
-      <QuillDiv>
-        <QuillComponent value={quillValue || ""} onChange={handleQuillChange} />
-      </QuillDiv>
-
-      <DoneButtonDiv>
-        <DoneButton>작성완료</DoneButton>
-      </DoneButtonDiv>
     </div>
   );
 }
@@ -123,7 +127,7 @@ export const PriviewImgBox = styled.img`
 `;
 
 export const InputTitle = styled.input`
-  width: 50%;
+  width: 60%;
   height: 50px;
   margin: 20px auto;
   background-color: #fff;
@@ -166,9 +170,9 @@ export const DoneButton = styled.button`
   float: left;
 `;
 export const QuillDiv = styled.div`
-  width: 70%;
   display: flex;
   width: 100%;
+  height: 80vh;
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;

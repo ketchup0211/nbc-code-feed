@@ -48,7 +48,7 @@ function QuillComponent({ value, onChange }) {
   return (
     <ReactQuill
       theme="snow"
-      style={{ height: "600px" }}
+      style={{ height: "600px", width: "60%" }}
       modules={modules}
       formats={formats}
       value={value}
