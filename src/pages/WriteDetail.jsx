@@ -1,14 +1,13 @@
-// import { ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
-// import { storage } from "src/firebase";
+import { storage } from "src/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetail.jsx/ReactQuill";
 
 function WriteDetail() {
-  // const [selectedImg, setSelectedImg] = useState([]);
-  // const [previewImg, setPreviewImg] = useState([]);
   const [quillValue, setQuillValue] = useState("");
+  const [imageUrls, setImageUrls] = useState([]);
 
   const handleQuillChange = (value) => {
     // value가 Quill 에디터의 내부 표현일 경우에만 getContents를 사용
@@ -20,21 +19,29 @@ function WriteDetail() {
     }
   };
 
-  // const handleImgSelect = (event) => {
-  //   const imageFile = event.target.files[0];
-  //   setSelectedImg(imageFile);
+  const handleImageUpload = async (file) => {
+    const storageRef = ref(storage, "folder/" + file.name);
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    return downloadURL;
+  };
 
-  //   const fileRead = new FileReader(); //FileRear를 이용해서 이미지 프리뷰 생성
-  //   fileRead.onload = function () {
-  //     setPreviewImg(fileRead.result); // 프리뷰 이미지 설정
-  //   };
-  //   fileRead.readAsDataURL(event.target.files[0]); // 프리뷰 이미지 URL 읽어오기
-  // };
+  console.log("Uploaded quillValue:", quillValue);
 
-  // const handleUpload = async () => {
-  //   const imageRef = ref(storage, "folder/file");
-  //   await uploadBytes(imageRef, selectedImg);
-  // };
+  const handleUpload = async () => {
+    // 이미지 데이터 업로드
+    const uploadedImageUrls = [];
+
+    for (const op of quillValue.ops) {
+      if (op.insert && op.insert.image) {
+        const imageUrl = await handleImageUpload(op.insert.image);
+        uploadedImageUrls.push(imageUrl);
+      }
+    }
+    setImageUrls(uploadedImageUrls);
+
+    console.log("Uploaded image URLs:", imageUrls);
+  };
 
   return (
     <div>
@@ -42,23 +49,6 @@ function WriteDetail() {
         <GoHome>CodeFeed</GoHome>
       </Nav>
       <FilterCheck />
-      {/* <UploadImageContainer>
-        <UploadBox htmlFor="inputImage">
-          <InputImage
-            id="inputImage"
-            type="file"
-            accept="image/jpg, image/jpeg, image/png"
-            onChange={handleImgSelect}
-            onClick={handleUpload}
-          />
-          <p>클릭 혹은 이미지를 이곳에 드래그하세요.</p>
-        </UploadBox>
-      </UploadImageContainer> */}
-      {/* <div>
-        <div>
-          <PriviewImgBox alt="이미지 미리보기" src={previewImg} />
-        </div>
-      </div> */}
       <div>
         <div>
           <InputTitle
@@ -71,11 +61,11 @@ function WriteDetail() {
           <QuillComponent
             value={quillValue || ""}
             onChange={handleQuillChange}
+            handleImageUpload={handleImageUpload}
           />
         </QuillDiv>
-
         <DoneButtonDiv>
-          <DoneButton>작성완료</DoneButton>
+          <DoneButton onClick={handleUpload}>작성완료</DoneButton>
         </DoneButtonDiv>
       </div>
     </div>
@@ -135,7 +125,7 @@ export const PriviewImgBox = styled.img`
 export const InputTitle = styled.input`
   width: 60%;
   height: 50px;
-  margin: 20px auto;
+  margin: 10px auto;
   background-color: #fff;
   border: none;
   border-bottom: 2px dashed #797979;
@@ -146,6 +136,7 @@ export const InputTitle = styled.input`
   align-items: center;
   font-size: 18px;
   font-weight: 600;
+  margin-top: 30px;
 `;
 
 export const InputContent = styled.textarea`
@@ -178,7 +169,7 @@ export const DoneButton = styled.button`
 export const QuillDiv = styled.div`
   display: flex;
   width: 100%;
-  height: 80vh;
+  height: 75vh;
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;

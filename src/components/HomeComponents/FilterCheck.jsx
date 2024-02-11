@@ -5,7 +5,7 @@ function FilterCheck() {
   return (
     <FilterCheckMain>
       {language.map((e) => {
-        return <label key={e.id}>{e.language}</label>;
+        return <FilterButton key={e.id}>{e.language}</FilterButton>;
       })}
     </FilterCheckMain>
   );
@@ -19,4 +19,10 @@ const FilterCheckMain = styled.section`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+`;
+
+const FilterButton = styled.button`
+  border: 1px solid transparent;
+  border-radius: 20px;
+  padding: 10px 20px;
 `;
