@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LinkStyle } from "src/util/LinkStyle";
+import { LinkStyle } from "src/util/Style";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button";
 import { onAuthStateChanged, signOut } from "firebase/auth";

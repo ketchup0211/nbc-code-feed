@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "src/firebase";
 import { addPost } from "src/redux/modules/postList";
-import { LinkStyle } from "src/util/LinkStyle";
+import { LinkStyle } from "src/util/Style";
 import styled from "styled-components";
 
 function CheckPost() {
