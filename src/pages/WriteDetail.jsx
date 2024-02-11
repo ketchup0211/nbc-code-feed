@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetail.jsx/ReactQuill";
-import Test from "./Test";
 
 function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
