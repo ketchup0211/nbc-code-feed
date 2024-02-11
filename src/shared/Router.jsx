@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Detail from "src/pages/Detail";
+import EditProfile from "src/pages/EditProfile";
 import Home from "src/pages/Home";
 import Login from "src/pages/Login";
 import LoginPage from "src/pages/LoginPage";
@@ -22,6 +23,7 @@ const Router = () => {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/searchResult" element={<SearchResult />} />
+        <Route path="/editProfile" element={<EditProfile />} />
       </Routes>
     </BrowserRouter>
   );
