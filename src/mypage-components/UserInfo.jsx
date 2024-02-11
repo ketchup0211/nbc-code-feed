@@ -1,12 +1,55 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import EditButton from "./common/EditButton";
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from '../firebase';
 
-export default function UserInfo ({ name, email }) {
+
+export default function UserInfo () {
+
+    const [user, setUser] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
+
+    useEffect(() => {
+        signInWithEmailAndPassword(auth, 'newtest@example.com', 'newpassword123')
+        .then(async(userCredential) => {
+            //로그인 성공
+            const user = userCredential.user;
+            setUser(user);
+
+            //사용자 정보 가져오기
+            const docRef = doc(db, 'users', 'uid');
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                setUserInfo(docSnap.data());
+            } else {
+                console.log("No such document!");
+            }
+        })
+        .catch((error) => {
+            //로그인 실패
+            console.log('임시 로그인 실패:', error);
+        })
+
+        //로그인 상태 감지
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            setUser(user);
+        })
+
+        return () => unsubscribe();
+    }, []);
+
+    if(!user) {
+        return <div>Loading ...</div>
+    }
 
     return (
         <UserInfoContainer>
-            <NameItem>{name}</NameItem>
-            <EmailItem>{email}</EmailItem>
+            <NameItem>{userInfo?.name}</NameItem>
+            <EmailItem>{user.email}</EmailItem>
             <EditButton></EditButton>
         </UserInfoContainer>
     )

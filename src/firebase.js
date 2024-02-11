@@ -10,16 +10,18 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_SOME_API_KEY,
-  authDomain: import.meta.env.VITE_SOME_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_SOME_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_SOME_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_SOME_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_SOME_APP_ID,
+  apiKey: "AIzaSyCN4MQ0FqABXjMsuuiKX9u6wFY1z9-vl6o",
+  authDomain: "code-feed-b2a51.firebaseapp.com",
+  projectId: "code-feed-b2a51",
+  storageBucket: "code-feed-b2a51.appspot.com",
+  messagingSenderId: "156601940351",
+  appId: "1:156601940351:web:e040c803816d7aff84824a",
+  measurementId: "G-0G63DPNV85"
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const analytics = getAnalytics(app);
