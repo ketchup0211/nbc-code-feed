@@ -1,26 +1,37 @@
-import React from "react";
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { ImageActions } from "@xeger/quill-image-actions";
+import { ImageFormats } from "@xeger/quill-image-formats";
+
+Quill.register("modules/imageActions", ImageActions);
+Quill.register("modules/imageFormats", ImageFormats);
 
 function QuillComponent({ value, onChange }) {
   const toolbarOptions = [
-    ["link", "image", "video"],
+    ["link", "image"],
     [{ header: [1, 2, 3, false] }],
-    ["bold", "italic", "underline", "strike"],
-    ["blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
+    ["bold", "italic", "underline", "strike", "blockquote"], // 굵기, 기울기, 밑줄 등 설정
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ], // 기호 매기기 설정
+    [{ color: [] }, { background: [] }, { align: [] }],
   ];
 
   const modules = {
     toolbar: {
       container: toolbarOptions,
     },
-    // ImageResize: {
-    //   parchment: Quill.import("parchment"),
-    //   modules: ["Resize", "DisplaySize", "Toolbar"],
+    // handlers: {
+    //   image: imageHandler,
     // },
+    // ImageResize: {
+    //   modules: ["Resize"],
+    // },
+    imageActions: {},
+    imageFormats: {},
   };
 
   // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
@@ -41,8 +52,10 @@ function QuillComponent({ value, onChange }) {
     "color",
     "link",
     "image",
-    "video",
     "width",
+    "float",
+    "width",
+    "height",
   ];
 
   return (

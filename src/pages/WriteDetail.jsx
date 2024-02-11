@@ -1,34 +1,40 @@
-import { ref, uploadBytes } from "firebase/storage";
+// import { ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
-import { storage } from "src/firebase";
+// import { storage } from "src/firebase";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetail.jsx/ReactQuill";
 
 function WriteDetail() {
-  const [selectedImg, setSelectedImg] = useState([]);
-  const [previewImg, setPreviewImg] = useState([]);
+  // const [selectedImg, setSelectedImg] = useState([]);
+  // const [previewImg, setPreviewImg] = useState([]);
   const [quillValue, setQuillValue] = useState("");
 
-  const handleQuillChange = (editor) => {
-    setQuillValue(editor.getContents());
+  const handleQuillChange = (value) => {
+    // value가 Quill 에디터의 내부 표현일 경우에만 getContents를 사용
+    if (typeof value === "object" && value?.constructor?.name === "Delta") {
+      setQuillValue(value.getContents());
+    } else {
+      // 그 외에는 value 그대로 사용
+      setQuillValue(value);
+    }
   };
 
-  const handleImgSelect = (event) => {
-    const imageFile = event.target.files[0];
-    setSelectedImg(imageFile);
+  // const handleImgSelect = (event) => {
+  //   const imageFile = event.target.files[0];
+  //   setSelectedImg(imageFile);
 
-    const fileRead = new FileReader(); //FileRear를 이용해서 이미지 프리뷰 생성
-    fileRead.onload = function () {
-      setPreviewImg(fileRead.result); // 프리뷰 이미지 설정
-    };
-    fileRead.readAsDataURL(event.target.files[0]); // 프리뷰 이미지 URL 읽어오기
-  };
+  //   const fileRead = new FileReader(); //FileRear를 이용해서 이미지 프리뷰 생성
+  //   fileRead.onload = function () {
+  //     setPreviewImg(fileRead.result); // 프리뷰 이미지 설정
+  //   };
+  //   fileRead.readAsDataURL(event.target.files[0]); // 프리뷰 이미지 URL 읽어오기
+  // };
 
-  const handleUpload = async () => {
-    const imageRef = ref(storage, "folder/file");
-    await uploadBytes(imageRef, selectedImg);
-  };
+  // const handleUpload = async () => {
+  //   const imageRef = ref(storage, "folder/file");
+  //   await uploadBytes(imageRef, selectedImg);
+  // };
 
   return (
     <div>
