@@ -2,11 +2,14 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { ImageActions } from "@xeger/quill-image-actions";
 import { ImageFormats } from "@xeger/quill-image-formats";
+import imageHandler from "./ImageHandler";
+import { useMemo, useRef } from "react";
 
 Quill.register("modules/imageActions", ImageActions);
 Quill.register("modules/imageFormats", ImageFormats);
 
 function QuillComponent({ value, onChange }) {
+  const quillRef = useRef(null);
   const toolbarOptions = [
     ["link", "image"],
     [{ header: [1, 2, 3, false] }],
@@ -20,19 +23,22 @@ function QuillComponent({ value, onChange }) {
     [{ color: [] }, { background: [] }, { align: [] }],
   ];
 
-  const modules = {
-    toolbar: {
-      container: toolbarOptions,
-    },
-    // handlers: {
-    //   image: imageHandler,
-    // },
-    // ImageResize: {
-    //   modules: ["Resize"],
-    // },
-    imageActions: {},
-    imageFormats: {},
-  };
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: toolbarOptions,
+        handlers: {
+          image: imageHandler(quillRef),
+        },
+      },
+
+      // ImageResize: {
+      //   modules: ["Resize"],
+      // },
+      imageActions: {},
+      imageFormats: {},
+    };
+  }, []);
 
   // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
   const formats = [
@@ -67,6 +73,7 @@ function QuillComponent({ value, onChange }) {
       value={value}
       onChange={onChange}
       toolbarOptions={toolbarOptions}
+      ref={quillRef}
     />
   );
 }

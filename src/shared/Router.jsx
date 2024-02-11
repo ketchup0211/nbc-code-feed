@@ -6,6 +6,7 @@ import LoginPage from "src/pages/LoginPage";
 import MyPages from "src/pages/MyPages";
 import SignUp from "src/pages/SignUp";
 import WriteDetail from "src/pages/WriteDetail";
+import Test from "src/pages/Test";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
         <Route path="/loginPage" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/Test" element={<Test />} />
       </Routes>
     </BrowserRouter>
   );

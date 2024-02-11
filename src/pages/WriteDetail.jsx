@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { storage } from "src/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetail.jsx/ReactQuill";
+import Test from "./Test";
 
 function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
-  const [imageUrls, setImageUrls] = useState([]);
 
   const handleQuillChange = (value) => {
     // value가 Quill 에디터의 내부 표현일 경우에만 getContents를 사용
@@ -19,29 +18,7 @@ function WriteDetail() {
     }
   };
 
-  const handleImageUpload = async (file) => {
-    const storageRef = ref(storage, "folder/" + file.name);
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
-    return downloadURL;
-  };
-
   console.log("Uploaded quillValue:", quillValue);
-
-  const handleUpload = async () => {
-    // 이미지 데이터 업로드
-    const uploadedImageUrls = [];
-
-    for (const op of quillValue.ops) {
-      if (op.insert && op.insert.image) {
-        const imageUrl = await handleImageUpload(op.insert.image);
-        uploadedImageUrls.push(imageUrl);
-      }
-    }
-    setImageUrls(uploadedImageUrls);
-
-    console.log("Uploaded image URLs:", imageUrls);
-  };
 
   return (
     <div>
@@ -61,12 +38,21 @@ function WriteDetail() {
           <QuillComponent
             value={quillValue || ""}
             onChange={handleQuillChange}
-            handleImageUpload={handleImageUpload}
           />
         </QuillDiv>
+        {/* <Test quillValue={quillValue} /> */}
         <DoneButtonDiv>
-          <DoneButton onClick={handleUpload}>작성완료</DoneButton>
+          <DoneButton>작성완료</DoneButton>
         </DoneButtonDiv>
+        <div>
+          {/* <button
+            onClick={() => {
+              navigate("/test"), { state: { quillValue } };
+            }}
+          >
+            미리보기 확인하기
+          </button> */}
+        </div>
       </div>
     </div>
   );
