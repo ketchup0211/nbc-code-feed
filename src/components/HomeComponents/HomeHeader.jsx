@@ -7,7 +7,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { checkSearch } from "src/redux/modules/search";
 import { useEffect } from "react";
 import { log } from "src/redux/modules/user";
-import { LinkStyle } from "src/util/LinkStyle";
+import { LinkStyle } from "src/util/Style";
 
 function HomeHeader() {
   const { user } = useSelector((state) => state.users);
@@ -35,7 +35,9 @@ function HomeHeader() {
       <header>
         <NavList>
           <NavPage>
-            <label>CodeFeed</label>
+            <LinkStyle to={"/"}>
+              <label>CodeFeed</label>
+            </LinkStyle>
           </NavPage>
           <NavInformation>
             <form onSubmit={() => navigate("/searchResult")}>
@@ -74,12 +76,15 @@ function HomeHeader() {
               onClick={() => navigate("/searchResult")}
             />
           </form>
-          <div>
+          <Profile>
             <LinkStyle to={"/myPage"}>
-              <ProfileName>{user.displayName}</ProfileName>
+              <UserDisplay>
+                <ProfileName>{user.displayName}</ProfileName>
+                <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
+              </UserDisplay>
             </LinkStyle>
             <Button content={"로그아웃"} width={"90"} onClick={logOut} />
-          </div>
+          </Profile>
         </NavInformation>
       </NavList>
     </header>
@@ -100,6 +105,9 @@ const NavList = styled.nav`
 const NavPage = styled.ul`
   display: flex;
   align-items: center;
+  & label {
+    cursor: pointer;
+  }
 `;
 
 const NavInformation = styled.ul`
@@ -117,6 +125,22 @@ const NavInformation = styled.ul`
   }
 `;
 
+const Profile = styled.div`
+  display: flex;
+`;
+
+const UserDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 const ProfileName = styled.label`
   cursor: pointer;
+`;
+
+const ProfileImage = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 `;
