@@ -1,58 +1,14 @@
 import { ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
 import { storage } from "src/firebase";
-import ReactQuill from "react-quill";
 import styled from "styled-components";
-import "react-quill/dist/quill.snow.css";
-// import { ImageResize } from "quill-image-resize-module-react";
-
-// Quill.register("modules/imageResize", ImageResize);
+import FilterCheck from "src/components/HomeComponents/FilterCheck";
+import QuillComponent from "src/components/WriteDetail.jsx/ReactQuill";
 
 function WriteDetail() {
   const [selectedImg, setSelectedImg] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
   const [quillValue, setQuillValue] = useState("");
-  const toolbarOptions = [
-    ["link", "image", "video"],
-    [{ header: [1, 2, 3, false] }],
-    ["bold", "italic", "underline", "strike"],
-    ["blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-  ];
-
-  // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
-  const formats = [
-    "header",
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "align",
-    "blockquote",
-    "list",
-    "bullet",
-    "indent",
-    "background",
-    "color",
-    "link",
-    "image",
-    "video",
-    "width",
-  ];
-
-  const modules = {
-    toolbar: {
-      container: toolbarOptions,
-    },
-    // ImageResize: {
-    //   parchment: Quill.import("parchment"),
-    //   modules: ["Resize", "DisplaySize", "Toolbar"],
-    // },
-  };
 
   const handleQuillChange = (editor) => {
     setQuillValue(editor.getContents());
@@ -79,6 +35,7 @@ function WriteDetail() {
       <Nav>
         <GoHome>CodeFeed</GoHome>
       </Nav>
+      <FilterCheck />
       <UploadImageContainer>
         <UploadBox htmlFor="inputImage">
           <InputImage
@@ -105,21 +62,7 @@ function WriteDetail() {
       </div>
 
       <QuillDiv>
-        {/* <InputContent
-          name="contents"
-          cols="100"
-          rows="50"
-          placeholder="내용을 입력해주세요."
-        ></InputContent> */}
-        <ReactQuill
-          style={{ height: "600px" }}
-          theme="snow"
-          modules={modules}
-          value={quillValue || ""}
-          onChange={handleQuillChange}
-          formats={formats}
-          toolbarOptions={toolbarOptions}
-        />
+        <QuillComponent value={quillValue || ""} onChange={handleQuillChange} />
       </QuillDiv>
 
       <DoneButtonDiv>
