@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "src/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import styled from "styled-components";
 
 const MainContainer = styled.div`
@@ -98,6 +100,7 @@ const Button = styled.button`
 function Login() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const updateInput = (event) => {
     switch (event.target.name) {
       case "login":
@@ -111,6 +114,31 @@ function Login() {
         return;
     }
   };
+  const handleLogin = (event) => {
+    event.preventDefault();
+    signInWithEmailAndPassword(auth, login, password)
+      .then((userCredential) => {
+        alert("WELCOME");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.code);
+        switch (error.code) {
+          case "auth/invalid-email":
+            alert("이메일을 올바르게 입력해주세요.");
+            break;
+          case "auth/missing-password":
+            alert("비밀번호를 입력해주세요.");
+            break;
+          case "auth/invalid-credential":
+            alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+            break;
+          default:
+            alert(`ERROR CODE : ${error.code}`);
+            return;
+        }
+      });
+  };
   return (
     <MainContainer>
       <AuthSidebar />
@@ -120,10 +148,10 @@ function Login() {
           <button>Sign in with GitHub</button>
           <HrDivider></HrDivider>
           <AuthForm>
-            <Session method="post">
+            <Session onSubmit={handleLogin}>
               <FormField>
                 <FieldSet>
-                  <Label> Username or Email</Label>
+                  <Label>Email</Label>
                   <LoginInput
                     type="text"
                     name="login"

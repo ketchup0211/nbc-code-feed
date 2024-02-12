@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 //Authentication
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -138,6 +138,7 @@ function SignUp() {
   const [name, setName] = useState("");
   const [username, setUserName] = useState("");
   const [agree, setAgree] = useState(false);
+  const navigate = useNavigate();
 
   const handleEmailSignUp = (event) => {
     event.preventDefault();
@@ -216,9 +217,13 @@ function SignUp() {
         case "auth/invalid-email":
           alert("이메일을 정확히 입력해주세요.");
           break;
-        case "auth/email-already-exists":
-          alert("이미 가입 된 이메일입니다.");
+        case "auth/email-already-in-use":
+          let result = confirm(
+            "이미 가입된 이메일입니다. 로그인 페이지로 이동하시겠습니까?"
+          );
+          result ? navigate("/login") : null;
           break;
+
         case ("auth/invalid-password", "auth/weak-password"):
           alert("비밀번호는 6자 이상의 문자열로 구성해주십시오.");
           break;
