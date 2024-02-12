@@ -190,7 +190,6 @@ function SignUp() {
         email,
         password
       );
-      console.log(userCredential);
       // update Account Profile
       updateProfile(auth.currentUser, {
         displayName: name,
@@ -201,25 +200,35 @@ function SignUp() {
         .catch((error) => alert(error));
       // make new Account Infomation
       try {
+        let path = `users/${userCredential.user.uid}`;
         const newUserInfo = {
           name,
           nickname: username,
           email,
           agree,
         };
-        let path = `users/${userCredential.user.uid}`;
-        const users = doc(db, path);
-        setDoc(users, newUserInfo);
-
-        console.log("KK", users);
+        setDoc(doc(db, path), newUserInfo);
       } catch (error) {
         console.log(error);
       }
     } catch (error) {
-      const errorCode = error.code;
-      alert(errorCode);
-      const errorMessage = error.message;
-      alert(errorMessage);
+      switch (error.code) {
+        case "auth/invalid-email":
+          alert("이메일을 정확히 입력해주세요.");
+          break;
+        case "auth/email-already-exists":
+          alert("이미 가입 된 이메일입니다.");
+          break;
+        case ("auth/invalid-password", "auth/weak-password"):
+          alert("비밀번호는 6자 이상의 문자열로 구성해주십시오.");
+          break;
+        case "auth/too-many-requests":
+          alert("요청이 많습니다. 잠시 후에 다시 시도해주십시오.");
+          break;
+        default:
+          alert(`ERROR CODE : ${error.code}`);
+          return;
+      }
     }
   };
 
