@@ -37,12 +37,15 @@ function SerchHead() {
       <LinkStyle to={"/"}>
         <label>CodeFeed</label>
       </LinkStyle>
-      <div>
+      <Profile>
         <LinkStyle to={"/myPage"}>
-          <label>{user.displayName}</label>
+          <UserDisplay>
+            <ProfileName>{user.displayName}</ProfileName>
+            <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
+          </UserDisplay>
         </LinkStyle>
         <Button content={"로그아웃"} width={"90"} onClick={logOut} />
-      </div>
+      </Profile>
     </HeadNav>
   );
 }
@@ -60,4 +63,24 @@ const HeadNav = styled.nav`
   & label {
     cursor: pointer;
   }
+`;
+
+const Profile = styled.div`
+  display: flex;
+`;
+
+const UserDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const ProfileName = styled.label`
+  cursor: pointer;
+`;
+
+const ProfileImage = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 `;
