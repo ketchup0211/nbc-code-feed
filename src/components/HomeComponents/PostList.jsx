@@ -78,7 +78,7 @@ export default PostList;
 const PostListMain = styled.ol`
   min-height: 400px;
   height: auto;
-  margin-left: 5%;
+  margin: 0% 3%;
   display: grid;
   grid-gap: 36px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

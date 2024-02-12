@@ -82,7 +82,7 @@ export default CheckPost;
 
 const PostListMain = styled.ol`
   height: auto;
-  margin-left: 5%;
+  margin: 1%;
   display: grid;
   grid-gap: 36px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
