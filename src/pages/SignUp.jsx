@@ -323,6 +323,9 @@ function SignUp() {
               <button type="button" name="github" style={{ cursor: "pointer" }}>
                 Sign up with GitHub
               </button>
+              <button type="button" name="google" style={{ cursor: "pointer" }}>
+                Sign up with Google
+              </button>
               <HrDivider></HrDivider>
               <Button type="button" name="email" onClick={handleEmailSignUp}>
                 Continue with email

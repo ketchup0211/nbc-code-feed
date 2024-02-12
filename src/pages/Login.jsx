@@ -146,6 +146,7 @@ function Login() {
         <AuthContent>
           <SubTitle>Sign in to Code Feed</SubTitle>
           <button>Sign in with GitHub</button>
+          <button>Sign in with Google</button>
           <HrDivider></HrDivider>
           <AuthForm>
             <Session onSubmit={handleLogin}>
