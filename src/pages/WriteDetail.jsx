@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
-import QuillComponent from "src/components/WriteDetail.jsx/ReactQuill";
+import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
 
 function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
