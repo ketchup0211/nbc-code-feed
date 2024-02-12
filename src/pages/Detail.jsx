@@ -1,21 +1,23 @@
-// import { collection, getDocs, query } from "firebase/firestore";
 import "bootstrap/dist/css/bootstrap.min.css";
-import 레드벨벳 from "../assets/img/레드벨벳.jpg";
 import wendy from "../assets/img/wendy.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { ref, getStorage, getDownloadURL } from "firebase/storage";
 import { collection, getDocs, query } from "firebase/firestore";
+
 import { db } from "src/firebase";
 
 function Detail() {
   const navigate = useNavigate();
   const [heart, setHeart] = useState(false);
   const [contents, setContents] = useState([]);
+
   useEffect(() => {
+    const storage = getStorage();
     const fetchData = async () => {
       // collection 이름이 todos인 collection의 모든 document를 가져옵니다.
-      const q = query(collection(db, "posts"));
+      const q = query(collection(db, "work"));
       const querySnapshot = await getDocs(q);
 
       const initialTodos = [];
@@ -24,7 +26,6 @@ function Detail() {
       // doc.id의 경우 따로 지정하지 않는 한 자동으로 생성되는 id입니다.
       // doc.data()를 실행하면 해당 document의 데이터를 가져올 수 있습니다.
       querySnapshot.forEach((doc) => {
-        console.log(doc);
         initialTodos.push({ id: doc.id, ...doc.data() });
       });
 
@@ -32,13 +33,39 @@ function Detail() {
       setContents(initialTodos);
     };
 
+    getDownloadURL(
+      ref(
+        storage,
+        "file/8ftpuzzD0_9jB6Uclw-EUshIHoWmtcSAvZW_3bRl6wF-3Gr7aFSTuXCKrAEBOgDoq4jJjEryvpWeen_L26Egpg.webp"
+      )
+    )
+      .then((url) => {
+        // `url` is the download URL for 'images/stars.jpg'
+        console.log(url);
+        // This can be downloaded directly:
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = "blob";
+        xhr.onload = (event) => {
+          const blob = xhr.response;
+        };
+        xhr.open("GET", url);
+        xhr.send();
+
+        // Or inserted into an <img> element
+        const img = document.getElementById("myimg");
+        img.setAttribute("src", url);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     fetchData();
   }, []);
 
   return (
     <>
       {contents.map((item) => {
-        console.log(item.imgFile);
+        console.log(item.file);
         return (
           <Container key={item.id}>
             <Title>{item.title}</Title>
@@ -57,8 +84,9 @@ function Detail() {
               )}
             </Fixed>
 
-            <BackGroundImg alt="img" />
-
+            <img id="myimg" />
+            {/*<div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div> */}
+            {/*<DetailImg imgName={item.file} />*/}
             <Description>{item.content}</Description>
           </Container>
         );
@@ -67,6 +95,27 @@ function Detail() {
       <button onClick={() => navigate("/write-detail")}>작성 디테일로</button>
     </>
   );
+}
+
+function DetailImg({ imgName }) {
+  const [imgUrl, setImgUrl] = useState();
+
+  useEffect(() => {
+    const storage = getStorage();
+
+    const func = async () => {
+      if (imgName !== undefined) {
+        const reference = ref(storage, `file/imgName`);
+        console.log(reference);
+        await getDownloadURL(reference).then((x) => {
+          setImgUrl(x);
+        });
+      }
+    };
+    func();
+  }, []);
+
+  return <img src={imgUrl} />;
 }
 
 export default Detail;
@@ -106,13 +155,4 @@ const Description = styled.p`
   margin: 20px auto 0px auto;
   width: 600px;
   line-height: 1.5;
-`;
-
-const BackGroundImg = styled.div`
-  display: block;
-  background-image: url(${레드벨벳});
-  margin: 50px auto 10px auto;
-  border-radius: 8px;
-  width: 1100px;
-  height: 400px;
 `;
