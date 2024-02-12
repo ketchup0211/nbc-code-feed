@@ -1,18 +1,17 @@
 import { onAuthStateChanged, updateProfile } from "firebase/auth";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "src/components/Button";
+import ImageChange from "src/components/EditProFileComponenets/ImageChange";
 import HomeHeader from "src/components/HomeComponents/HomeHeader";
-import { auth, storage } from "src/firebase";
+import { auth } from "src/firebase";
 import { log } from "src/redux/modules/user";
+import { LinkStyle } from "src/util/Style";
 import styled from "styled-components";
 
 function EditProfile() {
   const { user } = useSelector((state) => state.users);
-  const [selectedFile, setSelectedFile] = useState(null);
   const [name, setName] = useState("");
-  const [content, setContent] = useState("");
   const dispatch = useDispatch();
   const dispatchUser = () => {
     dispatch(log(user));
@@ -23,63 +22,48 @@ function EditProfile() {
       dispatch(log(user));
     });
   }, [dispatch]);
-  console.log(user);
-
-  const fileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    const imageRef = ref(storage, `${auth.currentUser.uid}/profileImage`);
-    await uploadBytes(imageRef, selectedFile);
-
-    const downloadUrl = await getDownloadURL(imageRef);
-    await updateProfile(auth.currentUser, {
-      photoURL: downloadUrl,
-    });
-    dispatchUser();
-  };
+  // console.log(user);
 
   const proFileChange = async () => {
+    if (name === "") {
+      alert("이름을 입력해주시기 바랍니다.");
+      return;
+    }
     await updateProfile(auth.currentUser, {
       displayName: name,
-      reloadListener: content,
     });
     dispatchUser();
     setName("");
   };
-  if (user === null) return <div>로딩중</div>;
+
+  if (user === null)
+    return (
+      <>
+        <div>로딩중</div>
+        <LinkStyle to={"/"}>
+          <label>홈으로 가기</label>
+        </LinkStyle>
+      </>
+    );
   return (
     <>
       <HomeHeader />
       <Background>
-        <div>
-          <input type="file" onChange={fileChange} />
-          <Button
-            content={"사진 변경하기"}
-            width={"90"}
-            onClick={handleUpload}
+        <ImageChange user={user} dispatchUser={dispatchUser} />
+        <NameChange>
+          <p>Name Change</p>
+          <NameChangeInput
+            type="text"
+            placeholder="변경할 이름을 입력해주세요"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
           />
-          <ImageStyle src={user.photoURL} />
-          <p>{user.reloadListener}</p>
-        </div>
-        <input
-          type="text"
-          placeholder="변경할 이름을 입력해주세요"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="소개글을 적어주세요"
-          value={content}
-          onChange={(event) => setContent(event.target.value)}
-        />
-        <Button
-          content={"프로필 변경하기"}
-          width={"110"}
-          onClick={proFileChange}
-        />
+          <Button
+            content={"Name Change"}
+            width={"110"}
+            onClick={proFileChange}
+          />
+        </NameChange>
       </Background>
     </>
   );
@@ -92,10 +76,22 @@ const Background = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
 `;
 
-const ImageStyle = styled.img`
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
+const NameChange = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 50px;
+`;
+
+const NameChangeInput = styled.input`
+  height: 40px;
+  width: 300px;
+  border: none;
+  box-shadow: 1px 3px 5px 5px gray;
+  border-radius: 12px;
+  padding: 5px;
 `;
