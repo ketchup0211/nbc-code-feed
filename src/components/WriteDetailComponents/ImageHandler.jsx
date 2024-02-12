@@ -1,5 +1,10 @@
 import { storage } from "src/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 const imageHandler = (quillRef) => {
   const input = document.createElement("input");
