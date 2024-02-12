@@ -1,11 +1,25 @@
 import styled from "styled-components";
 import { language } from "src/util/language";
 
-function FilterCheck() {
+function FilterCheck({ clickedLanguage, setClickedLanguage }) {
+  const onHandleClickedLanguage = (language) => {
+    setClickedLanguage(language.id);
+  };
   return (
     <FilterCheckMain>
       {language.map((e) => {
-        return <FilterButton key={e.id}>{e.language}</FilterButton>;
+        return (
+          <FilterButton
+            key={e.id}
+            onClick={() => onHandleClickedLanguage(e)}
+            style={{
+              backgroundColor:
+                clickedLanguage === e.id ? "#f2d184" : "transparent",
+            }}
+          >
+            {e.language}
+          </FilterButton>
+        );
       })}
     </FilterCheckMain>
   );

@@ -2,9 +2,11 @@ import { useState } from "react";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
+import DOMPurify from "dompurify";
 
 function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
+  const [clickedLanguage, setClickedLanguage] = useState("");
 
   const handleQuillChange = (value) => {
     // value가 Quill 에디터의 내부 표현일 경우에만 getContents를 사용
@@ -16,6 +18,8 @@ function WriteDetail() {
     }
   };
 
+  const sanitizer = DOMPurify.sanitize;
+
   console.log("Uploaded quillValue:", quillValue);
 
   return (
@@ -23,7 +27,10 @@ function WriteDetail() {
       <Nav>
         <GoHome>CodeFeed</GoHome>
       </Nav>
-      <FilterCheck />
+      <FilterCheck
+        clickedLanguage={clickedLanguage}
+        setClickedLanguage={setClickedLanguage}
+      />
       <div>
         <div>
           <InputTitle
@@ -39,6 +46,7 @@ function WriteDetail() {
           />
         </QuillDiv>
         {/* <Test quillValue={quillValue} /> */}
+        <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div>
         <DoneButtonDiv>
           <DoneButton>작성완료</DoneButton>
         </DoneButtonDiv>

@@ -1,5 +1,5 @@
 import { storage } from "src/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const imageHandler = (quillRef) => {
   const input = document.createElement("input");
@@ -12,13 +12,12 @@ const imageHandler = (quillRef) => {
     const file = input.files[0];
     try {
       const storageRef = ref(storage, file.name);
-      const uploadTask = uploadBytes(storageRef, file);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on(
-        () => {
-          toast.error("업로드 실패", {
-            theme: "colored",
-          });
+        "state_changed",
+        (error) => {
+          console.error("Upload failed:", error);
         },
         () => {
           //업로드가 완료된 경우, 이미지의 다운로드 URL을 가져와서 quill 에디터에 출력
@@ -27,7 +26,7 @@ const imageHandler = (quillRef) => {
             const range = editor.getSelection(); //// 에디터의 현재 커서 위치를 가져옴
             // 이미지를 에디터에 삽입
             editor.insertEmbed(range.index, "image", downloadURL);
-            console.lof(downloadURL);
+            console.log(downloadURL);
             // 삽입한 이미지 다음에 커서를 위치
             editor.setSelection(range.index + 1);
           });
