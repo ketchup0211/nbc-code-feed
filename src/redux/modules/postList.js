@@ -1,5 +1,4 @@
 const ADDPOST = "ADDPOST";
-// const SEARCHPOST = "SEARCHPOST";
 
 export const addPost = (payload) => {
   return {
@@ -7,6 +6,7 @@ export const addPost = (payload) => {
     payload,
   };
 };
+
 const initialState = {
   post: null,
 };

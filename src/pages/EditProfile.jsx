@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "src/components/Button";
 import ImageChange from "src/components/EditProFileComponenets/ImageChange";
 import HomeHeader from "src/components/HomeComponents/HomeHeader";
+import Loading from "src/components/Loading";
 import { auth } from "src/firebase";
 import { log } from "src/redux/modules/user";
 import { LinkStyle } from "src/util/Style";
@@ -22,7 +23,6 @@ function EditProfile() {
       dispatch(log(user));
     });
   }, [dispatch]);
-  // console.log(user);
 
   const proFileChange = async () => {
     if (name === "") {
@@ -38,12 +38,12 @@ function EditProfile() {
 
   if (user === null)
     return (
-      <>
-        <div>로딩중</div>
+      <LoadingMain>
+        <Loading />
         <LinkStyle to={"/"}>
           <label>홈으로 가기</label>
         </LinkStyle>
-      </>
+      </LoadingMain>
     );
   return (
     <>
@@ -70,6 +70,15 @@ function EditProfile() {
 }
 
 export default EditProfile;
+
+const LoadingMain = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 20px;
+`;
 
 const Background = styled.div`
   display: flex;

@@ -23,6 +23,7 @@ function HomeHeader() {
 
   const logOut = async (event) => {
     event.preventDefault();
+    navigate("/");
     await signOut(auth);
   };
 
@@ -127,6 +128,7 @@ const NavInformation = styled.ul`
 
 const Profile = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const UserDisplay = styled.div`
