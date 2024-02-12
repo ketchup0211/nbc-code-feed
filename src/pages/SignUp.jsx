@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 //Authentication
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import { db, auth } from "src/firebase";
 
 const MainContainer = styled.div`
   display: flex;
@@ -183,11 +184,14 @@ function SignUp() {
   const createAccount = async (event) => {
     event.preventDefault();
     try {
+      // Create Account
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
+      console.log(userCredential);
+      // update Account Profile
       updateProfile(auth.currentUser, {
         displayName: name,
       })
@@ -195,7 +199,22 @@ function SignUp() {
           alert("SUCCESS");
         })
         .catch((error) => alert(error));
-      console.log(userCredential.user);
+      // make new Account Infomation
+      try {
+        const newUserInfo = {
+          name,
+          nickname: username,
+          email,
+          agree,
+        };
+        let path = `users/${userCredential.user.uid}`;
+        const users = doc(db, path);
+        setDoc(users, newUserInfo);
+
+        console.log("KK", users);
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       const errorCode = error.code;
       alert(errorCode);
