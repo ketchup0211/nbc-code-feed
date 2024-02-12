@@ -6,6 +6,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import basicProfileImage from "src/assets/img/기본프로필.jpg";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -30,21 +31,22 @@ const LoginPage = () => {
 
   const signUp = async (event) => {
     event.preventDefault();
-    navigate("/");
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(auth.currentUser, {
         displayName: name,
+        photoURL: basicProfileImage,
       });
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log("error with signUP", errorCode, errorMessage);
     }
+    navigate("/");
   };
   const signIn = async (event) => {
     event.preventDefault();
-    navigate("/");
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
@@ -52,6 +54,7 @@ const LoginPage = () => {
       const errorMessage = error.message;
       console.log("error with signIn", errorCode, errorMessage);
     }
+    navigate("/");
   };
 
   return (
