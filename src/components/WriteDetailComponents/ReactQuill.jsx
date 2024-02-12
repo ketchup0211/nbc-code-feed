@@ -28,7 +28,9 @@ function QuillComponent({ value, onChange }) {
       toolbar: {
         container: toolbarOptions,
         handlers: {
-          image: imageHandler(quillRef),
+          image: function () {
+            imageHandler(quillRef);
+          },
           link: function (value) {
             if (value) {
               var href = prompt("Enter the URL");
@@ -39,10 +41,6 @@ function QuillComponent({ value, onChange }) {
           },
         },
       },
-
-      // ImageResize: {
-      //   modules: ["Resize"],
-      // },
       imageActions: {},
       imageFormats: {},
     };

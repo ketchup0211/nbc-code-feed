@@ -6,7 +6,6 @@ import DOMPurify from "dompurify";
 
 function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
-  const [clickedLanguage, setClickedLanguage] = useState("");
 
   const handleQuillChange = (value) => {
     // value가 Quill 에디터의 내부 표현일 경우에만 getContents를 사용
@@ -27,10 +26,7 @@ function WriteDetail() {
       <Nav>
         <GoHome>CodeFeed</GoHome>
       </Nav>
-      <FilterCheck
-        clickedLanguage={clickedLanguage}
-        setClickedLanguage={setClickedLanguage}
-      />
+      <FilterCheck />
       <div>
         <div>
           <InputTitle
@@ -45,20 +41,10 @@ function WriteDetail() {
             onChange={handleQuillChange}
           />
         </QuillDiv>
-        {/* <Test quillValue={quillValue} /> */}
         <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div>
         <DoneButtonDiv>
           <DoneButton>작성완료</DoneButton>
         </DoneButtonDiv>
-        <div>
-          {/* <button
-            onClick={() => {
-              navigate("/test"), { state: { quillValue } };
-            }}
-          >
-            미리보기 확인하기
-          </button> */}
-        </div>
       </div>
     </div>
   );

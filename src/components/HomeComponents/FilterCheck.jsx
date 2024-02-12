@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import { language } from "src/util/language";
+import { useState } from "react";
 
-function FilterCheck({ clickedLanguage, setClickedLanguage }) {
+function FilterCheck() {
+  const [clickedLanguage, setClickedLanguage] = useState("");
+
   const onHandleClickedLanguage = (language) => {
     setClickedLanguage(language.id);
   };
