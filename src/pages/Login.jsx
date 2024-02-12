@@ -157,7 +157,6 @@ function Login() {
                     name="login"
                     value={login}
                     onChange={updateInput}
-                    autoComplete="off"
                   />
                 </FieldSet>
                 <FieldSet>
