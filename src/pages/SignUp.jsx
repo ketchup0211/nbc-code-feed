@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-//LAST
+//Authentication
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+
 const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -61,6 +64,16 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const FormButton = styled.button`
+  cursor: pointer;
+  background-color: #0e0c22;
+  color: white;
+  padding: 16px 24px;
+  margin-top: 20px;
+  width: 100%;
+  border: 1.5px solid #0e0c22;
+  border-radius: 25px;
+`;
 const FontSmall = styled.p`
   margin-top: 20px;
   font-size: 12px;
@@ -89,6 +102,7 @@ const SignUpForm = styled.form``;
 const FormFieldGroup = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 15px;
 `;
 const FormField = styled.div`
   text-align: left;
@@ -118,9 +132,12 @@ const CheckBox = styled.input`
 `;
 function SignUp() {
   const [signUp, setSignUp] = useState(false);
-  const { name, username, email, password } = useSelector(
-    (state) => state.SignUpReducer
-  );
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [username, setUserName] = useState("");
+  const [agree, setAgree] = useState(false);
+
   const handleEmailSignUp = (event) => {
     event.preventDefault();
     switch (event.target.name) {
@@ -139,6 +156,54 @@ function SignUp() {
     event.preventDefault();
     setSignUp(false);
   };
+  const handleSignUpInput = (event) => {
+    event.preventDefault();
+    switch (event.target.id) {
+      case "name":
+        setName(event.target.value);
+        break;
+      case "username":
+        setUserName(event.target.value);
+        break;
+      case "email":
+        setEmail(event.target.value);
+        break;
+      case "password":
+        setPassword(event.target.value);
+        break;
+      case "user-agree":
+        setAgree(event.target.checked);
+        break;
+      default:
+        return;
+    }
+  };
+  //Authentication
+  //name, username, email, password, agree
+  const createAccount = async (event) => {
+    event.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      })
+        .then(() => {
+          alert("SUCCESS");
+        })
+        .catch((error) => alert(error));
+      console.log(userCredential.user);
+    } catch (error) {
+      const errorCode = error.code;
+      alert(errorCode);
+      const errorMessage = error.message;
+      alert(errorMessage);
+    }
+  };
+
   return (
     <MainContainer>
       <AuthSidebar />
@@ -152,37 +217,50 @@ function SignUp() {
           <SubTitle>Sign up to Code Feed</SubTitle>
           {signUp ? (
             <AuthForm>
-              <SignUpForm>
+              <SignUpForm onSubmit={createAccount}>
                 <FormFieldGroup>
                   <FormField>
                     <FieldSet>
-                      <Label for="name">Name</Label>
-                      <SignUpInput id="name" value={name} />
+                      <Label htmlFor="name">Name</Label>
+                      <SignUpInput
+                        id="name"
+                        onChange={handleSignUpInput}
+                        autoComplete="off"
+                      />
                     </FieldSet>
                   </FormField>
                   <FormField>
                     <FieldSet>
                       <FieldSet>
-                        <Label for="username">Username</Label>
-                        <SignUpInput id="username" value={username} />
+                        <Label htmlFor="username">Username</Label>
+                        <SignUpInput
+                          id="username"
+                          onChange={handleSignUpInput}
+                          autoComplete="off"
+                        />
                       </FieldSet>
                     </FieldSet>
                   </FormField>
                 </FormFieldGroup>
                 <FormField>
                   <FieldSet>
-                    <Label for="email">Email</Label>
-                    <SignUpInput id="email" value={email} />
+                    <Label htmlFor="email">Email</Label>
+                    <SignUpInput
+                      id="email"
+                      onChange={handleSignUpInput}
+                      autoComplete="off"
+                    />
                   </FieldSet>
                 </FormField>
                 <FormField>
                   <FieldSet>
-                    <Label for="password">Password</Label>
+                    <Label htmlFor="password">Password</Label>
                     <SignUpInput
                       id="password"
+                      onChange={handleSignUpInput}
                       type="password"
                       placeholder="6+characters"
-                      value={password}
+                      autoComplete="off"
                     />
                   </FieldSet>
                 </FormField>
@@ -193,12 +271,18 @@ function SignUp() {
                       marginTop: "30px",
                     }}
                   >
-                    <CheckBox id="user-agree" type="checkbox" />
-                    <Label for="user-agree" style={{ margin: "0px" }}>
+                    <CheckBox
+                      id="user-agree"
+                      onChange={handleSignUpInput}
+                      type="checkbox"
+                      required
+                    />
+                    <Label htmlFor="user-agree" style={{ margin: "0px" }}>
                       I agree with Code Feeds
                     </Label>
                   </FieldSet>
                 </FormField>
+                <FormButton type="submit">Sign Up</FormButton>
               </SignUpForm>
             </AuthForm>
           ) : (
