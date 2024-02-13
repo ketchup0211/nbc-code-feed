@@ -6,6 +6,7 @@ import Login from "src/pages/Login";
 import LoginPage from "src/pages/LoginPage";
 import MyPages from "src/pages/MyPages";
 import SearchResult from "src/pages/SearchResult";
+import PasswordReset from "src/pages/PasswordReset";
 import SignUp from "src/pages/SignUp";
 import WriteDetail from "src/pages/WriteDetail";
 
@@ -24,6 +25,7 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/searchResult" element={<SearchResult />} />
         <Route path="/editProfile" element={<EditProfile />} />
+        <Route path="/password_resets" element={<PasswordReset />} />
       </Routes>
     </BrowserRouter>
   );

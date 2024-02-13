@@ -1,130 +1,87 @@
-import { ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
-import { storage } from "src/firebase";
-import ReactQuill from "react-quill";
 import styled from "styled-components";
-import "react-quill/dist/quill.snow.css";
-// import { ImageResize } from "quill-image-resize-module-react";
-
-// Quill.register("modules/imageResize", ImageResize);
+import FilterCheck from "src/components/HomeComponents/FilterCheck";
+import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
+import DOMPurify from "dompurify";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "src/firebase";
 
 function WriteDetail() {
-  const [selectedImg, setSelectedImg] = useState([]);
-  const [previewImg, setPreviewImg] = useState([]);
   const [quillValue, setQuillValue] = useState("");
-  const toolbarOptions = [
-    ["link", "image", "video"],
-    [{ header: [1, 2, 3, false] }],
-    ["bold", "italic", "underline", "strike"],
-    ["blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-  ];
+  const [title, setTitle] = useState("");
+  const [userContents, setUserContents] = useState([]);
+  //const [filteredId, setFilteredId] = useState("");
 
-  // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
-  const formats = [
-    "header",
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "align",
-    "blockquote",
-    "list",
-    "bullet",
-    "indent",
-    "background",
-    "color",
-    "link",
-    "image",
-    "video",
-    "width",
-  ];
-
-  const modules = {
-    toolbar: {
-      container: toolbarOptions,
-    },
-    // ImageResize: {
-    //   parchment: Quill.import("parchment"),
-    //   modules: ["Resize", "DisplaySize", "Toolbar"],
-    // },
+  const inputTitle = (e) => {
+    setTitle(e.target.value);
   };
 
-  const handleQuillChange = (editor) => {
-    setQuillValue(editor.getContents());
-  };
-
-  const handleImgSelect = (event) => {
-    const imageFile = event.target.files[0];
-    setSelectedImg(imageFile);
-
-    const fileRead = new FileReader(); //FileRear를 이용해서 이미지 프리뷰 생성
-    fileRead.onload = function () {
-      setPreviewImg(fileRead.result); // 프리뷰 이미지 설정
-    };
-    fileRead.readAsDataURL(event.target.files[0]); // 프리뷰 이미지 URL 읽어오기
+  const handleQuillChange = (value) => {
+    // value가 Quill 에디터의 내부 표현일 경우에만 getContents를 사용
+    if (typeof value === "object" && value?.constructor?.name === "Delta") {
+      setQuillValue(value.getContents());
+    } else {
+      // 그 외에는 value 그대로 사용
+      setQuillValue(value);
+    }
   };
 
   const handleUpload = async () => {
-    const imageRef = ref(storage, "folder/file");
-    await uploadBytes(imageRef, selectedImg);
+    const newTodo = { title, quillValue };
+    setUserContents((prevlist) => {
+      return [...prevlist, newTodo];
+    });
+    setTitle("");
+
+    // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
+    const collectionRef = collection(db, "user"); // 추후에 {auth.id} 로 변경하면 될 듯?
+
+    await addDoc(collectionRef, newTodo);
   };
+
+  // const handleUpload = async (event) => {
+  //   // 데이터를 파이어베이스에 업로드하는 부분
+  //   event.preventDefault();
+  //   const newContent = {
+  //     quillValue,
+  //     title,
+  //   };
+  //   console.log(newContent);
+
+  //   const collectionRef = collection(db, "userContent");
+  //   await addDoc(collectionRef, newContent);
+  // };
+
+  const sanitizer = DOMPurify.sanitize;
+
+  console.log("Uploaded quillValue:", quillValue);
 
   return (
     <div>
       <Nav>
         <GoHome>CodeFeed</GoHome>
       </Nav>
-      <UploadImageContainer>
-        <UploadBox htmlFor="inputImage">
-          <InputImage
-            id="inputImage"
-            type="file"
-            accept="image/jpg, image/jpeg, image/png"
-            onChange={handleImgSelect}
-            onClick={handleUpload}
-          />
-          <p>클릭 혹은 이미지를 이곳에 드래그하세요.</p>
-        </UploadBox>
-      </UploadImageContainer>
+      <FilterCheck />
       <div>
         <div>
-          <PriviewImgBox alt="이미지 미리보기" src={previewImg} />
+          <InputTitle
+            type="text"
+            name="title"
+            placeholder="프로젝트의 제목을 입력해주세요."
+            onChange={inputTitle}
+          />
         </div>
+        <QuillDiv>
+          <QuillComponent
+            value={quillValue || ""}
+            onChange={handleQuillChange}
+          />
+        </QuillDiv>
+        <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div>
+        <DoneButtonDiv>
+          <DoneButton onClick={handleUpload}>작성완료</DoneButton>
+        </DoneButtonDiv>
       </div>
-      <div>
-        <InputTitle
-          type="text"
-          name="title"
-          placeholder="프로젝트의 제목을 입력해주세요."
-        />
-      </div>
-
-      <QuillDiv>
-        {/* <InputContent
-          name="contents"
-          cols="100"
-          rows="50"
-          placeholder="내용을 입력해주세요."
-        ></InputContent> */}
-        <ReactQuill
-          style={{ height: "600px" }}
-          theme="snow"
-          modules={modules}
-          value={quillValue || ""}
-          onChange={handleQuillChange}
-          formats={formats}
-          toolbarOptions={toolbarOptions}
-        />
-      </QuillDiv>
-
-      <DoneButtonDiv>
-        <DoneButton>작성완료</DoneButton>
-      </DoneButtonDiv>
     </div>
   );
 }
@@ -180,9 +137,9 @@ export const PriviewImgBox = styled.img`
 `;
 
 export const InputTitle = styled.input`
-  width: 50%;
+  width: 60%;
   height: 50px;
-  margin: 20px auto;
+  margin: 10px auto;
   background-color: #fff;
   border: none;
   border-bottom: 2px dashed #797979;
@@ -193,6 +150,7 @@ export const InputTitle = styled.input`
   align-items: center;
   font-size: 18px;
   font-weight: 600;
+  margin-top: 30px;
 `;
 
 export const InputContent = styled.textarea`
@@ -223,10 +181,16 @@ export const DoneButton = styled.button`
   float: left;
 `;
 export const QuillDiv = styled.div`
-  width: 70%;
   display: flex;
   width: 100%;
+  height: 75vh;
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;
+  .ql-editor strong {
+    font-weight: bold;
+  }
+  .ql-editor em {
+    font-style: italic;
+  }
 `;
