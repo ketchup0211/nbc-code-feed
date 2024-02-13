@@ -17,6 +17,12 @@ function HomeHeader() {
 
   useEffect(() => {
     let checkuid = "";
+    onAuthStateChanged(auth, (user) => {
+      if (auth.currentUser === null) {
+        return;
+      }
+      checkuid = user.uid;
+    });
     const fetchData = async () => {
       const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
@@ -34,15 +40,14 @@ function HomeHeader() {
       dispatch(initialization(check));
     };
     fetchData();
-    onAuthStateChanged(auth, (user) => {
-      checkuid = user.uid;
-    });
-  }, [dispatch]);
+    console.log(user);
+  }, [dispatch, user]);
 
   const logOut = async (event) => {
     event.preventDefault();
     navigate("/");
     await signOut(auth);
+    dispatch(initialization(null));
   };
 
   const inputChcange = (e) => {
@@ -52,6 +57,7 @@ function HomeHeader() {
   const SubmitHandler = (event) => {
     event.preventDefault();
     navigate("/searchResult");
+    dispatch(initialization(null));
   };
 
   if (user === null || user === undefined)
