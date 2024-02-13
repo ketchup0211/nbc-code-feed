@@ -10,6 +10,7 @@ Quill.register("modules/imageFormats", ImageFormats);
 
 function QuillComponent({ value, onChange }) {
   const quillRef = useRef(null);
+
   const toolbarOptions = [
     ["link", "image"],
     [{ header: [1, 2, 3, false] }],

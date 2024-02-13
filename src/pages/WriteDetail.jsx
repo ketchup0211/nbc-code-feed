@@ -187,4 +187,10 @@ export const QuillDiv = styled.div`
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;
+  .ql-editor strong {
+    font-weight: bold;
+  }
+  .ql-editor em {
+    font-style: italic;
+  }
 `;
