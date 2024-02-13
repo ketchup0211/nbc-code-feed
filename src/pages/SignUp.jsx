@@ -1,8 +1,18 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-//LAST
+//Authentication
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
+import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import { db, auth } from "src/firebase";
+import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
+import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
+
 const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -13,8 +23,8 @@ const MainContainer = styled.div`
 const AuthSidebar = styled.div`
   width: 450px;
   height: 100%;
-  background-color: #f2d184;
-  color: #866118;
+  background-color: #f2aa4c;
+  color: #f2aa4c;
 `;
 const Content = styled.div`
   display: flex;
@@ -41,8 +51,8 @@ const SubTitle = styled.h2`
 const HrDivider = styled.hr`
   margin: 30px 0px;
   border: none;
-  background-color: #e7e7e9;
-  color: #6e6d7a;
+  background-color: #c6c6c6;
+  color: black;
   text-align: center;
   overflow: visible;
   height: 1px;
@@ -56,11 +66,16 @@ const HrDivider = styled.hr`
   }
 `;
 
-const Button = styled.button`
-  margin-bottom: 40px;
+const FormButton = styled.button`
   cursor: pointer;
+  background-color: #0e0c22;
+  color: white;
+  padding: 16px 24px;
+  margin-top: 20px;
+  width: 100%;
+  border: 1.5px solid #0e0c22;
+  border-radius: 25px;
 `;
-
 const FontSmall = styled.p`
   margin-top: 20px;
   font-size: 12px;
@@ -89,6 +104,7 @@ const SignUpForm = styled.form``;
 const FormFieldGroup = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 15px;
 `;
 const FormField = styled.div`
   text-align: left;
@@ -101,7 +117,7 @@ const Label = styled.label`
   justify-content: space-between;
   margin: 14px 0px 4px 0px;
   font-size: 15px;
-  font-weight: 700w;
+  font-weight: 700;
 `;
 const SignUpInput = styled.input`
   width: 100%;
@@ -116,11 +132,54 @@ const CheckBox = styled.input`
   border-radius: 0px;
   transform: scale(1.05);
 `;
+const APIButton = styled.button`
+  cursor: pointer;
+  background-color: ${(props) => {
+    switch (props.name) {
+      case "google":
+        return "white";
+      case "github":
+        return "black";
+      default:
+        return "#F2AA4C";
+    }
+  }};
+  color: ${(props) => {
+    switch (props.name) {
+      case "google":
+        return "#0e0c22";
+      case "github":
+        return "white";
+      default:
+        return "#101820";
+    }
+  }};
+  font-weight: 600;
+  padding: 16px 24px;
+  margin-top: 20px;
+  width: 100%;
+  border: 1.5px solid
+    ${(props) => {
+      switch (props.name) {
+        case "google":
+          return "#e8e8ea";
+        case "github":
+          return "black";
+        default:
+          return "#F2AA4C";
+      }
+    }};
+  border-radius: 25px;
+`;
 function SignUp() {
   const [signUp, setSignUp] = useState(false);
-  const { name, username, email, password } = useSelector(
-    (state) => state.SignUpReducer
-  );
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [username, setUserName] = useState("");
+  const [agree, setAgree] = useState(false);
+  const navigate = useNavigate();
+
   const handleEmailSignUp = (event) => {
     event.preventDefault();
     switch (event.target.name) {
@@ -139,6 +198,105 @@ function SignUp() {
     event.preventDefault();
     setSignUp(false);
   };
+  const handleSignUpInput = (event) => {
+    event.preventDefault();
+    switch (event.target.id) {
+      case "name":
+        setName(event.target.value);
+        break;
+      case "username":
+        setUserName(event.target.value);
+        break;
+      case "email":
+        setEmail(event.target.value);
+        break;
+      case "password":
+        setPassword(event.target.value);
+        break;
+      case "user-agree":
+        setAgree(event.target.checked);
+        break;
+      default:
+        return;
+    }
+  };
+  //Authentication
+  //name, username, email, password, agree
+  const createAccount = async (event) => {
+    event.preventDefault();
+    try {
+      // Create Account
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // update Account Profile
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      })
+        .then(() => {
+          alert("SUCCESS");
+          navigate("/");
+        })
+        .catch((error) => alert(error));
+      // make new Account Infomation
+      try {
+        let path = `users/${userCredential.user.uid}`;
+        const newUserInfo = {
+          name,
+          nickname: username,
+          email,
+          agree,
+        };
+        setDoc(doc(db, path), newUserInfo);
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
+      switch (error.code) {
+        case "auth/invalid-email":
+          alert("이메일을 정확히 입력해주세요.");
+          break;
+        case "auth/email-already-in-use":
+          let result = confirm(
+            "이미 가입된 이메일입니다. 로그인 페이지로 이동하시겠습니까?"
+          );
+          result ? navigate("/login") : null;
+          break;
+
+        case ("auth/invalid-password", "auth/weak-password"):
+          alert("비밀번호는 6자 이상의 문자열로 구성해주십시오.");
+          break;
+        case "auth/too-many-requests":
+          alert("요청이 많습니다. 잠시 후에 다시 시도해주십시오.");
+          break;
+        default:
+          alert(`ERROR CODE : ${error.code}`);
+          return;
+      }
+    }
+  };
+  const handleGoogleSignUp = () => {
+    signInWithPopup(auth, googleProvider) // popup을 이용한 signup
+      .then((data) => {
+        console.log(data); // console로 들어온 데이터 표시
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleGitHubSignUp = () => {
+    signInWithPopup(auth, gitProvider) // popup을 이용한 signup
+      .then((data) => {
+        console.log(data); // console로 들어온 데이터 표시
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <MainContainer>
       <AuthSidebar />
@@ -152,37 +310,50 @@ function SignUp() {
           <SubTitle>Sign up to Code Feed</SubTitle>
           {signUp ? (
             <AuthForm>
-              <SignUpForm>
+              <SignUpForm onSubmit={createAccount}>
                 <FormFieldGroup>
                   <FormField>
                     <FieldSet>
-                      <Label for="name">Name</Label>
-                      <SignUpInput id="name" value={name} />
+                      <Label htmlFor="name">Name</Label>
+                      <SignUpInput
+                        id="name"
+                        onChange={handleSignUpInput}
+                        autoComplete="off"
+                      />
                     </FieldSet>
                   </FormField>
                   <FormField>
                     <FieldSet>
                       <FieldSet>
-                        <Label for="username">Username</Label>
-                        <SignUpInput id="username" value={username} />
+                        <Label htmlFor="username">Username</Label>
+                        <SignUpInput
+                          id="username"
+                          onChange={handleSignUpInput}
+                          autoComplete="off"
+                        />
                       </FieldSet>
                     </FieldSet>
                   </FormField>
                 </FormFieldGroup>
                 <FormField>
                   <FieldSet>
-                    <Label for="email">Email</Label>
-                    <SignUpInput id="email" value={email} />
+                    <Label htmlFor="email">Email</Label>
+                    <SignUpInput
+                      id="email"
+                      onChange={handleSignUpInput}
+                      autoComplete="off"
+                    />
                   </FieldSet>
                 </FormField>
                 <FormField>
                   <FieldSet>
-                    <Label for="password">Password</Label>
+                    <Label htmlFor="password">Password</Label>
                     <SignUpInput
                       id="password"
+                      onChange={handleSignUpInput}
                       type="password"
                       placeholder="6+characters"
-                      value={password}
+                      autoComplete="off"
                     />
                   </FieldSet>
                 </FormField>
@@ -193,23 +364,42 @@ function SignUp() {
                       marginTop: "30px",
                     }}
                   >
-                    <CheckBox id="user-agree" type="checkbox" />
-                    <Label for="user-agree" style={{ margin: "0px" }}>
+                    <CheckBox
+                      id="user-agree"
+                      onChange={handleSignUpInput}
+                      type="checkbox"
+                      required
+                    />
+                    <Label htmlFor="user-agree" style={{ margin: "0px" }}>
                       I agree with Code Feeds
                     </Label>
                   </FieldSet>
                 </FormField>
+                <FormButton type="submit">Sign Up</FormButton>
               </SignUpForm>
             </AuthForm>
           ) : (
             <>
-              <button type="button" name="github" style={{ cursor: "pointer" }}>
+              <APIButton
+                type="button"
+                onClick={handleGitHubSignUp}
+                name="github"
+                style={{ cursor: "pointer" }}
+              >
                 Sign up with GitHub
-              </button>
+              </APIButton>
+              <APIButton
+                type="button"
+                onClick={handleGoogleSignUp}
+                name="google"
+                style={{ cursor: "pointer" }}
+              >
+                Sign up with Google
+              </APIButton>
               <HrDivider></HrDivider>
-              <Button type="button" name="email" onClick={handleEmailSignUp}>
+              <APIButton type="button" name="email" onClick={handleEmailSignUp}>
                 Continue with email
-              </Button>
+              </APIButton>
               <FontSmall>
                 By creating account you agree with our Terms of Sevice, Privacy
                 Policy, and our default Notification Settings.

@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "src/firebase";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult,
+  sendPasswordResetEmail,
+} from "firebase/auth";
+import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
+import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
 import styled from "styled-components";
 
 const MainContainer = styled.div`
@@ -12,7 +23,7 @@ const MainContainer = styled.div`
 const AuthSidebar = styled.div`
   width: 450px;
   height: 100%;
-  background-color: #f2d184;
+  background-color: #f2aa4c;
   color: #866118;
 `;
 const Content = styled.div`
@@ -40,8 +51,8 @@ const SubTitle = styled.h2`
 const HrDivider = styled.hr`
   margin: 30px 0px;
   border: none;
-  background-color: #e7e7e9;
-  color: #6e6d7a;
+  background-color: #c6c6c6;
+  color: black;
   text-align: center;
   overflow: visible;
   height: 1px;
@@ -70,7 +81,7 @@ const Label = styled.label`
   justify-content: space-between;
   margin: 14px 0px 4px 0px;
   font-size: 15px;
-  font-weight: 700w;
+  font-weight: 700;
 `;
 const LoginInput = styled.input`
   width: 100%;
@@ -86,18 +97,53 @@ const FieldSet = styled.fieldset`
 const Button = styled.button`
   margin-top: 20px;
   width: 100%;
-  background-color: #0d0c22;
-  color: white;
+  background-color: #f2aa4c;
+  color: #101820;
   font-size: 14px;
-  padding: 0px 24px;
-  border: 0px;
+  padding: 16px 24px;
+  border: 1.5px solid #f2aa4c;
   border-radius: 25px;
   height: 50px;
   cursor: pointer;
+  font-weight: 600;
+`;
+const APIButton = styled.button`
+  cursor: pointer;
+  background-color: ${(props) => {
+    switch (props.name) {
+      case "google":
+        return "white";
+      default:
+        return "black";
+    }
+  }};
+  color: ${(props) => {
+    switch (props.name) {
+      case "google":
+        return "#0e0c22";
+      default:
+        return "white";
+    }
+  }};
+  font-weight: 600;
+  padding: 16px 24px;
+  margin-top: 20px;
+  width: 100%;
+  border: 1.5px solid
+    ${(props) => {
+      switch (props.name) {
+        case "google":
+          return "#e8e8ea";
+        default:
+          return "black";
+      }
+    }};
+  border-radius: 25px;
 `;
 function Login() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const updateInput = (event) => {
     switch (event.target.name) {
       case "login":
@@ -111,40 +157,93 @@ function Login() {
         return;
     }
   };
+  const handleLogin = (event) => {
+    event.preventDefault();
+    signInWithEmailAndPassword(auth, login, password)
+      .then((userCredential) => {
+        alert("WELCOME");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.code);
+        switch (error.code) {
+          case "auth/invalid-email":
+            alert("이메일을 올바르게 입력해주세요.");
+            break;
+          case "auth/missing-password":
+            alert("비밀번호를 입력해주세요.");
+            break;
+          case "auth/invalid-credential":
+            alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+            break;
+          default:
+            alert(`ERROR CODE : ${error.code}`);
+            return;
+        }
+      });
+  };
+  const handleGoogleLogin = () => {
+    signInWithPopup(auth, googleProvider) // popup을 이용한 signup
+      .then((data) => {
+        console.log(data); // console로 들어온 데이터 표시
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleGitHubLogin = () => {
+    signInWithPopup(auth, gitProvider) // popup을 이용한 signup
+      .then((data) => {
+        console.log(data); // console로 들어온 데이터 표시
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <MainContainer>
       <AuthSidebar />
       <Content>
         <AuthContent>
           <SubTitle>Sign in to Code Feed</SubTitle>
-          <button>Sign in with GitHub</button>
+          <APIButton onClick={handleGitHubLogin} name="github">
+            Sign in with GitHub
+          </APIButton>
+          <APIButton onClick={handleGoogleLogin} name="google">
+            Sign in with Google
+          </APIButton>
           <HrDivider></HrDivider>
           <AuthForm>
-            <Session method="post">
+            <Session onSubmit={handleLogin}>
               <FormField>
                 <FieldSet>
-                  <Label> Username or Email</Label>
+                  <Label>Email</Label>
                   <LoginInput
                     type="text"
                     name="login"
                     value={login}
                     onChange={updateInput}
-                    autoComplete="off"
                   />
                 </FieldSet>
                 <FieldSet>
                   <Label>
                     Password
-                    <a
-                      href=""
+                    <Link
+                      replace
+                      to="/password_resets"
                       style={{
                         float: "right",
                         color: "#0d0c22",
                         fontSize: "14px",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                        fontWeight: "400",
                       }}
                     >
                       Forgot?
-                    </a>
+                    </Link>
                   </Label>
                   <LoginInput
                     type="password"
