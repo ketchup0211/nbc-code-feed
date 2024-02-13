@@ -1,17 +1,17 @@
 import { useContext } from "react";
 import { handleSignUpInput } from "./event-handler/SignUpEvents";
 import {
+  CheckBox,
   FieldSet,
   FormField,
   Label,
-  SignUpInput,
 } from "./styled-components/SignUpStyle";
 import {
   SignUpDispatchContext,
   SignUpReduxActionContext,
 } from "src/context/SignUpNavigateContext";
 
-function EmailSignUpFormField({ id, label, type, placeholder }) {
+function SignUpAgree() {
   const dispatch = useContext(SignUpDispatchContext);
   const reduxActions = useContext(SignUpReduxActionContext);
   const handleSignUpInputWithRedux = (event) => {
@@ -20,17 +20,24 @@ function EmailSignUpFormField({ id, label, type, placeholder }) {
   };
   return (
     <FormField>
-      <FieldSet>
-        <Label htmlFor={id}>{label}</Label>
-        <SignUpInput
-          id={id}
+      <FieldSet
+        style={{
+          display: "flex",
+          marginTop: "30px",
+        }}
+      >
+        <CheckBox
+          id="user-agree"
           onChange={handleSignUpInputWithRedux}
-          autoComplete="off"
-          type={type}
-          placeholder={placeholder}
+          type="checkbox"
+          required
         />
+        <Label htmlFor="user-agree" style={{ margin: "0px" }}>
+          I agree with Code Feeds
+        </Label>
       </FieldSet>
     </FormField>
   );
 }
-export default EmailSignUpFormField;
+
+export default SignUpAgree;

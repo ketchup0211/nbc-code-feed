@@ -1,4 +1,8 @@
-import { signInWithPopup } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -59,84 +63,30 @@ export const handleDataBack = (event) => {
   setSignUp(false);
 };
 
-export const handleSignUpInput = (event) => {
+export const handleSignUpInput = (event, dispatch, reduxActions) => {
   event.preventDefault();
   switch (event.target.id) {
     case "name":
-      setName(event.target.value);
+      const { setName } = reduxActions;
+      dispatch(setName(event.target.value));
       break;
     case "username":
-      setUserName(event.target.value);
+      const { setUserName } = reduxActions;
+      dispatch(setUserName(event.target.value));
       break;
     case "email":
-      setEmail(event.target.value);
+      const { setEmail } = reduxActions;
+      dispatch(setEmail(event.target.value));
       break;
     case "password":
-      setPassword(event.target.value);
+      const { setPassword } = reduxActions;
+      dispatch(setPassword(event.target.value));
       break;
     case "user-agree":
-      setAgree(event.target.checked);
+      const { setAgree } = reduxActions;
+      dispatch(setAgree(event.target.checked));
       break;
     default:
       return;
-  }
-};
-
-//Authentication
-//name, username, email, password, agree
-export const createAccount = async (event) => {
-  const navigate = useNavigate();
-  event.preventDefault();
-  try {
-    // Create Account
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    // update Account Profile
-    updateProfile(auth.currentUser, {
-      displayName: name,
-    })
-      .then(() => {
-        alert("SUCCESS");
-        navigate("/");
-      })
-      .catch((error) => alert(error));
-    // make new Account Infomation
-    try {
-      let path = `users/${userCredential.user.uid}`;
-      const newUserInfo = {
-        name,
-        nickname: username,
-        email,
-        agree,
-      };
-      setDoc(doc(db, path), newUserInfo);
-    } catch (error) {
-      console.log(error);
-    }
-  } catch (error) {
-    switch (error.code) {
-      case "auth/invalid-email":
-        alert("이메일을 정확히 입력해주세요.");
-        break;
-      case "auth/email-already-in-use":
-        let result = confirm(
-          "이미 가입된 이메일입니다. 로그인 페이지로 이동하시겠습니까?"
-        );
-        result ? navigate("/login") : null;
-        break;
-
-      case ("auth/invalid-password", "auth/weak-password"):
-        alert("비밀번호는 6자 이상의 문자열로 구성해주십시오.");
-        break;
-      case "auth/too-many-requests":
-        alert("요청이 많습니다. 잠시 후에 다시 시도해주십시오.");
-        break;
-      default:
-        alert(`ERROR CODE : ${error.code}`);
-        return;
-    }
   }
 };
