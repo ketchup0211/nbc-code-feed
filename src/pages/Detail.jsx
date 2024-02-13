@@ -63,12 +63,15 @@ function Detail() {
     fetchData();
   }, []);
 
-  const handleContentChange = (itemId) => {
-    const contentsFilter = contents.filter((item) => item.id === itemId);
-    console.log(contentsFilter);
-    console.log(contents);
-  };
+  //   const handleContentChange = (itemId) => {
+  //     const contentsFilter = contents.map((item) => {
+  //       if(item.id === itemId){
 
+  //       }
+  //   });
+  // };
+
+  const [edit, setEdit] = useState(true);
   return (
     <>
       {contents.map((item) => {
@@ -90,14 +93,33 @@ function Detail() {
                   </Fixedright>
                 )}
               </Fixed>
-
-              <ImgContent id="myimg" />
-              {/*<div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div> */}
-              {/*<DetailImg imgName={item.file} />*/}
-              <Description>{item.content}</Description>
-              <EditBtn onClick={() => handleContentChange(item.id)}>
-                수정하기
-              </EditBtn>
+              {edit ? (
+                <>
+                  <ImgContent id="myimg" />
+                  <Description>{item.content}</Description>
+                  <EditBtn
+                    onClick={() => {
+                      setEdit(false);
+                      //handleContentChange(item.id);
+                    }}
+                  >
+                    수정하기
+                  </EditBtn>
+                </>
+              ) : (
+                <>
+                  <ImgContent id="myimg" />
+                  <Description>{item.content}</Description>
+                  <EditBtn
+                    onClick={() => {
+                      setEdit(true);
+                      //handleContentChange(item.id);
+                    }}
+                  >
+                    수정완료
+                  </EditBtn>
+                </>
+              )}
             </Container>
           </>
         );
@@ -165,7 +187,7 @@ const Fixedright = styled.div`
 const ImgContent = styled.img`
   border-radius: 8px;
 `;
-const Description = styled.p`
+const Description = styled.textarea`
   font-size: 18px;
   margin: 20px auto 0px auto;
   width: 600px;
