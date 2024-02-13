@@ -21,11 +21,11 @@ export default function Post () {
     return (
         <PostContainer>
             {posts.map(post => (
-                <>
-                <PostItem key={post.id} imageUrl={post.image}/>
-                <h1>{post.title}</h1>
-                <p>{post.content}</p>
-                </>
+                <PostBox key={post.id} >
+                <PostItem imageUrl={post.image}/>
+                <h1>title : {post.title}</h1>
+                <PostContent>{post.content}</PostContent>
+                </PostBox>
             ))}
         </PostContainer>
     )
@@ -34,9 +34,16 @@ export default function Post () {
 const PostContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    background-color: #faecec;
+    background-color: white;
     flex-shrink: 0;
     width: 100%;
+    gap: 2px;
+`;
+const PostBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #faf2f2;
 `;
 const PostItem = styled.div`
     width: 100%;
@@ -44,4 +51,9 @@ const PostItem = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     background-image: ${({ imageUrl }) => `url(${imageUrl})`};
+`;
+const PostContent = styled.p`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
