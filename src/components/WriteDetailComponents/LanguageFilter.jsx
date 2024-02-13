@@ -1,14 +1,26 @@
 import styled from "styled-components";
 import { language } from "src/util/language";
+import { useState } from "react";
 
-function LanguageFilter() {
+function LanguageFilter({ onClickedLanguage }) {
+  const [filteredLanguage, setFilteredLanguage] = useState([]);
+
+  const handleClickLanguage = (language) => {
+    setFilteredLanguage(language);
+    onClickedLanguage(language);
+  };
+
   return (
     <FilterCheckMain>
       {language.map((e) => {
         return (
           <FilterButton
             key={e.id}
-            $backgroundColor={id === e.language ? "gray" : "whitesmoke"}
+            onClick={() => handleClickLanguage(e.language)}
+            style={{
+              backgroundColor:
+                filteredLanguage === e.language ? "#ffcd8b" : "transparent",
+            }}
           >
             <label>{e.language}</label>
           </FilterButton>
@@ -34,4 +46,5 @@ const FilterButton = styled.button`
   background-color: ${(props) => props.$backgroundColor};
   padding: 10px;
   border-radius: 25px;
+  border: 1px solid dimgrey;
 `;

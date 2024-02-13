@@ -31,12 +31,6 @@ const imageHandler = (quillRef) => {
             editor.insertEmbed(range.index, "image", downloadURL); // 이미지를 에디터에 삽입
 
             editor.setSelection(range.index + 1); // 삽입한 이미지 다음에 커서를 위치
-
-            // 이미지 삭제 이벤트를 감지하여 Firebase Storage에서 이미지 삭제
-            editor.root.addEventListener("DOMNodeRemoved", () => {
-              // 이미지가 삭제되면 Firebase Storage에서도 삭제
-              deleteImageFromStorage(downloadURL);
-            });
           });
         },
         (error) => {

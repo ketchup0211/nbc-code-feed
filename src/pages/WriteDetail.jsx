@@ -1,11 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
-import FilterCheck from "src/components/HomeComponents/FilterCheck";
+import LanguageFilter from "src/components/WriteDetailComponents/LanguageFilter";
+//import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
 // import DOMPurify from "dompurify";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useSelector } from "react-redux";
+import { language } from "src/util/language";
 
 let dateNTime = "";
 
@@ -13,7 +15,12 @@ function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState("");
   const randomId = useSelector((state) => state.postImageid);
+
+  const handleSelectedLanguage = (language) => {
+    setSelectedLanguage(language);
+  };
 
   const inputTitle = (e) => {
     setTitle(e.target.value);
@@ -43,6 +50,7 @@ function WriteDetail() {
       title,
       quillValue,
       dateNTime,
+      language: selectedLanguage,
     };
     setUserContents((prevlist) => {
       return [...prevlist, newContent];
@@ -66,7 +74,8 @@ function WriteDetail() {
       <Nav>
         <GoHome>CodeFeed</GoHome>
       </Nav>
-      <FilterCheck />
+      {/* <FilterCheck /> */}
+      <LanguageFilter onClickedLanguage={handleSelectedLanguage} />
       <div>
         <div>
           <InputTitle
