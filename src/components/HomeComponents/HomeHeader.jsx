@@ -37,7 +37,7 @@ function HomeHeader() {
     onAuthStateChanged(auth, (user) => {
       checkuid = user.uid;
     });
-  }, [dispatch]);
+  }, []);
 
   const logOut = async (event) => {
     event.preventDefault();

@@ -20,8 +20,12 @@ export default function Post () {
 
     return (
         <PostContainer>
-            {posts.map((post) => (
+            {posts.map(post => (
+                <>
                 <PostItem key={post.id} imageUrl={post.image}/>
+                <h1>{post.title}</h1>
+                <p>{post.content}</p>
+                </>
             ))}
         </PostContainer>
     )

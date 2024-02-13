@@ -4,7 +4,7 @@ import EditButton from "./common/EditButton";
 import { auth } from '../firebase';
 import { onAuthStateChanged  } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { log } from 'src/redux/modules/user';
+import { initialization } from 'src/redux/modules/user';
 
 export default function UserInfo () {
 
@@ -13,7 +13,7 @@ export default function UserInfo () {
     
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
-          dispatch(log(user));
+          dispatch(initialization(user));
         });
       }, [dispatch]);
     
