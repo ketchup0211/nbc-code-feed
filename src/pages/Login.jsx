@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "src/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult,
+} from "firebase/auth";
+import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
+import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
 import styled from "styled-components";
 
 const MainContainer = styled.div`
@@ -14,7 +22,7 @@ const MainContainer = styled.div`
 const AuthSidebar = styled.div`
   width: 450px;
   height: 100%;
-  background-color: #f2d184;
+  background-color: #f2aa4c;
   color: #866118;
 `;
 const Content = styled.div`
@@ -42,8 +50,8 @@ const SubTitle = styled.h2`
 const HrDivider = styled.hr`
   margin: 30px 0px;
   border: none;
-  background-color: #e7e7e9;
-  color: #6e6d7a;
+  background-color: #c6c6c6;
+  color: black;
   text-align: center;
   overflow: visible;
   height: 1px;
@@ -88,14 +96,48 @@ const FieldSet = styled.fieldset`
 const Button = styled.button`
   margin-top: 20px;
   width: 100%;
-  background-color: #0d0c22;
-  color: white;
+  background-color: #f2aa4c;
+  color: #101820;
   font-size: 14px;
-  padding: 0px 24px;
-  border: 0px;
+  padding: 16px 24px;
+  border: 1.5px solid #f2aa4c;
   border-radius: 25px;
   height: 50px;
   cursor: pointer;
+  font-weight: 600;
+`;
+const APIButton = styled.button`
+  cursor: pointer;
+  background-color: ${(props) => {
+    switch (props.name) {
+      case "google":
+        return "white";
+      default:
+        return "black";
+    }
+  }};
+  color: ${(props) => {
+    switch (props.name) {
+      case "google":
+        return "#0e0c22";
+      default:
+        return "white";
+    }
+  }};
+  font-weight: 600;
+  padding: 16px 24px;
+  margin-top: 20px;
+  width: 100%;
+  border: 1.5px solid
+    ${(props) => {
+      switch (props.name) {
+        case "google":
+          return "#e8e8ea";
+        default:
+          return "black";
+      }
+    }};
+  border-radius: 25px;
 `;
 function Login() {
   const [login, setLogin] = useState("");
@@ -139,14 +181,38 @@ function Login() {
         }
       });
   };
+  const handleGoogleLogin = () => {
+    signInWithPopup(auth, googleProvider) // popup을 이용한 signup
+      .then((data) => {
+        console.log(data); // console로 들어온 데이터 표시
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleGitHubLogin = () => {
+    signInWithPopup(auth, gitProvider) // popup을 이용한 signup
+      .then((data) => {
+        console.log(data); // console로 들어온 데이터 표시
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <MainContainer>
       <AuthSidebar />
       <Content>
         <AuthContent>
           <SubTitle>Sign in to Code Feed</SubTitle>
-          <button>Sign in with GitHub</button>
-          <button>Sign in with Google</button>
+          <APIButton onClick={handleGitHubLogin} name="github">
+            Sign in with GitHub
+          </APIButton>
+          <APIButton onClick={handleGoogleLogin} name="google">
+            Sign in with Google
+          </APIButton>
           <HrDivider></HrDivider>
           <AuthForm>
             <Session onSubmit={handleLogin}>

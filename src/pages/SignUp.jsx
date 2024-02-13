@@ -3,9 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 //Authentication
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import { doc, setDoc, collection, addDoc } from "firebase/firestore";
 import { db, auth } from "src/firebase";
+import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
+import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
 
 const MainContainer = styled.div`
   display: flex;
@@ -17,8 +23,8 @@ const MainContainer = styled.div`
 const AuthSidebar = styled.div`
   width: 450px;
   height: 100%;
-  background-color: #f2d184;
-  color: #866118;
+  background-color: #f2aa4c;
+  color: #f2aa4c;
 `;
 const Content = styled.div`
   display: flex;
@@ -45,8 +51,8 @@ const SubTitle = styled.h2`
 const HrDivider = styled.hr`
   margin: 30px 0px;
   border: none;
-  background-color: #e7e7e9;
-  color: #6e6d7a;
+  background-color: #c6c6c6;
+  color: black;
   text-align: center;
   overflow: visible;
   height: 1px;
@@ -58,11 +64,6 @@ const HrDivider = styled.hr`
     padding: 0 16px;
     background-color: #fff;
   }
-`;
-
-const Button = styled.button`
-  margin-bottom: 40px;
-  cursor: pointer;
 `;
 
 const FormButton = styled.button`
@@ -131,6 +132,45 @@ const CheckBox = styled.input`
   border-radius: 0px;
   transform: scale(1.05);
 `;
+const APIButton = styled.button`
+  cursor: pointer;
+  background-color: ${(props) => {
+    switch (props.name) {
+      case "google":
+        return "white";
+      case "github":
+        return "black";
+      default:
+        return "#F2AA4C";
+    }
+  }};
+  color: ${(props) => {
+    switch (props.name) {
+      case "google":
+        return "#0e0c22";
+      case "github":
+        return "white";
+      default:
+        return "#101820";
+    }
+  }};
+  font-weight: 600;
+  padding: 16px 24px;
+  margin-top: 20px;
+  width: 100%;
+  border: 1.5px solid
+    ${(props) => {
+      switch (props.name) {
+        case "google":
+          return "#e8e8ea";
+        case "github":
+          return "black";
+        default:
+          return "#F2AA4C";
+      }
+    }};
+  border-radius: 25px;
+`;
 function SignUp() {
   const [signUp, setSignUp] = useState(false);
   const [email, setEmail] = useState("");
@@ -197,6 +237,7 @@ function SignUp() {
       })
         .then(() => {
           alert("SUCCESS");
+          navigate("/");
         })
         .catch((error) => alert(error));
       // make new Account Infomation
@@ -236,7 +277,26 @@ function SignUp() {
       }
     }
   };
-
+  const handleGoogleSignUp = () => {
+    signInWithPopup(auth, googleProvider) // popup을 이용한 signup
+      .then((data) => {
+        console.log(data); // console로 들어온 데이터 표시
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleGitHubSignUp = () => {
+    signInWithPopup(auth, gitProvider) // popup을 이용한 signup
+      .then((data) => {
+        console.log(data); // console로 들어온 데이터 표시
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <MainContainer>
       <AuthSidebar />
@@ -320,16 +380,26 @@ function SignUp() {
             </AuthForm>
           ) : (
             <>
-              <button type="button" name="github" style={{ cursor: "pointer" }}>
+              <APIButton
+                type="button"
+                onClick={handleGitHubSignUp}
+                name="github"
+                style={{ cursor: "pointer" }}
+              >
                 Sign up with GitHub
-              </button>
-              <button type="button" name="google" style={{ cursor: "pointer" }}>
+              </APIButton>
+              <APIButton
+                type="button"
+                onClick={handleGoogleSignUp}
+                name="google"
+                style={{ cursor: "pointer" }}
+              >
                 Sign up with Google
-              </button>
+              </APIButton>
               <HrDivider></HrDivider>
-              <Button type="button" name="email" onClick={handleEmailSignUp}>
+              <APIButton type="button" name="email" onClick={handleEmailSignUp}>
                 Continue with email
-              </Button>
+              </APIButton>
               <FontSmall>
                 By creating account you agree with our Terms of Sevice, Privacy
                 Policy, and our default Notification Settings.
