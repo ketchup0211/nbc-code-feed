@@ -9,7 +9,7 @@ import { LinkStyle } from "src/util/Style";
 import Loading from "../Loading";
 
 function PostList() {
-  const { post } = useSelector((state) => state.postList);
+  const post = useSelector((state) => state.postList.post);
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -27,10 +27,11 @@ function PostList() {
         };
         initialTodos.push(data);
       });
+
       dispatch(addPost(initialTodos));
     };
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   if (post === null) return <Loading />;
   if (id === undefined)
@@ -44,7 +45,7 @@ function PostList() {
                   <img src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
                 </div>
-                <p>{e.name}</p>
+                <p>{e.nickname}</p>
               </PostCard>
             </LinkStyle>
           );
@@ -65,7 +66,7 @@ function PostList() {
                   <img src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
                 </div>
-                <p>{e.name}</p>
+                <p>{e.nickname}</p>
               </PostCard>
             </LinkStyle>
           );

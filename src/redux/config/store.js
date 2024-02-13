@@ -4,6 +4,7 @@ import postList from "../modules/postList";
 import users from "../modules/user";
 import search from "../modules/search";
 import postImageid from "../modules/postImageId";
+import postBasicImage from "../modules/postBasicImage";
 
 const RootReducer = combineReducers({
   SignUpReducer,
@@ -11,6 +12,7 @@ const RootReducer = combineReducers({
   users,
   search,
   postImageid,
+  postBasicImage,
 });
 
 const store = createStore(RootReducer);

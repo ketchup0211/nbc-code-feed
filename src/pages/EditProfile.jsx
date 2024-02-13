@@ -14,13 +14,12 @@ import styled from "styled-components";
 function EditProfile() {
   const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
-  const dispatchUser = () => {
-    dispatch(initialization(user));
+  const dispatchUser = (item) => {
+    dispatch(initialization(item));
   };
 
   useEffect(() => {
-    let checkuid = "";
-    const fetchData = async () => {
+    const fetchData = async (uid) => {
       const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
 
@@ -33,14 +32,17 @@ function EditProfile() {
         };
         initialTodos.push(data);
       });
-      const check = initialTodos.find((e) => e.id === checkuid);
+
+      const check = initialTodos.find((e) => e.id === uid);
       dispatch(initialization(check));
+
     };
-    fetchData();
     onAuthStateChanged(auth, (user) => {
-      checkuid = user.uid;
+      if (user) {
+        fetchData(user.uid);
+      }
     });
-  }, [dispatch]);
+  }, []);
 
   if (user === null)
     return (

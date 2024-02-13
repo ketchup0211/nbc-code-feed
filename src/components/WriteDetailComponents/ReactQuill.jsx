@@ -4,12 +4,16 @@ import { ImageActions } from "@xeger/quill-image-actions";
 import { ImageFormats } from "@xeger/quill-image-formats";
 import imageHandler from "./ImageHandler";
 import { useMemo, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 Quill.register("modules/imageActions", ImageActions);
 Quill.register("modules/imageFormats", ImageFormats);
 
 function QuillComponent({ value, onChange, randomId, check }) {
+  const postBasicImage = useSelector((state) => state.postBasicImage);
   const quillRef = useRef(null);
+  const dispatch = useDispatch();
+  // const path = randomId;
 
   const toolbarOptions = [
     ["link", "image"],
@@ -85,6 +89,8 @@ function QuillComponent({ value, onChange, randomId, check }) {
       toolbarOptions={toolbarOptions}
       randomId={randomId}
       check={check}
+      postBasicImage={postBasicImage}
+      dispatch={dispatch}
       ref={quillRef}
     />
   );

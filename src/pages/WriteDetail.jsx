@@ -4,25 +4,48 @@ import LanguageFilter from "src/components/WriteDetailComponents/LanguageFilter"
 //import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
 // import DOMPurify from "dompurify";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { auth, db } from "src/firebase";
-import { useSelector } from "react-redux";
-import { language } from "src/util/language";
+import { LinkStyle } from "src/util/Style";
+import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
+import { initialization } from "src/redux/modules/user";
+import { urlPatch } from "src/redux/modules/postBasicImage";
+import { useNavigate } from "react-router-dom";
 
 function WriteDetail() {
+  const user = useSelector((state) => state.users.user);
+  const postBasicImage = useSelector((state) => state.postBasicImage);
   let check = "";
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       check = user.uid;
-      console.log(check);
     });
-  });
+    const fetchData = async () => {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+
+      const initialTodos = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        initialTodos.push(data);
+      });
+      const checkuser = initialTodos.find((e) => e.id === check);
+      dispatch(initialization(checkuser));
+    };
+    fetchData();
+  }, []);
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
-  const [selectedLanguage, setSelectedLanguage] = useState("");
   const randomId = useSelector((state) => state.postImageid);
+  const [selectedLanguage, setSelectedLanguage] = useState("");
 
   let dateNTime = "";
 
@@ -53,35 +76,38 @@ function WriteDetail() {
   };
 
   const handleUpload = async () => {
+    dateContainer();
     const newContent = {
       id: randomId,
+      nickname: user.nickname,
+      userUid: check,
       title,
       quillValue,
 
       dateNTime,
       language: selectedLanguage,
+      image: postBasicImage,
     };
     setUserContents((prevlist) => {
       return [...prevlist, newContent];
     });
-    console.log(newContent);
-    console.log(randomId);
     // setTitle("");
-
-    //Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
-    const collectionRef = collection(db, "user"); // 추후에 {auth.id} 로 변경하면 될 듯?
+    // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
+    const collectionRef = collection(db, "posts"); // 추후에 {auth.id} 로 변경하면 될 듯?
 
     await addDoc(collectionRef, newContent);
+    dispatch(urlPatch(""));
+    navigate(`/detail/${newContent.id}`);
   };
 
   // const sanitizer = DOMPurify.sanitize;
 
-  console.log("Uploaded quillValue:", quillValue);
-
   return (
     <div>
       <Nav>
-        <GoHome>CodeFeed</GoHome>
+        <LinkStyle to={"/"}>
+          <GoHome>CodeFeed</GoHome>
+        </LinkStyle>
       </Nav>
       {/* <FilterCheck /> */}
       <LanguageFilter onClickedLanguage={handleSelectedLanguage} />
@@ -106,7 +132,7 @@ function WriteDetail() {
         <DoneButtonDiv>
           <DoneButton
             onClick={() => {
-              dateContainer();
+              // dateContainer();
               handleUpload();
             }}
           >

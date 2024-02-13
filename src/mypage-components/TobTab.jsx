@@ -1,13 +1,18 @@
 import styled from 'styled-components';
 import SearchInput from './common/SearchInput';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function TodTob() {
+
+    const navigate = useNavigate();
+
     return (
         <nav>
             <TobTabContainer>
                 <LiContainer>
-                    <TobTabLi>Posting</TobTabLi>
-                    <TobTabLi>Home</TobTabLi>
+                    <TobTabLi onClick={() => navigate('WriteDetail')}>Posting</TobTabLi>
+                    <TobTabLi onClick={() => navigate('/')} >Home</TobTabLi>
                 </LiContainer>
                 <SearchInputContainer>
                     <SearchInput></SearchInput>
