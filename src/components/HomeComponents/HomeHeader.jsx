@@ -76,7 +76,7 @@ function HomeHeader() {
               onChange={inputChcange}
             />
           </form>
-          <LinkStyle to={"/sign-up"}>Login</LinkStyle>
+          <LinkStyle to={"/login"}>Login</LinkStyle>
         </NavInformation>
       </NavList>
     );

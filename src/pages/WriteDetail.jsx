@@ -15,11 +15,11 @@ import { urlPatch } from "src/redux/modules/postBasicImage";
 function WriteDetail() {
   const user = useSelector((state) => state.users.user);
   const postBasicImage = useSelector((state) => state.postBasicImage);
-  const [check, setCheck] = useState();
+  let check = "";
   const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      setCheck(user.uid);
+      check = user.uid;
     });
     const fetchData = async () => {
       const q = query(collection(db, "users"));
@@ -35,8 +35,7 @@ function WriteDetail() {
         initialTodos.push(data);
       });
       const checkuser = initialTodos.find((e) => e.id === check);
-      console.log(checkuser);
-      // dispatch(initialization(checkuser));
+      dispatch(initialization(checkuser));
     };
     fetchData();
   }, []);
