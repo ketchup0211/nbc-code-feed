@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 //Authentication
 import {
   createUserWithEmailAndPassword,
@@ -98,6 +99,7 @@ function SignUp() {
           nickname: username,
           email,
           agree,
+          profileImg: "image/basicavatar.jpg",
         };
         setDoc(doc(db, path), newUserInfo);
       } catch (error) {
@@ -142,12 +144,22 @@ function SignUp() {
         }
         // make new Account Infomation
         try {
+          updateProfile(auth.currentUser, {
+            displayName: name,
+            photoURL: "image/basicavatar.jpg",
+          })
+            .then(() => {
+              alert("SUCCESS");
+              navigate("/");
+            })
+            .catch((error) => alert(error));
           let path = `users/${userCredential.user.uid}`;
           const newUserInfo = {
             name: userCredential.user.displayName,
             nickname: userCredential.user.displayName,
             email: userCredential.user.email,
             agree: true,
+            profileImg: "image/basicavatar.jpg",
           };
           setDoc(doc(db, path), newUserInfo);
           console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");
@@ -175,12 +187,22 @@ function SignUp() {
         }
         // make new Account Infomation
         try {
+          updateProfile(auth.currentUser, {
+            displayName: name,
+            photoURL: "image/basicavatar.jpg",
+          })
+            .then(() => {
+              alert("SUCCESS");
+              navigate("/");
+            })
+            .catch((error) => alert(error));
           let path = `users/${userCredential.user.uid}`;
           const newUserInfo = {
             name: userCredential.user.displayName,
             nickname: userCredential.user.displayName,
             email: userCredential.user.email,
             agree: true,
+            profileImg: "image/basicavatar.jpg",
           };
           setDoc(doc(db, path), newUserInfo);
           console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");
