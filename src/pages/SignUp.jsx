@@ -279,8 +279,21 @@ function SignUp() {
   };
   const handleGoogleSignUp = () => {
     signInWithPopup(auth, googleProvider) // popup을 이용한 signup
-      .then((data) => {
-        console.log(data); // console로 들어온 데이터 표시
+      .then((userCredential) => {
+        console.log(userCredential); // console로 들어온 데이터 표시
+        // make new Account Infomation
+        try {
+          let path = `users/${userCredential.user.uid}`;
+          const newUserInfo = {
+            name: userCredential.user.displayName,
+            nickname: userCredential.user.displayName,
+            email: userCredential.user.email,
+            agree: true,
+          };
+          setDoc(doc(db, path), newUserInfo);
+        } catch (error) {
+          console.log(error);
+        }
         navigate("/");
       })
       .catch((err) => {
@@ -289,8 +302,21 @@ function SignUp() {
   };
   const handleGitHubSignUp = () => {
     signInWithPopup(auth, gitProvider) // popup을 이용한 signup
-      .then((data) => {
-        console.log(data); // console로 들어온 데이터 표시
+      .then((userCredential) => {
+        console.log(userCredential); // console로 들어온 데이터 표시
+        // make new Account Infomation
+        try {
+          let path = `users/${userCredential.user.uid}`;
+          const newUserInfo = {
+            name: userCredential.user.displayName,
+            nickname: userCredential.user.displayName,
+            email: userCredential.user.email,
+            agree: true,
+          };
+          setDoc(doc(db, path), newUserInfo);
+        } catch (error) {
+          console.log(error);
+        }
         navigate("/");
       })
       .catch((err) => {
