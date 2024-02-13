@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
 import DOMPurify from "dompurify";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "src/firebase";
+import { v4 as uuidv4 } from "uuid";
 
 function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
+  // const [randomId, setRandomId] = useState("");
   //const [filteredId, setFilteredId] = useState("");
+
+  // useEffect(() => {
+  //   const randomId = uuidv4();
+  //   setRandomId(randomId);
+  // }, []);
 
   const inputTitle = (e) => {
     setTitle(e.target.value);
@@ -27,16 +34,16 @@ function WriteDetail() {
   };
 
   const handleUpload = async () => {
-    const newTodo = { title, quillValue };
+    const newContent = { id: randomId, title, quillValue };
     setUserContents((prevlist) => {
-      return [...prevlist, newTodo];
+      return [...prevlist, newContent];
     });
     setTitle("");
-
+    console.log(newContent);
     // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
     const collectionRef = collection(db, "user"); // 추후에 {auth.id} 로 변경하면 될 듯?
 
-    await addDoc(collectionRef, newTodo);
+    await addDoc(collectionRef, newContent);
   };
 
   // const handleUpload = async (event) => {
@@ -75,6 +82,7 @@ function WriteDetail() {
           <QuillComponent
             value={quillValue || ""}
             onChange={handleQuillChange}
+            // randomid={randomId}
           />
         </QuillDiv>
         <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div>

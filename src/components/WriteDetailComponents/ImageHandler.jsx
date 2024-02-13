@@ -16,7 +16,7 @@ const imageHandler = (quillRef) => {
   input.addEventListener("change", async () => {
     const file = input.files[0];
     try {
-      const storageRef = ref(storage, `image/${file.name}`); //image를 ${user.id}로 변경하면 사용자에 따라 이미지 저장될 듯?
+      const storageRef = ref(storage, `/image/${file.name}`); //image를 ${user.id}로 변경하면 사용자에 따라 이미지 저장될 듯?
       const uploadTask = uploadBytesResumable(storageRef, file); //이미지를 storage에 업로드하는 동작 수행
 
       uploadTask.on(

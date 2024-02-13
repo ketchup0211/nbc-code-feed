@@ -47,7 +47,7 @@ function QuillComponent({ value, onChange }) {
       imageActions: {},
       imageFormats: {},
     };
-  }, []);
+  });
 
   // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
   const formats = [
@@ -84,6 +84,7 @@ function QuillComponent({ value, onChange }) {
       onChange={onChange}
       toolbarOptions={toolbarOptions}
       ref={quillRef}
+      // randomid={randomid}
     />
   );
 }
