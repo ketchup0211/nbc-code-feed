@@ -42,6 +42,7 @@ function HomeHeader() {
     fetchData();
   }, []);
 
+
   const logOut = async (event) => {
     event.preventDefault();
     navigate("/");
