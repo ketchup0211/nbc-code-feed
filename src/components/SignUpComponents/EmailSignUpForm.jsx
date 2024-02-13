@@ -10,56 +10,22 @@ import {
   SignUpInput,
 } from "./styled-components/SignUpStyle";
 import { createAccount, handleSignUpInput } from "./event-handler/SignUpEvents";
+import EmailSignUpFormField from "./EmailSignUpFormField";
 function EmailSignUpForm() {
   return (
     <AuthForm>
       <SignUpForm onSubmit={createAccount}>
         <FormFieldGroup>
-          <FormField>
-            <FieldSet>
-              <Label htmlFor="name">Name</Label>
-              <SignUpInput
-                id="name"
-                onChange={handleSignUpInput}
-                autoComplete="off"
-              />
-            </FieldSet>
-          </FormField>
-          <FormField>
-            <FieldSet>
-              <FieldSet>
-                <Label htmlFor="username">Username</Label>
-                <SignUpInput
-                  id="username"
-                  onChange={handleSignUpInput}
-                  autoComplete="off"
-                />
-              </FieldSet>
-            </FieldSet>
-          </FormField>
+          <EmailSignUpFormField id="name" label="Name" />
+          <EmailSignUpFormField id="username" label="Username" />
         </FormFieldGroup>
-        <FormField>
-          <FieldSet>
-            <Label htmlFor="email">Email</Label>
-            <SignUpInput
-              id="email"
-              onChange={handleSignUpInput}
-              autoComplete="off"
-            />
-          </FieldSet>
-        </FormField>
-        <FormField>
-          <FieldSet>
-            <Label htmlFor="password">Password</Label>
-            <SignUpInput
-              id="password"
-              onChange={handleSignUpInput}
-              type="password"
-              placeholder="6+characters"
-              autoComplete="off"
-            />
-          </FieldSet>
-        </FormField>
+        <EmailSignUpFormField id="email" label="Email" />
+        <EmailSignUpFormField
+          id="password"
+          label="Password"
+          type="password"
+          placeholder="6+characters"
+        />
         <FormField>
           <FieldSet
             style={{
