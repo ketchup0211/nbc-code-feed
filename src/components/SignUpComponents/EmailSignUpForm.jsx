@@ -2,13 +2,14 @@ import {
   AuthForm,
   CheckBox,
   FieldSet,
+  FormButton,
   FormField,
   FormFieldGroup,
   Label,
   SignUpForm,
   SignUpInput,
 } from "./styled-components/SignUpStyle";
-
+import { createAccount, handleSignUpInput } from "./event-handler/SignUpEvents";
 function EmailSignUpForm() {
   return (
     <AuthForm>

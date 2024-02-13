@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { handleAPISignUp } from "./event-handler/SignUpEvents";
 import { APIButton } from "./styled-components/SignUpStyle";
-import { SignUpContext } from "src/context/SignUpContext";
+import { SignUpNavigateContext } from "src/context/SignUpNavigateContext";
 
 function GitHubSignUp() {
-  const navigate = useContext(SignUpContext);
+  const navigate = useContext(SignUpNavigateContext);
   const handleAPISignUpWithNavigate = (event) => {
     handleAPISignUp(event, navigate);
   };

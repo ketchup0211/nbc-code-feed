@@ -7,8 +7,7 @@ import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
 import { auth, db } from "src/firebase";
 import SignUpReducer from "src/redux/modules/SignUpReducer";
 
-export const handleEmailSignUp = (event) => {
-  event.preventDefault();
+export const handleEmailSignUp = (event, setSignUp) => {
   switch (event.target.name) {
     case "github":
       //현재 페이지를 GitHub 로그인 페이지로 이동 (target=_self)
@@ -35,11 +34,11 @@ export const handleAPISignUp = async (event, navigate) => {
       return;
   }
   console.log(userCredential); //  console로 들어온 데이터 표시
-  _createNewAccount(userCredential); //  make new Account Infomation, add firestore
+  _storeNewAccount(userCredential); //  make new Account Infomation, add firestore
   navigate("/"); //  Go Home (login)
 };
 
-export const _createNewAccount = (userCredential) => {
+export const _storeNewAccount = (userCredential) => {
   try {
     let path = `users/${userCredential.user.uid}`;
     const newUserInfo = {
@@ -49,7 +48,7 @@ export const _createNewAccount = (userCredential) => {
       agree: true,
     };
     setDoc(doc(db, path), newUserInfo);
-    console.log(`FIRESTORE : SUCCESSFULLY_SAVED`);
+    console.log(`FIRESTORE : SUCCESSFULLY_STORED`);
   } catch (error) {
     console.log(`ERROR : ${error}`);
   }

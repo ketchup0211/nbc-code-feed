@@ -10,6 +10,7 @@ import EmailSignUpForm from "./EmailSignUpForm";
 import { handleDataBack } from "./event-handler/SignUpEvents";
 import { useSelector } from "react-redux";
 import ChoiceSignUp from "./ChoiceSignUp";
+import { SignUpModeContext } from "src/context/SignUpNavigateContext";
 
 function Contents() {
   const [signUp, setSignUp] = useState(false);
@@ -19,17 +20,19 @@ function Contents() {
   const navigate = useNavigate();
 
   return (
-    <Content>
-      {signUp ? (
-        <BackButton type="button" onClick={handleDataBack}>
-          &lt;
-        </BackButton>
-      ) : null}
-      <AuthContent>
-        <SubTitle>Sign up to Code Feed</SubTitle>
-        {signUp ? <EmailSignUpForm /> : <ChoiceSignUp />}
-      </AuthContent>
-    </Content>
+    <SignUpModeContext.Provider value={setSignUp}>
+      <Content>
+        {signUp ? (
+          <BackButton type="button" onClick={handleDataBack}>
+            &lt;
+          </BackButton>
+        ) : null}
+        <AuthContent>
+          <SubTitle>Sign up to Code Feed</SubTitle>
+          {signUp ? <EmailSignUpForm /> : <ChoiceSignUp />}
+        </AuthContent>
+      </Content>
+    </SignUpModeContext.Provider>
   );
 }
 export default Contents;
