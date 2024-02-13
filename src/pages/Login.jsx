@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "src/firebase";
+import { auth, db } from "src/firebase";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -8,10 +8,219 @@ import {
   signInWithRedirect,
   getRedirectResult,
   sendPasswordResetEmail,
+  updateProfile,
 } from "firebase/auth";
 import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
 import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
 import styled from "styled-components";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+
+function Login() {
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const updateInput = (event) => {
+    switch (event.target.name) {
+      case "login":
+        setLogin(event.target.value);
+        break;
+      case "password":
+        setPassword(event.target.value);
+        break;
+      default:
+        console.log("유효하지 않은 입력입니다.");
+        return;
+    }
+  };
+  const handleLogin = (event) => {
+    event.preventDefault();
+    signInWithEmailAndPassword(auth, login, password)
+      .then((userCredential) => {
+        alert("WELCOME");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.code);
+        switch (error.code) {
+          case "auth/invalid-email":
+            alert("이메일을 올바르게 입력해주세요.");
+            break;
+          case "auth/missing-password":
+            alert("비밀번호를 입력해주세요.");
+            break;
+          case "auth/invalid-credential":
+            alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+            break;
+          default:
+            alert(`ERROR CODE : ${error.code}`);
+            return;
+        }
+      });
+  };
+  const handleGoogleLogin = () => {
+    signInWithPopup(auth, googleProvider) // popup을 이용한 signup
+      .then(async (userCredential) => {
+        const exists = await checkAccountExist(userCredential.user.email);
+        console.log(`exist? ${exists}`);
+        if (!exists) {
+          let choice = confirm(
+            "해당 이메일로 생성 된 계정이 존재하지 않습니다. Google로 회원가입 하시겠습니까?"
+          );
+          if (!choice) {
+            return;
+          }
+        }
+        // make new Account Infomation
+        try {
+          let path = `users/${userCredential.user.uid}`;
+          const newUserInfo = {
+            name: userCredential.user.displayName,
+            nickname: userCredential.user.displayName,
+            email: userCredential.user.email,
+            agree: true,
+            profileImg: "image/basicavatar.jpg",
+          };
+          setDoc(doc(db, path), newUserInfo);
+          console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");
+        } catch (error) {
+          console.log(error);
+        }
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleGitHubLogin = () => {
+    signInWithPopup(auth, gitProvider) // popup을 이용한 signup
+      .then(async (userCredential) => {
+        const exists = await checkAccountExist(userCredential.user.email);
+        console.log(`exist? ${exists}`);
+        if (!exists) {
+          let choice = confirm(
+            "해당 이메일로 생성 된 계정이 존재하지 않습니다. GitHub로 회원가입 하시겠습니까?"
+          );
+          if (!choice) {
+            return;
+          }
+        }
+        // make new Account Infomation
+        try {
+          let path = `users/${userCredential.user.uid}`;
+          const newUserInfo = {
+            name: userCredential.user.displayName,
+            nickname: userCredential.user.displayName,
+            email: userCredential.user.email,
+            agree: true,
+            profileImg: "image/basicavatar.jpg",
+          };
+          setDoc(doc(db, path), newUserInfo);
+          console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");
+        } catch (error) {
+          console.log(error);
+        }
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // TODO: understand this logic
+  const checkAccountExist = (email) => {
+    return new Promise((resolve, reject) => {
+      const q = query(collection(db, "users"), where("email", "==", email));
+      const unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
+          const matchingDocs = [];
+          querySnapshot.forEach((doc) => {
+            matchingDocs.push(doc.data().name);
+          });
+          if (matchingDocs.length >= 1) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        },
+        (error) => {
+          // Reject the promise if there's an error
+          console.error("Error fetching documents: ", error);
+          reject(error);
+        }
+      );
+    });
+  };
+  return (
+    <MainContainer>
+      <AuthSidebar />
+      <Content>
+        <AuthContent>
+          <SubTitle>Sign in to Code Feed</SubTitle>
+          <APIButton onClick={handleGitHubLogin} name="github">
+            Sign in with GitHub
+          </APIButton>
+          <APIButton onClick={handleGoogleLogin} name="google">
+            Sign in with Google
+          </APIButton>
+          <HrDivider></HrDivider>
+          <AuthForm>
+            <Session onSubmit={handleLogin}>
+              <FormField>
+                <FieldSet>
+                  <Label>Email</Label>
+                  <LoginInput
+                    type="text"
+                    name="login"
+                    value={login}
+                    onChange={updateInput}
+                  />
+                </FieldSet>
+                <FieldSet>
+                  <Label>
+                    Password
+                    <Link
+                      replace
+                      to="/password_resets"
+                      style={{
+                        float: "right",
+                        color: "#0d0c22",
+                        fontSize: "14px",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                        fontWeight: "400",
+                      }}
+                    >
+                      Forgot?
+                    </Link>
+                  </Label>
+                  <LoginInput
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={updateInput}
+                    autoComplete="off"
+                  />
+                </FieldSet>
+              </FormField>
+              <Button type="submit">Sign In</Button>
+            </Session>
+            <AuthLink>
+              Dont have an account? <Link to="/sign-up">Sign Up</Link>
+            </AuthLink>
+          </AuthForm>
+        </AuthContent>
+      </Content>
+    </MainContainer>
+  );
+}
+export default Login;
 
 const MainContainer = styled.div`
   display: flex;
@@ -140,130 +349,3 @@ const APIButton = styled.button`
     }};
   border-radius: 25px;
 `;
-function Login() {
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const updateInput = (event) => {
-    switch (event.target.name) {
-      case "login":
-        setLogin(event.target.value);
-        break;
-      case "password":
-        setPassword(event.target.value);
-        break;
-      default:
-        console.log("유효하지 않은 입력입니다.");
-        return;
-    }
-  };
-  const handleLogin = (event) => {
-    event.preventDefault();
-    signInWithEmailAndPassword(auth, login, password)
-      .then((userCredential) => {
-        alert("WELCOME");
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error.code);
-        switch (error.code) {
-          case "auth/invalid-email":
-            alert("이메일을 올바르게 입력해주세요.");
-            break;
-          case "auth/missing-password":
-            alert("비밀번호를 입력해주세요.");
-            break;
-          case "auth/invalid-credential":
-            alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-            break;
-          default:
-            alert(`ERROR CODE : ${error.code}`);
-            return;
-        }
-      });
-  };
-  const handleGoogleLogin = () => {
-    signInWithPopup(auth, googleProvider) // popup을 이용한 signup
-      .then((data) => {
-        console.log(data); // console로 들어온 데이터 표시
-        navigate("/");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const handleGitHubLogin = () => {
-    signInWithPopup(auth, gitProvider) // popup을 이용한 signup
-      .then((data) => {
-        console.log(data); // console로 들어온 데이터 표시
-        navigate("/");
-      })
-      .catch((err) => {
-        alert(err.code);
-        console.log(err);
-      });
-  };
-  return (
-    <MainContainer>
-      <AuthSidebar />
-      <Content>
-        <AuthContent>
-          <SubTitle>Sign in to Code Feed</SubTitle>
-          <APIButton onClick={handleGitHubLogin} name="github">
-            Sign in with GitHub
-          </APIButton>
-          <APIButton onClick={handleGoogleLogin} name="google">
-            Sign in with Google
-          </APIButton>
-          <HrDivider></HrDivider>
-          <AuthForm>
-            <Session onSubmit={handleLogin}>
-              <FormField>
-                <FieldSet>
-                  <Label>Email</Label>
-                  <LoginInput
-                    type="text"
-                    name="login"
-                    value={login}
-                    onChange={updateInput}
-                  />
-                </FieldSet>
-                <FieldSet>
-                  <Label>
-                    Password
-                    <Link
-                      replace
-                      to="/password_resets"
-                      style={{
-                        float: "right",
-                        color: "#0d0c22",
-                        fontSize: "14px",
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                        fontWeight: "400",
-                      }}
-                    >
-                      Forgot?
-                    </Link>
-                  </Label>
-                  <LoginInput
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={updateInput}
-                    autoComplete="off"
-                  />
-                </FieldSet>
-              </FormField>
-              <Button type="submit">Sign In</Button>
-            </Session>
-            <AuthLink>
-              Dont have an account? <Link to="/sign-up">Sign Up</Link>
-            </AuthLink>
-          </AuthForm>
-        </AuthContent>
-      </Content>
-    </MainContainer>
-  );
-}
-export default Login;
