@@ -40,8 +40,8 @@ function HomeHeader() {
       dispatch(initialization(check));
     };
     fetchData();
-    console.log(user);
-  }, [dispatch, user]);
+  }, []);
+
 
   const logOut = async (event) => {
     event.preventDefault();
