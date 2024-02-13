@@ -13,7 +13,7 @@ export default function PostTab() {
         <TabWrapper>
             <TabContainer>
                 <TabButton selected={selectedTab === 'latest'} onClick={() => handleClick('latest')}>Work</TabButton>
-                <TabButton selected={selectedTab === 'liked'} onClick={() => handleClick('liked')}>Liked</TabButton>
+                <TabButton selected={selectedTab === 'liked'} onClick={() => handleClick('liked')}>Posting</TabButton>
             </TabContainer>
         </TabWrapper>
     )
