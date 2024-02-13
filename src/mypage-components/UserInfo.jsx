@@ -20,7 +20,7 @@ export default function UserInfo () {
             setUser(user);
 
             //사용자 정보 가져오기
-            const docRef = doc(db, 'users', 'uid');
+            const docRef = doc(db, 'users', 'uid'); //사용자의 uid를 가져옴
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {

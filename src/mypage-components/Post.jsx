@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { db } from '../firebase';
-import { collection, getDocs } from "firebase/firestore";;
+import { collection, getDocs } from "firebase/firestore";
 
 export default function Post () {
 
