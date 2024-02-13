@@ -3,10 +3,10 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
-  deleteObject,
+  // deleteObject,
 } from "firebase/storage";
-
 const imageHandler = (quillRef) => {
+  const path = quillRef.current.props.randomId;
   const input = document.createElement("input");
 
   input.setAttribute("type", "file");
@@ -16,7 +16,7 @@ const imageHandler = (quillRef) => {
   input.addEventListener("change", async () => {
     const file = input.files[0];
     try {
-      const storageRef = ref(storage, `image/${file.name}`); //image를 ${user.id}로 변경하면 사용자에 따라 이미지 저장될 듯?
+      const storageRef = ref(storage, `/image/${path}/${file.name}`); //image를 ${user.id}로 변경하면 사용자에 따라 이미지 저장될 듯?
       const uploadTask = uploadBytesResumable(storageRef, file); //이미지를 storage에 업로드하는 동작 수행
 
       uploadTask.on(
@@ -24,6 +24,7 @@ const imageHandler = (quillRef) => {
         "complete", // 업로드가 완료되었을 때 호출됨
         (snapshot) => {
           console.log("Upload complete!");
+          console.log("randomId", path);
 
           //업로드가 완료된 경우, 이미지의 다운로드 URL을 가져와서 quill 에디터에 출력
           getDownloadURL(snapshot.ref).then(async (downloadURL) => {
@@ -36,10 +37,10 @@ const imageHandler = (quillRef) => {
             editor.setSelection(range.index + 1); // 삽입한 이미지 다음에 커서를 위치
 
             // 이미지 삭제 이벤트를 감지하여 Firebase Storage에서 이미지 삭제
-            editor.root.addEventListener("DOMNodeRemoved", () => {
-              // 이미지가 삭제되면 Firebase Storage에서도 삭제
-              deleteImageFromStorage(downloadURL);
-            });
+            // editor.root.addEventListener("DOMNodeRemoved", () => {
+            //   // 이미지가 삭제되면 Firebase Storage에서도 삭제
+            //   deleteImageFromStorage(downloadURL);
+            // });
           });
         },
         (error) => {
@@ -76,38 +77,38 @@ const imageHandler = (quillRef) => {
 //   return imageURL.substring(startIndex + 7); // "/image/" 다음의 문자열 반환
 // };
 
-const deleteImageFromStorage = (imageURL) => {
-  try {
-    // 이미지의 경로와 토큰을 추출
-    const { imagePath, token } = getImagePathAndTokenFromURL(imageURL);
+// const deleteImageFromStorage = (imageURL) => {
+//   try {
+//     // 이미지의 경로와 토큰을 추출
+//     const { imagePath, token } = getImagePathAndTokenFromURL(imageURL);
 
-    // 토큰을 사용하여 Firebase Storage에서 이미지 삭제
-    const imageRef = ref(storage, imagePath);
-    deleteObject(imageRef)
-      .then(() => {
-        console.log("Image deleted from storage successfully");
-      })
-      .catch((error) => {
-        console.error("Error deleting image from storage:", error);
-      });
-  } catch (error) {
-    console.error(error.message);
-  }
-};
+//     // 토큰을 사용하여 Firebase Storage에서 이미지 삭제
+//     const imageRef = ref(storage, imagePath);
+//     deleteObject(imageRef)
+//       .then(() => {
+//         console.log("Image deleted from storage successfully");
+//       })
+//       .catch((error) => {
+//         console.error("Error deleting image from storage:", error);
+//       });
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// };
 
-const getImagePathAndTokenFromURL = (imageURL) => {
-  // 이미지 URL에서 이미지 경로와 토큰 추출
-  const startIndex = imageURL.indexOf("/image/");
-  if (startIndex === -1) {
-    throw new Error("Invalid image URL");
-  }
-  const endIndex = imageURL.indexOf("?");
-  if (endIndex === -1) {
-    throw new Error("Invalid image URL");
-  }
-  const imagePath = imageURL.substring(startIndex + 7, endIndex); // "/image/" 다음의 문자열부터 토큰 앞까지의 문자열 반환
-  const token = imageURL.substring(endIndex + 7); // "?" 다음의 문자열 반환
-  return { imagePath, token };
-};
+// const getImagePathAndTokenFromURL = (imageURL) => {
+//   // 이미지 URL에서 이미지 경로와 토큰 추출
+//   const startIndex = imageURL.indexOf("/image/");
+//   if (startIndex === -1) {
+//     throw new Error("Invalid image URL");
+//   }
+//   const endIndex = imageURL.indexOf("?");
+//   if (endIndex === -1) {
+//     throw new Error("Invalid image URL");
+//   }
+//   const imagePath = imageURL.substring(startIndex + 7, endIndex); // "/image/" 다음의 문자열부터 토큰 앞까지의 문자열 반환
+//   const token = imageURL.substring(endIndex + 7); // "?" 다음의 문자열 반환
+//   return { imagePath, token };
+// };
 
 export default imageHandler;

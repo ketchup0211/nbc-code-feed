@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
@@ -6,12 +6,22 @@ import DOMPurify from "dompurify";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "src/firebase";
 import { LinkStyle } from "src/util/Style";
+import { v4 as uuidv4 } from "uuid";
+import { useDispatch, useSelector } from "react-redux";
 
 function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
+  const randomId = useSelector((state) => state.postImageid);
+  // const didpatch = useDispatch();
+  // const [randomId, setRandomId] = useState([]);
+  // const [dateNTime, setdateNTime] = useState([]);
   //const [filteredId, setFilteredId] = useState("");
+
+  // useEffect(() => {
+  //   didpatch(initialId(uuidv4())); // 렌더링될 때마다 새로운 randomid 생성
+  // }, []);
 
   const inputTitle = (e) => {
     setTitle(e.target.value);
@@ -27,17 +37,30 @@ function WriteDetail() {
     }
   };
 
+  let dateNTime = "";
+
+  const dateContainer = async () => {
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getFullYear()}-${
+      currentDate.getMonth() + 1
+    }-${currentDate.getDate()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
+    dateNTime = formattedDate;
+  };
+
   const handleUpload = async () => {
-    const newTodo = { title, quillValue };
+    dateContainer();
+    const newTodo = { id: randomId, title, quillValue, dateNTime };
     setUserContents((prevlist) => {
       return [...prevlist, newTodo];
     });
+    console.log(newTodo);
+    console.log(randomId);
     setTitle("");
 
     // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
-    const collectionRef = collection(db, "user"); // 추후에 {auth.id} 로 변경하면 될 듯?
+    // const collectionRef = collection(db, "user"); // 추후에 {auth.id} 로 변경하면 될 듯?
 
-    await addDoc(collectionRef, newTodo);
+    // await addDoc(collectionRef, newTodo);
   };
 
   // const handleUpload = async (event) => {
@@ -78,11 +101,19 @@ function WriteDetail() {
           <QuillComponent
             value={quillValue || ""}
             onChange={handleQuillChange}
+            randomId={randomId}
           />
         </QuillDiv>
         <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div>
         <DoneButtonDiv>
-          <DoneButton onClick={handleUpload}>작성완료</DoneButton>
+          <DoneButton
+            onClick={() => {
+              // dateContainer();
+              handleUpload();
+            }}
+          >
+            작성완료
+          </DoneButton>
         </DoneButtonDiv>
       </div>
     </div>

@@ -8,8 +8,9 @@ import { useMemo, useRef } from "react";
 Quill.register("modules/imageActions", ImageActions);
 Quill.register("modules/imageFormats", ImageFormats);
 
-function QuillComponent({ value, onChange }) {
+function QuillComponent({ value, onChange, randomId }) {
   const quillRef = useRef(null);
+  // const path = randomId;
 
   const toolbarOptions = [
     ["link", "image"],
@@ -83,6 +84,7 @@ function QuillComponent({ value, onChange }) {
       value={value}
       onChange={onChange}
       toolbarOptions={toolbarOptions}
+      randomId={randomId}
       ref={quillRef}
     />
   );
