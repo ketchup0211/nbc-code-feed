@@ -23,6 +23,10 @@ function ImageChange({ user, dispatchUser }) {
   };
 
   const handleUpload = async () => {
+    if (selectedFile.length === 0) {
+      alert("이미지를 넣어주시기 바랍니다.");
+      return;
+    }
     const imageRef = ref(storage, `${auth.currentUser.uid}/profileImage`);
     await uploadBytes(imageRef, selectedFile);
 
