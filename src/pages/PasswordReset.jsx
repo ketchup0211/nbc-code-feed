@@ -96,6 +96,8 @@ function PasswordReset() {
     event.preventDefault();
     setEmail(event.target.value);
   };
+
+  // TODO: understand this logic
   const checkAccountExist = (email) => {
     return new Promise((resolve, reject) => {
       const q = query(collection(db, "users"), where("email", "==", email));
@@ -107,9 +109,9 @@ function PasswordReset() {
             matchingDocs.push(doc.data().name);
           });
           if (matchingDocs.length >= 1) {
-            resolve(true); // Resolve with true if account exists
+            resolve(true);
           } else {
-            resolve(false); // Resolve with false if account doesn't exist
+            resolve(false);
           }
         },
         (error) => {
@@ -125,9 +127,9 @@ function PasswordReset() {
     event.preventDefault();
 
     try {
-      const exists = await checkAccountExist(email); // Wait for account existence check
+      const exists = await checkAccountExist(email);
       if (exists) {
-        await sendPasswordResetEmail(auth, email); // Wait for password reset email sending
+        await sendPasswordResetEmail(auth, email);
         alert("Password reset email sent!");
       } else {
         alert("해당 이메일의 가입 내역이 존재하지 않습니다.");

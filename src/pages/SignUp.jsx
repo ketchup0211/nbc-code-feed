@@ -8,7 +8,15 @@ import {
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 import { db, auth } from "src/firebase";
 import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
 import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
@@ -121,8 +129,31 @@ function SignUp() {
   };
   const handleGoogleSignUp = () => {
     signInWithPopup(auth, googleProvider) // popup을 이용한 signup
-      .then((data) => {
-        console.log(data); // console로 들어온 데이터 표시
+      .then(async (userCredential) => {
+        const exists = await checkAccountExist(userCredential.user.email);
+        console.log(`exist? ${exists}`);
+        if (exists) {
+          let choice = confirm(
+            "이미 해당 이메일로 생성 된 계정이 존재합니다. Google로 로그인하시겠습니까?"
+          );
+          if (!choice) {
+            return;
+          }
+        }
+        // make new Account Infomation
+        try {
+          let path = `users/${userCredential.user.uid}`;
+          const newUserInfo = {
+            name: userCredential.user.displayName,
+            nickname: userCredential.user.displayName,
+            email: userCredential.user.email,
+            agree: true,
+          };
+          setDoc(doc(db, path), newUserInfo);
+          console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");
+        } catch (error) {
+          console.log(error);
+        }
         navigate("/");
       })
       .catch((err) => {
@@ -131,14 +162,62 @@ function SignUp() {
   };
   const handleGitHubSignUp = () => {
     signInWithPopup(auth, gitProvider) // popup을 이용한 signup
-      .then((data) => {
-        console.log(data); // console로 들어온 데이터 표시
+      .then(async (userCredential) => {
+        const exists = await checkAccountExist(userCredential.user.email);
+        console.log(`exist? ${exists}`);
+        if (exists) {
+          let choice = confirm(
+            "이미 해당 이메일로 생성 된 계정이 존재합니다. GitHub로 로그인하시겠습니까?"
+          );
+          if (!choice) {
+            return;
+          }
+        }
+        // make new Account Infomation
+        try {
+          let path = `users/${userCredential.user.uid}`;
+          const newUserInfo = {
+            name: userCredential.user.displayName,
+            nickname: userCredential.user.displayName,
+            email: userCredential.user.email,
+            agree: true,
+          };
+          setDoc(doc(db, path), newUserInfo);
+          console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");
+        } catch (error) {
+          console.log(error);
+        }
         navigate("/");
       })
       .catch((err) => {
         alert(err.code);
         console.log(err);
       });
+  };
+  // TODO: understand this logic
+  const checkAccountExist = (email) => {
+    return new Promise((resolve, reject) => {
+      const q = query(collection(db, "users"), where("email", "==", email));
+      const unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
+          const matchingDocs = [];
+          querySnapshot.forEach((doc) => {
+            matchingDocs.push(doc.data().name);
+          });
+          if (matchingDocs.length >= 1) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        },
+        (error) => {
+          // Reject the promise if there's an error
+          console.error("Error fetching documents: ", error);
+          reject(error);
+        }
+      );
+    });
   };
   return (
     <MainContainer>
