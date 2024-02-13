@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "src/firebase";
+import { auth, db } from "src/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { checkSearch } from "src/redux/modules/search";
 import { useEffect } from "react";
-import { log } from "src/redux/modules/user";
+import { initialization } from "src/redux/modules/user";
 import { LinkStyle } from "src/util/Style";
+import { collection, getDocs, query } from "firebase/firestore";
 
 function HomeHeader() {
   const { user } = useSelector((state) => state.users);
@@ -15,8 +16,26 @@ function HomeHeader() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let checkuid = "";
+    const fetchData = async () => {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+
+      const initialTodos = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        initialTodos.push(data);
+      });
+      const check = initialTodos.find((e) => e.id === checkuid);
+      dispatch(initialization(check));
+    };
+    fetchData();
     onAuthStateChanged(auth, (user) => {
-      dispatch(log(user));
+      checkuid = user.uid;
     });
   }, [dispatch]);
 
@@ -37,33 +56,10 @@ function HomeHeader() {
 
   if (user === null)
     return (
-      <header>
-        <NavList>
-          <NavPage>
-            <LinkStyle to={"/"}>
-              <label>CodeFeed</label>
-            </LinkStyle>
-          </NavPage>
-          <NavInformation>
-            <form onSubmit={SubmitHandler}>
-              <input
-                type="text"
-                placeholder="검색"
-                value={search}
-                onChange={inputChcange}
-              />
-            </form>
-            <LinkStyle to={"/sign-up"}>Login</LinkStyle>
-          </NavInformation>
-        </NavList>
-      </header>
-    );
-  return (
-    <header>
       <NavList>
         <NavPage>
           <LinkStyle to={"/"}>
-            <label>CodeFeed</label>
+            <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
           </LinkStyle>
         </NavPage>
         <NavInformation>
@@ -75,18 +71,37 @@ function HomeHeader() {
               onChange={inputChcange}
             />
           </form>
-          <Profile>
-            <LinkStyle to={"/myPage"}>
-              <UserDisplay>
-                <ProfileName>{user.displayName}</ProfileName>
-                <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
-              </UserDisplay>
-            </LinkStyle>
-            <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
-          </Profile>
+          <LinkStyle to={"/sign-up"}>Login</LinkStyle>
         </NavInformation>
       </NavList>
-    </header>
+    );
+  return (
+    <NavList>
+      <NavPage>
+        <LinkStyle to={"/"}>
+          <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
+        </LinkStyle>
+      </NavPage>
+      <NavInformation>
+        <form onSubmit={SubmitHandler}>
+          <input
+            type="text"
+            placeholder="검색"
+            value={search}
+            onChange={inputChcange}
+          />
+        </form>
+        <Profile>
+          <LinkStyle to={"/myPage"}>
+            <UserDisplay>
+              <ProfileName>{user.nickname}</ProfileName>
+              <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
+            </UserDisplay>
+          </LinkStyle>
+          <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
+        </Profile>
+      </NavInformation>
+    </NavList>
   );
 }
 
@@ -104,9 +119,12 @@ const NavList = styled.nav`
 const NavPage = styled.ul`
   display: flex;
   align-items: center;
-  & label {
-    cursor: pointer;
-  }
+`;
+
+const SvgImage = styled.img`
+  width: 10vh;
+  border-radius: 12px;
+  opacity: 0.8;
 `;
 
 const NavInformation = styled.ul`

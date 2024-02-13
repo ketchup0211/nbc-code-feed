@@ -2,17 +2,36 @@ import styled from "styled-components";
 import { LinkStyle } from "src/util/Style";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "src/firebase";
+import { auth, db } from "src/firebase";
 import { useEffect } from "react";
-import { log } from "src/redux/modules/user";
+import { initialization } from "src/redux/modules/user";
+import { collection, getDocs, query } from "firebase/firestore";
 
 function SerchHead() {
   const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    let checkuid = "";
+    const fetchData = async () => {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+
+      const initialTodos = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        initialTodos.push(data);
+      });
+      const check = initialTodos.find((e) => e.id === checkuid);
+      dispatch(initialization(check));
+    };
+    fetchData();
     onAuthStateChanged(auth, (user) => {
-      dispatch(log(user));
+      checkuid = user.uid;
     });
   }, [dispatch]);
 
@@ -25,7 +44,7 @@ function SerchHead() {
     return (
       <HeadNav>
         <LinkStyle to={"/"}>
-          <label>CodeFeed</label>
+          <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
         </LinkStyle>
         <LinkStyle to={"/sign-up"}>로그인</LinkStyle>
       </HeadNav>
@@ -34,12 +53,12 @@ function SerchHead() {
   return (
     <HeadNav>
       <LinkStyle to={"/"}>
-        <label>CodeFeed</label>
+        <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
       </LinkStyle>
       <Profile>
         <LinkStyle to={"/myPage"}>
           <UserDisplay>
-            <ProfileName>{user.displayName}</ProfileName>
+            <ProfileName>{user.nickname}</ProfileName>
             <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
           </UserDisplay>
         </LinkStyle>
@@ -62,6 +81,12 @@ const HeadNav = styled.nav`
   & label {
     cursor: pointer;
   }
+`;
+
+const SvgImage = styled.img`
+  width: 10vh;
+  border-radius: 12px;
+  opacity: 0.8;
 `;
 
 const Profile = styled.div`
