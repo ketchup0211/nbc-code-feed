@@ -80,6 +80,7 @@ function WriteDetail() {
     const newContent = {
       id: randomId,
       nickname: user.nickname,
+      userUid: check,
       title,
       quillValue,
       dateNTime,
