@@ -5,6 +5,7 @@ import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
 import DOMPurify from "dompurify";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "src/firebase";
+import { LinkStyle } from "src/util/Style";
 
 function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
@@ -59,7 +60,9 @@ function WriteDetail() {
   return (
     <div>
       <Nav>
-        <GoHome>CodeFeed</GoHome>
+        <LinkStyle to={"/"}>
+          <GoHome>CodeFeed</GoHome>
+        </LinkStyle>
       </Nav>
       <FilterCheck />
       <div>
