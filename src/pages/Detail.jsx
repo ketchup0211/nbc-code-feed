@@ -17,7 +17,7 @@ function Detail() {
     const storage = getStorage();
     const fetchData = async () => {
       // collection 이름이 todos인 collection의 모든 document를 가져옵니다.
-      const q = query(collection(db, "users"));
+      const q = query(collection(db, "posts"));
       const querySnapshot = await getDocs(q);
 
       const initialTodos = [];

@@ -14,8 +14,8 @@ import styled from "styled-components";
 function EditProfile() {
   const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
-  const dispatchUser = () => {
-    dispatch(initialization(user));
+  const dispatchUser = (item) => {
+    dispatch(initialization(item));
   };
 
   useEffect(() => {
@@ -32,15 +32,17 @@ function EditProfile() {
         };
         initialTodos.push(data);
       });
+
       const check = initialTodos.find((e) => e.id === uid);
       dispatch(initialization(check));
+
     };
     onAuthStateChanged(auth, (user) => {
       if (user) {
         fetchData(user.uid);
       }
     });
-  }, [dispatch]);
+  }, []);
 
   if (user === null)
     return (

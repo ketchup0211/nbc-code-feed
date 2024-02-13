@@ -10,13 +10,19 @@ import { LinkStyle } from "src/util/Style";
 import { collection, getDocs, query } from "firebase/firestore";
 
 function HomeHeader() {
-  const { user } = useSelector((state) => state.users);
+  const user = useSelector((state) => state.users.user);
   const search = useSelector((state) => state.search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     let checkuid = "";
+    onAuthStateChanged(auth, (user) => {
+      if (auth.currentUser === null) {
+        return;
+      }
+      checkuid = user.uid;
+    });
     const fetchData = async () => {
       const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
@@ -43,6 +49,7 @@ function HomeHeader() {
     event.preventDefault();
     navigate("/");
     await signOut(auth);
+    dispatch(initialization(null));
   };
 
   const inputChcange = (e) => {
@@ -52,6 +59,7 @@ function HomeHeader() {
   const SubmitHandler = (event) => {
     event.preventDefault();
     navigate("/searchResult");
+    dispatch(initialization(null));
   };
 
   if (user === null || user === undefined)
@@ -71,7 +79,7 @@ function HomeHeader() {
               onChange={inputChcange}
             />
           </form>
-          <LinkStyle to={"/sign-up"}>Login</LinkStyle>
+          <LinkStyle to={"/login"}>Login</LinkStyle>
         </NavInformation>
       </NavList>
     );
