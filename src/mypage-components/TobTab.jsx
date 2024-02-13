@@ -6,10 +6,7 @@ export default function TodTob() {
         <nav>
             <TobTabContainer>
                 <LiContainer>
-                    <TobTabLi>Category</TobTabLi>
                     <TobTabLi>Posting</TobTabLi>
-                    <TobTabLi>Community</TobTabLi>
-                    <TobTabLi>Jobs</TobTabLi>
                     <TobTabLi>Home</TobTabLi>
                 </LiContainer>
                 <SearchInputContainer>

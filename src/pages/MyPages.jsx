@@ -6,10 +6,7 @@ import Post from "../mypage-components/Post";
 import PostTab from "../mypage-components/PostTab";
 
 export default function MyPages() {
-  const userInfo = {
-    name: "이지은",
-    email: "lge9380@naver.com",
-  };
+
 
   return (
     <>
@@ -17,7 +14,7 @@ export default function MyPages() {
         <TodTob />
         <SubContainer>
           <ProfilePicture />
-          <UserInfo {...userInfo} />
+          <UserInfo />
         </SubContainer>
         <PostTab />
         <Post />
