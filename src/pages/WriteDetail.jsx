@@ -1,22 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import LanguageFilter from "src/components/WriteDetailComponents/LanguageFilter";
 //import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
 // import DOMPurify from "dompurify";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "src/firebase";
+import { auth, db } from "src/firebase";
 import { useSelector } from "react-redux";
 import { language } from "src/util/language";
-
-let dateNTime = "";
+import { onAuthStateChanged } from "firebase/auth";
 
 function WriteDetail() {
+  let check = "";
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      check = user.uid;
+      console.log(check);
+    });
+  });
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const randomId = useSelector((state) => state.postImageid);
+
+  let dateNTime = "";
 
   const handleSelectedLanguage = (language) => {
     setSelectedLanguage(language);
@@ -60,9 +68,9 @@ function WriteDetail() {
     // setTitle("");
 
     //Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
-    const collectionRef = collection(db, "user"); // 추후에 {auth.id} 로 변경하면 될 듯?
+    // const collectionRef = collection(db, "user"); // 추후에 {auth.id} 로 변경하면 될 듯?
 
-    await addDoc(collectionRef, newContent);
+    // await addDoc(collectionRef, newContent);
   };
 
   // const sanitizer = DOMPurify.sanitize;
@@ -90,6 +98,7 @@ function WriteDetail() {
             value={quillValue || ""}
             onChange={handleQuillChange}
             randomId={randomId}
+            check={check}
           />
         </QuillDiv>
         {/* <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div> */}
