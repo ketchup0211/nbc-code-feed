@@ -1,8 +1,8 @@
-const LOG = "user/LOG";
+const INITIALIZATION = "user/INITIALIZATION";
 
-export const log = (payload) => {
+export const initialization = (payload) => {
   return {
-    type: LOG,
+    type: INITIALIZATION,
     payload,
   };
 };
@@ -13,7 +13,7 @@ const initialState = {
 
 const users = (state = initialState, action) => {
   switch (action.type) {
-    case LOG:
+    case INITIALIZATION:
       return {
         ...state,
         user: action.payload,
