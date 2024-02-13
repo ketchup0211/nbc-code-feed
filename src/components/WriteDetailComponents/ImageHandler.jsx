@@ -6,7 +6,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 
-const imageHandler = (quillRef) => {
+const imageHandler = (quillRef, path) => {
   const input = document.createElement("input");
 
   input.setAttribute("type", "file");
@@ -16,7 +16,7 @@ const imageHandler = (quillRef) => {
   input.addEventListener("change", async () => {
     const file = input.files[0];
     try {
-      const storageRef = ref(storage, `/image/${file.name}`); //image를 ${user.id}로 변경하면 사용자에 따라 이미지 저장될 듯?
+      const storageRef = ref(storage, `/image/${path}/${file.name}`); //image를 ${user.id}로 변경하면 사용자에 따라 이미지 저장될 듯?
       const uploadTask = uploadBytesResumable(storageRef, file); //이미지를 storage에 업로드하는 동작 수행
 
       uploadTask.on(
@@ -24,6 +24,7 @@ const imageHandler = (quillRef) => {
         "complete", // 업로드가 완료되었을 때 호출됨
         (snapshot) => {
           console.log("Upload complete!");
+          console.log("randomId", path);
 
           //업로드가 완료된 경우, 이미지의 다운로드 URL을 가져와서 quill 에디터에 출력
           getDownloadURL(snapshot.ref).then(async (downloadURL) => {
