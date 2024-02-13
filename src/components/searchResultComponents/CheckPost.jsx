@@ -5,6 +5,7 @@ import { db } from "src/firebase";
 import { addPost } from "src/redux/modules/postList";
 import { LinkStyle } from "src/util/Style";
 import styled from "styled-components";
+import Loading from "../Loading";
 
 function CheckPost() {
   const { post } = useSelector((state) => state.postList);
@@ -31,7 +32,7 @@ function CheckPost() {
     fetchData();
   }, [dispatch]);
 
-  if (post === null) return <div>포스트가 없습니다.</div>;
+  if (post === null) return <Loading />;
   if (search === "")
     return (
       <PostListMain>

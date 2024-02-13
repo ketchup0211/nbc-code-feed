@@ -6,6 +6,7 @@ import { db } from "src/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "src/redux/modules/postList";
 import { LinkStyle } from "src/util/Style";
+import Loading from "../Loading";
 
 function PostList() {
   const { post } = useSelector((state) => state.postList);
@@ -31,7 +32,7 @@ function PostList() {
     fetchData();
   }, [dispatch]);
 
-  if (post === null) return <div>포스트가 없습니다.</div>;
+  if (post === null) return <Loading />;
   if (id === undefined)
     return (
       <PostListMain>
