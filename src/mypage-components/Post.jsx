@@ -1,15 +1,22 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { db } from '../firebase';
+import { collection, getDocs } from "firebase/firestore";
 
 export default function Post () {
 
-    const posts = [
-        { id: 1, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
-        { id: 2, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
-        { id: 3, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
-        { id: 4, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
-        { id: 5, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
-        { id: 6, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMz6LAptxabLdMx-mTJTi2wMkKK3ioQG-yUw&usqp=CAU'},
-    ];
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const postsCollection = collection(db, 'posts');
+            const postsSnapshot = await getDocs(postsCollection);
+            const postList = postsSnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+            setPosts(postList);
+        };
+
+        fetchPosts();
+    }, []);
 
     return (
         <PostContainer>
