@@ -54,7 +54,7 @@ function HomeHeader() {
     navigate("/searchResult");
   };
 
-  if (user === null)
+  if (user === null || user === undefined)
     return (
       <NavList>
         <NavPage>

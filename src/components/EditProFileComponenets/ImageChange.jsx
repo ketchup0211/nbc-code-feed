@@ -1,7 +1,7 @@
-import { updateProfile } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useRef, useState } from "react";
-import { auth, storage } from "src/firebase";
+import { auth, db, storage } from "src/firebase";
 import styled from "styled-components";
 
 function ImageChange({ user, dispatchUser }) {
@@ -26,10 +26,12 @@ function ImageChange({ user, dispatchUser }) {
     const imageRef = ref(storage, `${auth.currentUser.uid}/profileImage`);
     await uploadBytes(imageRef, selectedFile);
 
+    const postRef = doc(db, "users", `${user.id}`);
     const downloadUrl = await getDownloadURL(imageRef);
-    await updateProfile(auth.currentUser, {
+    await updateDoc(postRef, {
       photoURL: downloadUrl,
     });
+
     dispatchUser();
     setSelectedFile([]);
     setPreviewImg([]);

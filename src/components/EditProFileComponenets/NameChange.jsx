@@ -1,9 +1,9 @@
-import { updateProfile } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import { auth } from "src/firebase";
+import { db } from "src/firebase";
 import styled from "styled-components";
 
-function NameChange({ dispatchUser }) {
+function NameChange({ user, dispatchUser }) {
   const [name, setName] = useState("");
 
   const proFileChange = async () => {
@@ -11,8 +11,10 @@ function NameChange({ dispatchUser }) {
       alert("이름을 입력해주시기 바랍니다.");
       return;
     }
-    await updateProfile(auth.currentUser, {
-      displayName: name,
+
+    const postRef = doc(db, "users", `${user.id}`);
+    await updateDoc(postRef, {
+      nickname: name,
     });
     dispatchUser();
     setName("");

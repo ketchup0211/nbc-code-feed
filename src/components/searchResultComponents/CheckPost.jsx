@@ -57,7 +57,6 @@ function CheckPost() {
         .filter((i) => {
           return (
             i.language.replace(/\s/g, "").toUpperCase().includes(searchCheck) ||
-            i.profile.replace(/\s/g, "").toUpperCase().includes(searchCheck) ||
             i.name.replace(/\s/g, "").toUpperCase().includes(searchCheck) ||
             i.title.replace(/\s/g, "").toUpperCase().includes(searchCheck)
           );

@@ -58,7 +58,7 @@ function EditProfile() {
       <HomeHeader />
       <Background>
         <ImageChange user={user} dispatchUser={dispatchUser} />
-        <NameChange dispatchUser={dispatchUser} />
+        <NameChange user={user} dispatchUser={dispatchUser} />
       </Background>
     </BackgroundColor>
   );
