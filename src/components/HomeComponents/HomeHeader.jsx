@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Button from "src/components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "src/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -31,6 +30,11 @@ function HomeHeader() {
     dispatch(checkSearch(e.target.value));
   };
 
+  const SubmitHandler = (event) => {
+    event.preventDefault();
+    navigate("/searchResult");
+  };
+
   if (user === null)
     return (
       <header>
@@ -41,16 +45,15 @@ function HomeHeader() {
             </LinkStyle>
           </NavPage>
           <NavInformation>
-            <form onSubmit={() => navigate("/searchResult")}>
+            <form onSubmit={SubmitHandler}>
               <input
                 type="text"
                 placeholder="검색"
                 value={search}
                 onChange={inputChcange}
               />
-              <Button content={"검색하기"} width={"100"} />
             </form>
-            <LinkStyle to={"/sign-up"}>로그인</LinkStyle>
+            <LinkStyle to={"/sign-up"}>Login</LinkStyle>
           </NavInformation>
         </NavList>
       </header>
@@ -64,17 +67,12 @@ function HomeHeader() {
           </LinkStyle>
         </NavPage>
         <NavInformation>
-          <form>
+          <form onSubmit={SubmitHandler}>
             <input
               type="text"
               placeholder="검색"
               value={search}
               onChange={inputChcange}
-            />
-            <Button
-              content={"검색하기"}
-              width={"100"}
-              onClick={() => navigate("/searchResult")}
             />
           </form>
           <Profile>
@@ -84,7 +82,7 @@ function HomeHeader() {
                 <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
               </UserDisplay>
             </LinkStyle>
-            <Button content={"로그아웃"} width={"90"} onClick={logOut} />
+            <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
           </Profile>
         </NavInformation>
       </NavList>
@@ -119,7 +117,6 @@ const NavInformation = styled.ul`
   margin: 10px;
   & input {
     border: none;
-    background-color: whitesmoke;
     height: 40px;
     border-radius: 25px;
     padding: 10px;
@@ -145,4 +142,11 @@ const ProfileImage = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+`;
+
+const LogOutBtn = styled.button`
+  border: none;
+  height: 30px;
+  margin: 8px;
+  font-size: 12px;
 `;

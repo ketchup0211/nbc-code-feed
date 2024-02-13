@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { LinkStyle } from "src/util/Style";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "../Button";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "src/firebase";
 import { useEffect } from "react";
@@ -44,7 +43,7 @@ function SerchHead() {
             <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
           </UserDisplay>
         </LinkStyle>
-        <Button content={"로그아웃"} width={"90"} onClick={logOut} />
+        <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
       </Profile>
     </HeadNav>
   );
@@ -83,4 +82,11 @@ const ProfileImage = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+`;
+
+const LogOutBtn = styled.button`
+  border: none;
+  height: 30px;
+  margin: 8px;
+  font-size: 12px;
 `;

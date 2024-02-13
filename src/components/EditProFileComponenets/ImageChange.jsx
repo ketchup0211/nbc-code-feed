@@ -3,7 +3,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useRef, useState } from "react";
 import { auth, storage } from "src/firebase";
 import styled from "styled-components";
-import Button from "../Button";
 
 function ImageChange({ user, dispatchUser }) {
   const [previewImg, setPreviewImg] = useState([]);
@@ -41,10 +40,10 @@ function ImageChange({ user, dispatchUser }) {
       <p>Image Change</p>
       <ImageChangeSection>
         <ImageStyle src={user.photoURL} />
-        <Button content={"Image Upload"} onClick={handClick} width={"100"} />
+        <ChangeBtn onClick={handClick}>Image Upload</ChangeBtn>
         {previewImg.length === 0 ? false : <ImageStyle src={previewImg} />}
         <InputStyle type="file" ref={hiddenFileInput} onChange={fileChange} />
-        <Button content={"Image Change"} width={"150"} onClick={handleUpload} />
+        <ChangeBtn onClick={handleUpload}>Image Change</ChangeBtn>
         <p>{user.reloadListener}</p>
       </ImageChangeSection>
     </>
@@ -66,6 +65,15 @@ const ImageStyle = styled.img`
   width: 200px;
   height: 200px;
   border-radius: 50%;
+`;
+
+const ChangeBtn = styled.button`
+  border: none;
+  width: 130px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 1px 1px 5px 1px gray;
 `;
 
 const InputStyle = styled.input`
