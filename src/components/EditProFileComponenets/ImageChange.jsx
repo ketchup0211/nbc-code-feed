@@ -32,7 +32,7 @@ function ImageChange({ user, dispatchUser }) {
       photoURL: downloadUrl,
     });
 
-    dispatchUser();
+    dispatchUser({ ...user, photoURL: downloadUrl });
     setSelectedFile([]);
     setPreviewImg([]);
   };

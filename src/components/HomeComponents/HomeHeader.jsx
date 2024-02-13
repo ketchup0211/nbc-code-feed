@@ -10,7 +10,7 @@ import { LinkStyle } from "src/util/Style";
 import { collection, getDocs, query } from "firebase/firestore";
 
 function HomeHeader() {
-  const { user } = useSelector((state) => state.users);
+  const user = useSelector((state) => state.users.user);
   const search = useSelector((state) => state.search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,7 +41,6 @@ function HomeHeader() {
     };
     fetchData();
   }, []);
-
 
   const logOut = async (event) => {
     event.preventDefault();
@@ -77,7 +76,7 @@ function HomeHeader() {
               onChange={inputChcange}
             />
           </form>
-          <LinkStyle to={"/sign-up"}>Login</LinkStyle>
+          <LinkStyle to={"/login"}>Login</LinkStyle>
         </NavInformation>
       </NavList>
     );

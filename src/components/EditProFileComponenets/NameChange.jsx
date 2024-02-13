@@ -16,7 +16,7 @@ function NameChange({ user, dispatchUser }) {
     await updateDoc(postRef, {
       nickname: name,
     });
-    dispatchUser();
+    dispatchUser({ ...user, nickname: name });
     setName("");
   };
   return (
