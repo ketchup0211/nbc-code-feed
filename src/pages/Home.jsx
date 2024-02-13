@@ -9,7 +9,7 @@ function Home() {
   const navigate = useNavigate();
 
   return (
-    <>
+    <Background>
       <HomeHeader />
       <FilterCheck />
       <PostList />
@@ -25,11 +25,15 @@ function Home() {
         <button onClick={() => navigate("/")}>전체게시글</button>
         <LinkStyle to={"/editProfile"}>프로필 수정 페이지</LinkStyle>
       </TestDiv>
-    </>
+    </Background>
   );
 }
 
 export default Home;
+
+const Background = styled.div`
+  background-color: whitesmoke;
+`;
 
 const TestDiv = styled.div`
   /* display: none; */
