@@ -29,9 +29,11 @@ function QuillComponent({ value, onChange }) {
         container: toolbarOptions,
         handlers: {
           image: function () {
+            // 이미지 삽입 및 업로드 기능
             imageHandler(quillRef);
           },
           link: function (value) {
+            //링크 삽입하기 기능
             if (value) {
               var href = prompt("Enter the URL");
               this.quill.format("link", href);
@@ -73,6 +75,7 @@ function QuillComponent({ value, onChange }) {
   return (
     <ReactQuill
       theme="snow"
+      placeholder="내용을 작성해주세요."
       style={{ height: "600px", width: "60%" }}
       modules={modules}
       formats={formats}
