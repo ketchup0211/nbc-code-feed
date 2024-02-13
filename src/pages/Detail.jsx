@@ -17,7 +17,7 @@ function Detail() {
     const storage = getStorage();
     const fetchData = async () => {
       // collection 이름이 todos인 collection의 모든 document를 가져옵니다.
-      const q = query(collection(db, "work"));
+      const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
 
       const initialTodos = [];
@@ -36,7 +36,7 @@ function Detail() {
     getDownloadURL(
       ref(
         storage,
-        "file/8ftpuzzD0_9jB6Uclw-EUshIHoWmtcSAvZW_3bRl6wF-3Gr7aFSTuXCKrAEBOgDoq4jJjEryvpWeen_L26Egpg.webp"
+        "file/_TyCM7pzDaKLd7S_-TpW1qJa3m5-xZbxfSgmkNhnrDvi305ZFKaWZbbd6gjql8IeR394hw9NhxQIQULev9q1odx-FgjKS3dMB6Oi2YJSOdBE7PwWctKi8F_XVKMyEz2Z7aURmMbNXCakvi3pjfqlFQ.webp"
       )
     )
       .then((url) => {
@@ -63,33 +63,43 @@ function Detail() {
     fetchData();
   }, []);
 
+  const handleContentChange = (itemId) => {
+    const contentsFilter = contents.filter((item) => item.id === itemId);
+    console.log(contentsFilter);
+    console.log(contents);
+  };
+
   return (
     <>
       {contents.map((item) => {
-        console.log(item.file);
         return (
-          <Container key={item.id}>
-            <Title>{item.title}</Title>
-            <Fixed>
-              <AvatarImg src={wendy} />
-              <Fixedleft>{item.profile} &nbsp;</Fixedleft>
-              <Fixedleft>{item.name}</Fixedleft>
-              {heart ? (
-                <Fixedright onClick={() => setHeart(false)}>
-                  <i className="bi bi-heart-fill" />
-                </Fixedright>
-              ) : (
-                <Fixedright onClick={() => setHeart(true)}>
-                  <i className="bi bi-heart" />
-                </Fixedright>
-              )}
-            </Fixed>
+          <>
+            <Container key={item.id}>
+              <Title>{item.title}</Title>
+              <Fixed>
+                <AvatarImg src={wendy} />
+                <Fixedleft>{item.profile} &nbsp;</Fixedleft>
+                <Fixedleft>{item.name}</Fixedleft>
+                {heart ? (
+                  <Fixedright onClick={() => setHeart(false)}>
+                    <i className="bi bi-heart-fill" />
+                  </Fixedright>
+                ) : (
+                  <Fixedright onClick={() => setHeart(true)}>
+                    <i className="bi bi-heart" />
+                  </Fixedright>
+                )}
+              </Fixed>
 
-            <img id="myimg" />
-            {/*<div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div> */}
-            {/*<DetailImg imgName={item.file} />*/}
-            <Description>{item.content}</Description>
-          </Container>
+              <ImgContent id="myimg" />
+              {/*<div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div> */}
+              {/*<DetailImg imgName={item.file} />*/}
+              <Description>{item.content}</Description>
+              <EditBtn onClick={() => handleContentChange(item.id)}>
+                수정하기
+              </EditBtn>
+            </Container>
+          </>
         );
       })}
       <button onClick={() => navigate("/")}>홈으로</button>
@@ -98,26 +108,26 @@ function Detail() {
   );
 }
 
-function DetailImg({ imgName }) {
-  const [imgUrl, setImgUrl] = useState();
+// function DetailImg({ imgName }) {
+//   const [imgUrl, setImgUrl] = useState();
 
-  useEffect(() => {
-    const storage = getStorage();
+//   useEffect(() => {
+//     const storage = getStorage();
 
-    const func = async () => {
-      if (imgName !== undefined) {
-        const reference = ref(storage, `file/imgName`);
-        console.log(reference);
-        await getDownloadURL(reference).then((x) => {
-          setImgUrl(x);
-        });
-      }
-    };
-    func();
-  }, []);
+//     const func = async () => {
+//       if (imgName !== undefined) {
+//         const reference = ref(storage, `file/imgName`);
+//         console.log(reference);
+//         await getDownloadURL(reference).then((x) => {
+//           setImgUrl(x);
+//         });
+//       }
+//     };
+//     func();
+//   }, []);
 
-  return <img src={imgUrl} />;
-}
+//   return <img src={imgUrl} />;
+// }
 
 export default Detail;
 
@@ -151,9 +161,19 @@ const Fixedright = styled.div`
   margin-right: 50px;
   float: right;
 `;
+
+const ImgContent = styled.img`
+  border-radius: 8px;
+`;
 const Description = styled.p`
   font-size: 18px;
   margin: 20px auto 0px auto;
   width: 600px;
   line-height: 1.5;
+`;
+
+const EditBtn = styled.button`
+  float: right;
+  width: 80px;
+  height: 30px;
 `;
