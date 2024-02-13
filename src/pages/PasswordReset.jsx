@@ -97,7 +97,6 @@ function PasswordReset() {
     setEmail(event.target.value);
   };
   const checkAccountExist = (email) => {
-    //TODO : Understand this Logic!
     return new Promise((resolve, reject) => {
       const q = query(collection(db, "users"), where("email", "==", email));
       const unsubscribe = onSnapshot(
@@ -107,17 +106,14 @@ function PasswordReset() {
           querySnapshot.forEach((doc) => {
             matchingDocs.push(doc.data().name);
           });
-          if (matchingDocs.length > 1) {
-            // 이메일과 일치하는 문서가 하나 이상이면 true 반환
-            resolve(true);
+          if (matchingDocs.length >= 1) {
+            resolve(true); // Resolve with true if account exists
           } else {
-            // 이메일과 일치하는 문서가 하나도 없거나 하나만 있으면 false 반환
-            resolve(false);
+            resolve(false); // Resolve with false if account doesn't exist
           }
-          unsubscribe(); // 리스너 해제
         },
         (error) => {
-          // 에러 처리
+          // Reject the promise if there's an error
           console.error("Error fetching documents: ", error);
           reject(error);
         }
@@ -125,34 +121,32 @@ function PasswordReset() {
     });
   };
 
-  const handleForgotPassword = (event) => {
+  const handleForgotPassword = async (event) => {
     event.preventDefault();
 
-    const isExist = checkAccountExist(email);
-    if (isExist) {
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          // Password reset email sent!
-          alert("Password reset email sent!");
-        })
-        .catch((error) => {
-          switch (error.code) {
-            case "auth/missing-email":
-              alert("가입 시 사용했던 이메일을 입력해주세요.");
-              break;
-            case "auth/invalid-email":
-              alert("유효하지 않은 이메일 형식입니다.");
-              break;
-            default:
-              alert(`ERROR : ${error.code}`);
-              return;
-          }
-        });
-    } else {
-      alert("해당 이메일의 가입 내역이 존재하지 않습니다.");
-      return;
+    try {
+      const exists = await checkAccountExist(email); // Wait for account existence check
+      if (exists) {
+        await sendPasswordResetEmail(auth, email); // Wait for password reset email sending
+        alert("Password reset email sent!");
+      } else {
+        alert("해당 이메일의 가입 내역이 존재하지 않습니다.");
+      }
+    } catch (error) {
+      switch (error.code) {
+        case "auth/missing-email":
+          alert("가입 시 사용했던 이메일을 입력해주세요.");
+          break;
+        case "auth/invalid-email":
+          alert("유효하지 않은 이메일 형식입니다.");
+          break;
+        default:
+          alert(`ERROR : ${error.code}`);
+          break;
+      }
     }
   };
+
   return (
     <MainContainer>
       <AuthSidebar />
