@@ -1,13 +1,9 @@
 import { storage } from "src/firebase";
-import {
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-const imageHandler = (quillRef, path) => {
+const imageHandler = (quillRef) => {
   const input = document.createElement("input");
+  const path = quillRef.current.props.randomId;
 
   input.setAttribute("type", "file");
   input.setAttribute("accept", "image/*");
@@ -51,64 +47,6 @@ const imageHandler = (quillRef, path) => {
       console.log(error);
     }
   });
-};
-
-// const deleteImageFromStorage = (imageURL) => {
-//   // 다운로드 URL로부터 이미지의 경로를 추출
-//   const imagePath = getImagePathFromURL(imageURL);
-
-//   // 이미지 경로를 사용하여 Firebase Storage에서 이미지 삭제
-//   const imageRef = ref(storage, imagePath);
-//   deleteObject(imageRef)
-//     .then(() => {
-//       console.log("Image deleted from storage successfully");
-//     })
-//     .catch((error) => {
-//       console.error("Error deleting image from storage:", error);
-//     });
-// };
-
-// const getImagePathFromURL = (imageURL) => {
-//   // 이미지의 다운로드 URL에서 스토리지 내부 경로 추출
-//   const startIndex = imageURL.indexOf("/image");
-//   if (startIndex === -1) {
-//     throw new Error("Invalid image URL");
-//   }
-//   return imageURL.substring(startIndex + 7); // "/image/" 다음의 문자열 반환
-// };
-
-const deleteImageFromStorage = (imageURL) => {
-  try {
-    // 이미지의 경로와 토큰을 추출
-    const { imagePath, token } = getImagePathAndTokenFromURL(imageURL);
-
-    // 토큰을 사용하여 Firebase Storage에서 이미지 삭제
-    const imageRef = ref(storage, imagePath);
-    deleteObject(imageRef)
-      .then(() => {
-        console.log("Image deleted from storage successfully");
-      })
-      .catch((error) => {
-        console.error("Error deleting image from storage:", error);
-      });
-  } catch (error) {
-    console.error(error.message);
-  }
-};
-
-const getImagePathAndTokenFromURL = (imageURL) => {
-  // 이미지 URL에서 이미지 경로와 토큰 추출
-  const startIndex = imageURL.indexOf("/image/");
-  if (startIndex === -1) {
-    throw new Error("Invalid image URL");
-  }
-  const endIndex = imageURL.indexOf("?");
-  if (endIndex === -1) {
-    throw new Error("Invalid image URL");
-  }
-  const imagePath = imageURL.substring(startIndex + 7, endIndex); // "/image/" 다음의 문자열부터 토큰 앞까지의 문자열 반환
-  const token = imageURL.substring(endIndex + 7); // "?" 다음의 문자열 반환
-  return { imagePath, token };
 };
 
 export default imageHandler;

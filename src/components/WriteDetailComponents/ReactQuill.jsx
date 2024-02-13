@@ -10,7 +10,6 @@ Quill.register("modules/imageFormats", ImageFormats);
 
 function QuillComponent({ value, onChange, randomId }) {
   const quillRef = useRef(null);
-  const path = randomId;
 
   const toolbarOptions = [
     ["link", "image"],
@@ -32,7 +31,7 @@ function QuillComponent({ value, onChange, randomId }) {
         handlers: {
           image: function () {
             // 이미지 삽입 및 업로드 기능
-            imageHandler(quillRef, path);
+            imageHandler(quillRef);
           },
           link: function (value) {
             //링크 삽입하기 기능
@@ -84,6 +83,7 @@ function QuillComponent({ value, onChange, randomId }) {
       value={value}
       onChange={onChange}
       toolbarOptions={toolbarOptions}
+      randomId={randomId}
       ref={quillRef}
     />
   );

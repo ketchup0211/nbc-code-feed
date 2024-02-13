@@ -1,23 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
-import DOMPurify from "dompurify";
+// import DOMPurify from "dompurify";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "src/firebase";
-import { v4 as uuidv4 } from "uuid";
+import { useSelector } from "react-redux";
+
+let dateNTime = "";
 
 function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
-  const [randomId, setRandomId] = useState([]);
-  const [dateNTime, setdateNTime] = useState([]);
-  //const [filteredId, setFilteredId] = useState("");
-
-  useEffect(() => {
-    setRandomId(uuidv4()); // 렌더링될 때마다 새로운 randomid 생성
-  }, []);
+  const randomId = useSelector((state) => state.postImageid);
 
   const inputTitle = (e) => {
     setTitle(e.target.value);
@@ -38,38 +34,30 @@ function WriteDetail() {
     const formattedDate = `${currentDate.getFullYear()}-${
       currentDate.getMonth() + 1
     }-${currentDate.getDate()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
-    setdateNTime(formattedDate);
+    dateNTime = formattedDate;
   };
 
   const handleUpload = async () => {
-    const newTodo = { id: randomId, title, quillValue, dateNTime };
+    const newContent = {
+      id: randomId,
+      title,
+      quillValue,
+      dateNTime,
+    };
     setUserContents((prevlist) => {
-      return [...prevlist, newTodo];
+      return [...prevlist, newContent];
     });
-    console.log(newTodo);
+    console.log(newContent);
     console.log(randomId);
-    setTitle("");
+    // setTitle("");
 
-    // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
+    //Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
     const collectionRef = collection(db, "user"); // 추후에 {auth.id} 로 변경하면 될 듯?
 
-    await addDoc(collectionRef, newTodo);
+    await addDoc(collectionRef, newContent);
   };
 
-  // const handleUpload = async (event) => {
-  //   // 데이터를 파이어베이스에 업로드하는 부분
-  //   event.preventDefault();
-  //   const newContent = {
-  //     quillValue,
-  //     title,
-  //   };
-  //   console.log(newContent);
-
-  //   const collectionRef = collection(db, "userContent");
-  //   await addDoc(collectionRef, newContent);
-  // };
-
-  const sanitizer = DOMPurify.sanitize;
+  // const sanitizer = DOMPurify.sanitize;
 
   console.log("Uploaded quillValue:", quillValue);
 
@@ -95,7 +83,7 @@ function WriteDetail() {
             randomId={randomId}
           />
         </QuillDiv>
-        <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div>
+        {/* <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div> */}
         <DoneButtonDiv>
           <DoneButton
             onClick={() => {
