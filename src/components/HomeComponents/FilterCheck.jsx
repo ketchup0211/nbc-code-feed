@@ -1,27 +1,20 @@
 import styled from "styled-components";
 import { language } from "src/util/language";
-import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 function FilterCheck() {
-  const [clickedLanguage, setClickedLanguage] = useState("");
-
-  const onHandleClickedLanguage = (language) => {
-    setClickedLanguage(language.id);
-  };
+  const { id } = useParams();
   return (
     <FilterCheckMain>
       {language.map((e) => {
         return (
-          <FilterButton
+          <FilterLinkStyle
+            to={`/${e.language}`}
             key={e.id}
-            onClick={() => onHandleClickedLanguage(e)}
-            style={{
-              backgroundColor:
-                clickedLanguage === e.id ? "#f2d184" : "transparent",
-            }}
+            $backgroundColor={id === e.language ? "gray" : "whitesmoke"}
           >
-            {e.language}
-          </FilterButton>
+            <label>{e.language}</label>
+          </FilterLinkStyle>
         );
       })}
     </FilterCheckMain>
@@ -38,8 +31,13 @@ const FilterCheckMain = styled.section`
   align-items: center;
 `;
 
-const FilterButton = styled.button`
-  border: 1px solid transparent;
-  border-radius: 20px;
-  padding: 10px 20px;
+const FilterLinkStyle = styled(Link)`
+  text-decoration: none;
+  color: black;
+  background-color: ${(props) => props.$backgroundColor};
+  padding: 10px;
+  border-radius: 25px;
+  & label {
+    cursor: pointer;
+  }
 `;

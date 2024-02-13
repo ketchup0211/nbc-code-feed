@@ -1,16 +1,16 @@
-import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
-import { db } from "src/firebase";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { db } from "src/firebase";
 import { addPost } from "src/redux/modules/postList";
 import { LinkStyle } from "src/util/Style";
+import styled from "styled-components";
 import Loading from "../Loading";
 
-function PostList() {
+function CheckPost() {
   const { post } = useSelector((state) => state.postList);
-  const { id } = useParams();
+  const search = useSelector((state) => state.search);
+  const searchCheck = search.replace(/\s/g, "").toUpperCase();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function PostList() {
   }, [dispatch]);
 
   if (post === null) return <Loading />;
-  if (id === undefined)
+  if (search === "")
     return (
       <PostListMain>
         {post.map((e) => {
@@ -55,7 +55,11 @@ function PostList() {
     <PostListMain>
       {post
         .filter((i) => {
-          return i.language === id;
+          return (
+            i.language.replace(/\s/g, "").toUpperCase().includes(searchCheck) ||
+            i.name.replace(/\s/g, "").toUpperCase().includes(searchCheck) ||
+            i.title.replace(/\s/g, "").toUpperCase().includes(searchCheck)
+          );
         })
         .map((e) => {
           return (
@@ -74,12 +78,11 @@ function PostList() {
   );
 }
 
-export default PostList;
+export default CheckPost;
 
 const PostListMain = styled.ol`
-  min-height: 400px;
   height: auto;
-  margin: 0% 3%;
+  margin: 1%;
   display: grid;
   grid-gap: 36px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

@@ -1,48 +1,107 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Button from "src/components/Button";
-import { useSelector } from "react-redux";
-import { auth } from "src/firebase";
-import { signOut } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { auth, db } from "src/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { checkSearch } from "src/redux/modules/search";
+import { useEffect } from "react";
+import { initialization } from "src/redux/modules/user";
+import { LinkStyle } from "src/util/Style";
+import { collection, getDocs, query } from "firebase/firestore";
 
 function HomeHeader() {
   const { user } = useSelector((state) => state.users);
+  const search = useSelector((state) => state.search);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let checkuid = "";
+    const fetchData = async () => {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+
+      const initialTodos = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        initialTodos.push(data);
+      });
+      const check = initialTodos.find((e) => e.id === checkuid);
+      dispatch(initialization(check));
+    };
+    fetchData();
+    onAuthStateChanged(auth, (user) => {
+      checkuid = user.uid;
+    });
+  }, [dispatch]);
 
   const logOut = async (event) => {
     event.preventDefault();
+    navigate("/");
     await signOut(auth);
   };
-  if (user === null)
+
+  const inputChcange = (e) => {
+    dispatch(checkSearch(e.target.value));
+  };
+
+  const SubmitHandler = (event) => {
+    event.preventDefault();
+    navigate("/searchResult");
+  };
+
+  if (user === null || user === undefined)
     return (
-      <header>
-        <NavList>
-          <NavPage>
-            <label>CodeFeed</label>
-          </NavPage>
-          <NavInformation>
-            <input type="text" placeholder="검색" />
-            <LinkStyle to={"/sign-up"}>로그인</LinkStyle>
-          </NavInformation>
-        </NavList>
-      </header>
-    );
-  return (
-    <header>
       <NavList>
         <NavPage>
-          <label>CodeFeed</label>
+          <LinkStyle to={"/"}>
+            <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
+          </LinkStyle>
         </NavPage>
         <NavInformation>
-          <input type="text" placeholder="Search..." />
-          <div>
-            <LinkStyle to={"/myPage"}>
-              <ProfileName>{user.displayName}</ProfileName>
-            </LinkStyle>
-            <Button content={"로그아웃"} width={"90"} onClick={logOut} />
-          </div>
+          <form onSubmit={SubmitHandler}>
+            <input
+              type="text"
+              placeholder="검색"
+              value={search}
+              onChange={inputChcange}
+            />
+          </form>
+          <LinkStyle to={"/sign-up"}>Login</LinkStyle>
         </NavInformation>
       </NavList>
-    </header>
+    );
+  return (
+    <NavList>
+      <NavPage>
+        <LinkStyle to={"/"}>
+          <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
+        </LinkStyle>
+      </NavPage>
+      <NavInformation>
+        <form onSubmit={SubmitHandler}>
+          <input
+            type="text"
+            placeholder="검색"
+            value={search}
+            onChange={inputChcange}
+          />
+        </form>
+        <Profile>
+          <LinkStyle to={"/myPage"}>
+            <UserDisplay>
+              <ProfileName>{user.nickname}</ProfileName>
+              <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
+            </UserDisplay>
+          </LinkStyle>
+          <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
+        </Profile>
+      </NavInformation>
+    </NavList>
   );
 }
 
@@ -62,6 +121,12 @@ const NavPage = styled.ul`
   align-items: center;
 `;
 
+const SvgImage = styled.img`
+  width: 10vh;
+  border-radius: 12px;
+  opacity: 0.8;
+`;
+
 const NavInformation = styled.ul`
   display: flex;
   justify-content: space-between;
@@ -70,20 +135,36 @@ const NavInformation = styled.ul`
   margin: 10px;
   & input {
     border: none;
-    background-color: whitesmoke;
     height: 40px;
     border-radius: 25px;
     padding: 10px;
   }
 `;
 
+const Profile = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const UserDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 const ProfileName = styled.label`
   cursor: pointer;
 `;
 
-const LinkStyle = styled(Link)`
-  color: black;
-  text-decoration: none;
-  white-space: nowrap;
-  font-size: 15px;
+const ProfileImage = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+`;
+
+const LogOutBtn = styled.button`
+  border: none;
+  height: 30px;
+  margin: 8px;
+  font-size: 12px;
 `;
