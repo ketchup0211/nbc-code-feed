@@ -11,12 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { initialization } from "src/redux/modules/user";
 import { urlPatch } from "src/redux/modules/postBasicImage";
+import { useNavigate } from "react-router-dom";
 
 function WriteDetail() {
   const user = useSelector((state) => state.users.user);
   const postBasicImage = useSelector((state) => state.postBasicImage);
   let check = "";
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       check = user.uid;
@@ -93,6 +95,7 @@ function WriteDetail() {
 
     await addDoc(collectionRef, newContent);
     dispatch(urlPatch(""));
+    navigate(`/detail/${newContent.id}`);
   };
 
   // const sanitizer = DOMPurify.sanitize;
