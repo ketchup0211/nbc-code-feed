@@ -7,6 +7,7 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   getRedirectResult,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
 import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
@@ -201,6 +202,18 @@ function Login() {
         console.log(err);
       });
   };
+  const handleForgotPassword = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        // Password reset email sent!
+        alert("Password reset email sent!");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+  };
   return (
     <MainContainer>
       <AuthSidebar />
@@ -229,16 +242,20 @@ function Login() {
                 <FieldSet>
                   <Label>
                     Password
-                    <a
-                      href=""
+                    <Link
+                      replace
+                      to=""
                       style={{
                         float: "right",
                         color: "#0d0c22",
                         fontSize: "14px",
+                        cursor: "pointer",
+                        textDecoration: "underline",
                       }}
+                      onClick={handleForgotPassword}
                     >
                       Forgot?
-                    </a>
+                    </Link>
                   </Label>
                   <LoginInput
                     type="password"
