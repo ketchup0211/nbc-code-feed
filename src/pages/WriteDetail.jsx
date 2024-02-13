@@ -1,27 +1,28 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
 import DOMPurify from "dompurify";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "src/firebase";
+import { auth, db } from "src/firebase";
 import { LinkStyle } from "src/util/Style";
-import { v4 as uuidv4 } from "uuid";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
 
 function WriteDetail() {
+  auth.currentUser.uid;
+  let check = "";
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      check = user.uid;
+      console.log(user.uid);
+    });
+  });
+  console.log(check);
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
-  const [userContents, setUserContents] = useState([]);
+  const [setUserContents] = useState([]);
   const randomId = useSelector((state) => state.postImageid);
-  // const didpatch = useDispatch();
-  // const [randomId, setRandomId] = useState([]);
-  // const [dateNTime, setdateNTime] = useState([]);
-  //const [filteredId, setFilteredId] = useState("");
-
-  // useEffect(() => {
-  //   didpatch(initialId(uuidv4())); // 렌더링될 때마다 새로운 randomid 생성
-  // }, []);
 
   const inputTitle = (e) => {
     setTitle(e.target.value);
@@ -58,9 +59,9 @@ function WriteDetail() {
     setTitle("");
 
     // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
-    // const collectionRef = collection(db, "user"); // 추후에 {auth.id} 로 변경하면 될 듯?
+    const collectionRef = collection(db, "posts"); // 추후에 {auth.id} 로 변경하면 될 듯?
 
-    // await addDoc(collectionRef, newTodo);
+    await addDoc(collectionRef, newTodo);
   };
 
   // const handleUpload = async (event) => {
