@@ -11,7 +11,7 @@ function FilterCheck() {
           <FilterLinkStyle
             to={`/${e.language}`}
             key={e.id}
-            $backgroundColor={id === e.language ? "whitesmoke" : "white"}
+            $backgroundColor={id === e.language ? "gray" : "whitesmoke"}
           >
             <label>{e.language}</label>
           </FilterLinkStyle>
