@@ -95,29 +95,48 @@ function PasswordReset() {
     event.preventDefault();
     setEmail(event.target.value);
   };
-  const handleForgotPassword = (event) => {
-    event.preventDefault();
-    getAuth()
-      .importUsers()
-      .then((data) => console.log(`DATA${DATA}`));
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        // Password reset email sent!
-        alert("Password reset email sent!");
+  const checkAccountExist = (email) => {
+    return auth
+      .getUserByEmail(email)
+      .then((userRecord) => {
+        // 사용자가 존재함
+        console.log("사용자 데이터를 성공적으로 가져왔습니다:", userRecord);
+        return true;
       })
       .catch((error) => {
-        switch (error.code) {
-          case "auth/missing-email":
-            alert("가입 시 사용했던 이메일을 입력해주세요.");
-            break;
-          case "auth/invalid-email":
-            alert("유효하지 않은 이메일 형식입니다.");
-            break;
-          default:
-            alert(`ERROR : ${error.code}`);
-            return;
-        }
+        // 사용자가 존재하지 않음
+        console.log("사용자 데이터를 가져오는 중 오류가 발생했습니다:", error);
+        return false;
       });
+  };
+
+  const handleForgotPassword = (event) => {
+    event.preventDefault();
+
+    const isExist = checkAccountExist(email);
+    if (isExist) {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          // Password reset email sent!
+          alert("Password reset email sent!");
+        })
+        .catch((error) => {
+          switch (error.code) {
+            case "auth/missing-email":
+              alert("가입 시 사용했던 이메일을 입력해주세요.");
+              break;
+            case "auth/invalid-email":
+              alert("유효하지 않은 이메일 형식입니다.");
+              break;
+            default:
+              alert(`ERROR : ${error.code}`);
+              return;
+          }
+        });
+    } else {
+      alert("해당 이메일의 가입 내역이 존재하지 않습니다.");
+      return;
+    }
   };
   return (
     <MainContainer>
