@@ -199,6 +199,7 @@ function Login() {
         navigate("/");
       })
       .catch((err) => {
+        alert(err.code);
         console.log(err);
       });
   };
