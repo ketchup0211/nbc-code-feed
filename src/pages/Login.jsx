@@ -202,18 +202,6 @@ function Login() {
         console.log(err);
       });
   };
-  const handleForgotPassword = () => {
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        // Password reset email sent!
-        alert("Password reset email sent!");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
-  };
   return (
     <MainContainer>
       <AuthSidebar />
@@ -244,7 +232,7 @@ function Login() {
                     Password
                     <Link
                       replace
-                      to=""
+                      to="/password_resets"
                       style={{
                         float: "right",
                         color: "#0d0c22",
@@ -252,7 +240,6 @@ function Login() {
                         cursor: "pointer",
                         textDecoration: "underline",
                       }}
-                      onClick={handleForgotPassword}
                     >
                       Forgot?
                     </Link>
