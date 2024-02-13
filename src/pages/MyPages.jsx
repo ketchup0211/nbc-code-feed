@@ -6,8 +6,6 @@ import Post from "../mypage-components/Post";
 import PostTab from "../mypage-components/PostTab";
 
 export default function MyPages() {
-
-
   return (
     <>
       <MyPageContainer>

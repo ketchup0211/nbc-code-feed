@@ -1,29 +1,31 @@
 import styled from "styled-components"
-import { useState } from "react"
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { checkSearch } from "src/redux/modules/search";
 import { CiSearch } from "react-icons/ci"
 
 export default function SearchInput() {
-    const [search, setSearch] = useState('');
-    const [submit, setSubmit] = useState('');
+    const search = useSelector((state) => state.search);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const handleSearchChange = (event) => {
-        setSearch(event.target.value);
-    };
-
-    const handleSubmit = (event) => {
+    const SubmitHandler = (event) => {
         event.preventDefault();
-        setSubmit(search);
+        navigate("/searchResult");
     };
 
-  return (
-    <div>
-        <SearchContainer onSubmit={handleSubmit} >
-        <SearchBar type='text' value={search} onChange={handleSearchChange} placeholder='Search ...'></SearchBar>
-        <SearchIcon/>
-        </SearchContainer>
-        {submit && <p>Search ... {submit}</p>}
-    </div>
-  )
+    const inputChcange = (e) => {
+        dispatch(checkSearch(e.target.value));
+    };
+
+    return (
+        <div>
+            <SearchContainer onSubmit={SubmitHandler} >
+                <SearchBar type='text' value={search} onChange={inputChcange} placeholder='Search ...'></SearchBar>
+                <SearchIcon />
+            </SearchContainer>
+        </div>
+    )
 }
 
 const SearchContainer = styled.form`

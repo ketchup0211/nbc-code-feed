@@ -10,7 +10,7 @@ import { LinkStyle } from "src/util/Style";
 import { collection, getDocs, query } from "firebase/firestore";
 
 function HomeHeader() {
-  const { user } = useSelector((state) => state.users);
+  const user = useSelector((state) => state.users.user);
   const search = useSelector((state) => state.search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,7 +40,9 @@ function HomeHeader() {
       dispatch(initialization(check));
     };
     fetchData();
-    //console.log(user);
+    onAuthStateChanged(auth, (user) => {
+      checkuid = user.uid;
+    });
   }, []);
 
   const logOut = async (event) => {
@@ -77,7 +79,7 @@ function HomeHeader() {
               onChange={inputChcange}
             />
           </form>
-          <LinkStyle to={"/sign-up"}>Login</LinkStyle>
+          <LinkStyle to={"/login"}>Login</LinkStyle>
         </NavInformation>
       </NavList>
     );
