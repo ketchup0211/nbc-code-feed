@@ -108,26 +108,26 @@ function Detail() {
   );
 }
 
-function DetailImg({ imgName }) {
-  const [imgUrl, setImgUrl] = useState();
+// function DetailImg({ imgName }) {
+//   const [imgUrl, setImgUrl] = useState();
 
-  useEffect(() => {
-    const storage = getStorage();
+//   useEffect(() => {
+//     const storage = getStorage();
 
-    const func = async () => {
-      if (imgName !== undefined) {
-        const reference = ref(storage, `file/imgName`);
-        console.log(reference);
-        await getDownloadURL(reference).then((x) => {
-          setImgUrl(x);
-        });
-      }
-    };
-    func();
-  }, []);
+//     const func = async () => {
+//       if (imgName !== undefined) {
+//         const reference = ref(storage, `file/imgName`);
+//         console.log(reference);
+//         await getDownloadURL(reference).then((x) => {
+//           setImgUrl(x);
+//         });
+//       }
+//     };
+//     func();
+//   }, []);
 
-  return <img src={imgUrl} />;
-}
+//   return <img src={imgUrl} />;
+// }
 
 export default Detail;
 
