@@ -12,8 +12,8 @@
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
     "@xeger/quill-image-actions": "^0.7.2",
-    "bootstrap": "^5.3.2",
     "@xeger/quill-image-formats": "^0.7.2",
+    "bootstrap": "^5.3.2",
     "dompurify": "^3.0.8",
     "firebase": "^10.7.2",
     "node": "^21.6.1",

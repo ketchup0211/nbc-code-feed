@@ -40,6 +40,9 @@ function HomeHeader() {
       dispatch(initialization(check));
     };
     fetchData();
+    onAuthStateChanged(auth, (user) => {
+      checkuid = user.uid;
+    });
   }, []);
 
   const logOut = async (event) => {
