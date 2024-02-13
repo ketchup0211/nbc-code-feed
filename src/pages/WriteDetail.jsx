@@ -1,28 +1,56 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import FilterCheck from "src/components/HomeComponents/FilterCheck";
+import LanguageFilter from "src/components/WriteDetailComponents/LanguageFilter";
+//import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
-import DOMPurify from "dompurify";
-import { collection, addDoc } from "firebase/firestore";
+// import DOMPurify from "dompurify";
+import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { auth, db } from "src/firebase";
 import { LinkStyle } from "src/util/Style";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
+import { initialization } from "src/redux/modules/user";
+import { urlPatch } from "src/redux/modules/postBasicImage";
 
 function WriteDetail() {
-  auth.currentUser.uid;
-  let check = "";
+  const user = useSelector((state) => state.users.user);
+  const postBasicImage = useSelector((state) => state.postBasicImage);
+  const [check, setCheck] = useState();
+  const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      check = user.uid;
-      console.log(user.uid);
+      setCheck(user.uid);
     });
-  });
-  console.log(check);
+    const fetchData = async () => {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+
+      const initialTodos = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        initialTodos.push(data);
+      });
+      const checkuser = initialTodos.find((e) => e.id === check);
+      console.log(checkuser);
+      // dispatch(initialization(checkuser));
+    };
+    fetchData();
+  }, []);
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
-  const [setUserContents] = useState([]);
+  const [userContents, setUserContents] = useState([]);
   const randomId = useSelector((state) => state.postImageid);
+  const [selectedLanguage, setSelectedLanguage] = useState("");
+
+  let dateNTime = "";
+
+  const handleSelectedLanguage = (language) => {
+    setSelectedLanguage(language);
+  };
 
   const inputTitle = (e) => {
     setTitle(e.target.value);
@@ -38,8 +66,6 @@ function WriteDetail() {
     }
   };
 
-  let dateNTime = "";
-
   const dateContainer = async () => {
     const currentDate = new Date();
     const formattedDate = `${currentDate.getFullYear()}-${
@@ -50,36 +76,27 @@ function WriteDetail() {
 
   const handleUpload = async () => {
     dateContainer();
-    const newTodo = { id: randomId, title, quillValue, dateNTime };
+    const newContent = {
+      id: randomId,
+      nickname: user.nickname,
+      title,
+      quillValue,
+      dateNTime,
+      language: selectedLanguage,
+      image: postBasicImage,
+    };
     setUserContents((prevlist) => {
-      return [...prevlist, newTodo];
+      return [...prevlist, newContent];
     });
-    console.log(newTodo);
-    console.log(randomId);
-    setTitle("");
-
+    // setTitle("");
     // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
     const collectionRef = collection(db, "posts"); // 추후에 {auth.id} 로 변경하면 될 듯?
 
-    await addDoc(collectionRef, newTodo);
+    await addDoc(collectionRef, newContent);
+    dispatch(urlPatch(""));
   };
 
-  // const handleUpload = async (event) => {
-  //   // 데이터를 파이어베이스에 업로드하는 부분
-  //   event.preventDefault();
-  //   const newContent = {
-  //     quillValue,
-  //     title,
-  //   };
-  //   console.log(newContent);
-
-  //   const collectionRef = collection(db, "userContent");
-  //   await addDoc(collectionRef, newContent);
-  // };
-
-  const sanitizer = DOMPurify.sanitize;
-
-  console.log("Uploaded quillValue:", quillValue);
+  // const sanitizer = DOMPurify.sanitize;
 
   return (
     <div>
@@ -88,7 +105,8 @@ function WriteDetail() {
           <GoHome>CodeFeed</GoHome>
         </LinkStyle>
       </Nav>
-      <FilterCheck />
+      {/* <FilterCheck /> */}
+      <LanguageFilter onClickedLanguage={handleSelectedLanguage} />
       <div>
         <div>
           <InputTitle
@@ -103,9 +121,10 @@ function WriteDetail() {
             value={quillValue || ""}
             onChange={handleQuillChange}
             randomId={randomId}
+            check={check}
           />
         </QuillDiv>
-        <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div>
+        {/* <div dangerouslySetInnerHTML={{ __html: sanitizer(quillValue) }}></div> */}
         <DoneButtonDiv>
           <DoneButton
             onClick={() => {

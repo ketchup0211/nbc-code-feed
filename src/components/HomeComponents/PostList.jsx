@@ -44,7 +44,7 @@ function PostList() {
                   <img src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
                 </div>
-                <p>{e.name}</p>
+                <p>{e.nickname}</p>
               </PostCard>
             </LinkStyle>
           );
@@ -65,7 +65,7 @@ function PostList() {
                   <img src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
                 </div>
-                <p>{e.name}</p>
+                <p>{e.nickname}</p>
               </PostCard>
             </LinkStyle>
           );
