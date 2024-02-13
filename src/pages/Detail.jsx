@@ -45,9 +45,10 @@ function Detail() {
         // This can be downloaded directly:
         const xhr = new XMLHttpRequest();
         xhr.responseType = "blob";
-        xhr.onload = (event) => {
-          const blob = xhr.response;
-        };
+        // xhr.onload = (event) => {
+        //   const blob = xhr.response;
+        // };
+
         xhr.open("GET", url);
         xhr.send();
 
@@ -95,27 +96,6 @@ function Detail() {
       <button onClick={() => navigate("/write-detail")}>작성 디테일로</button>
     </>
   );
-}
-
-function DetailImg({ imgName }) {
-  const [imgUrl, setImgUrl] = useState();
-
-  useEffect(() => {
-    const storage = getStorage();
-
-    const func = async () => {
-      if (imgName !== undefined) {
-        const reference = ref(storage, `file/imgName`);
-        console.log(reference);
-        await getDownloadURL(reference).then((x) => {
-          setImgUrl(x);
-        });
-      }
-    };
-    func();
-  }, []);
-
-  return <img src={imgUrl} />;
 }
 
 export default Detail;
