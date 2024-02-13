@@ -294,6 +294,7 @@ function SignUp() {
         navigate("/");
       })
       .catch((err) => {
+        alert(err.code);
         console.log(err);
       });
   };
