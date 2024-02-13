@@ -81,7 +81,7 @@ const Label = styled.label`
   justify-content: space-between;
   margin: 14px 0px 4px 0px;
   font-size: 15px;
-  font-weight: 700w;
+  font-weight: 700;
 `;
 const LoginInput = styled.input`
   width: 100%;
@@ -239,6 +239,7 @@ function Login() {
                         fontSize: "14px",
                         cursor: "pointer",
                         textDecoration: "underline",
+                        fontWeight: "400",
                       }}
                     >
                       Forgot?

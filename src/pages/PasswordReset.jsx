@@ -8,6 +8,7 @@ import {
   signInWithRedirect,
   getRedirectResult,
   sendPasswordResetEmail,
+  getAuth,
 } from "firebase/auth";
 import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
 import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
@@ -69,7 +70,7 @@ const LoginInput = styled.input`
 const FieldSet = styled.fieldset`
   margin-bottom: 12px;
 `;
-
+const Session = styled.form``;
 const Button = styled.button`
   margin-top: 20px;
   width: 100%;
@@ -94,17 +95,28 @@ function PasswordReset() {
     event.preventDefault();
     setEmail(event.target.value);
   };
-  const handleForgotPassword = () => {
+  const handleForgotPassword = (event) => {
+    event.preventDefault();
+    getAuth()
+      .importUsers()
+      .then((data) => console.log(`DATA${DATA}`));
     sendPasswordResetEmail(auth, email)
       .then(() => {
         // Password reset email sent!
         alert("Password reset email sent!");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        console.log(errorCode);
-        const errorMessage = error.message;
-        // ..
+        switch (error.code) {
+          case "auth/missing-email":
+            alert("가입 시 사용했던 이메일을 입력해주세요.");
+            break;
+          case "auth/invalid-email":
+            alert("유효하지 않은 이메일 형식입니다.");
+            break;
+          default:
+            alert(`ERROR : ${error.code}`);
+            return;
+        }
       });
   };
   return (
@@ -121,18 +133,20 @@ function PasswordReset() {
             that we will never send your password via email.
           </PasswordInstructions>
           <AuthForm>
-            <FormField>
-              <FieldSet>
-                <Label>Email Address</Label>
-                <LoginInput
-                  type="text"
-                  name="email"
-                  value={email}
-                  onChange={updateEmail}
-                />
-              </FieldSet>
-            </FormField>
-            <Button type="submit">Send Reset Instructions</Button>
+            <Session onSubmit={handleForgotPassword}>
+              <FormField>
+                <FieldSet>
+                  <Label>Email Address</Label>
+                  <LoginInput
+                    type="text"
+                    name="email"
+                    value={email}
+                    onChange={updateEmail}
+                  />
+                </FieldSet>
+              </FormField>
+              <Button type="submit">Send Reset Instructions</Button>
+            </Session>
           </AuthForm>
         </AuthContent>
       </Content>
