@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "src/firebase";
+import { auth, db } from "src/firebase";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -96,18 +97,32 @@ function PasswordReset() {
     setEmail(event.target.value);
   };
   const checkAccountExist = (email) => {
-    return auth
-      .getUserByEmail(email)
-      .then((userRecord) => {
-        // 사용자가 존재함
-        console.log("사용자 데이터를 성공적으로 가져왔습니다:", userRecord);
-        return true;
-      })
-      .catch((error) => {
-        // 사용자가 존재하지 않음
-        console.log("사용자 데이터를 가져오는 중 오류가 발생했습니다:", error);
-        return false;
-      });
+    //TODO : Understand this Logic!
+    return new Promise((resolve, reject) => {
+      const q = query(collection(db, "users"), where("email", "==", email));
+      const unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
+          const matchingDocs = [];
+          querySnapshot.forEach((doc) => {
+            matchingDocs.push(doc.data().name);
+          });
+          if (matchingDocs.length > 1) {
+            // 이메일과 일치하는 문서가 하나 이상이면 true 반환
+            resolve(true);
+          } else {
+            // 이메일과 일치하는 문서가 하나도 없거나 하나만 있으면 false 반환
+            resolve(false);
+          }
+          unsubscribe(); // 리스너 해제
+        },
+        (error) => {
+          // 에러 처리
+          console.error("Error fetching documents: ", error);
+          reject(error);
+        }
+      );
+    });
   };
 
   const handleForgotPassword = (event) => {
