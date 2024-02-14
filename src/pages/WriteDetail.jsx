@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { onAuthStateChanged } from "firebase/auth";
 import LanguageFilter from "src/components/WriteDetailComponents/LanguageFilter";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "src/firebase";
+import { collection, addDoc, query, getDocs } from "firebase/firestore";
+import { db, auth } from "src/firebase";
 import { LinkStyle } from "src/util/Style";
 import { useDispatch, useSelector } from "react-redux";
-
+import { initialization } from "src/redux/modules/user";
 import { urlPatch } from "src/redux/modules/postBasicImage";
 import { useNavigate } from "react-router-dom";
 
 function WriteDetail() {
-  const user = useSelector((state) => state.users.user);
+  //const user = useSelector((state) => state.users.user);
+  const userInfo = useSelector((state) => state.users.user);
   const postBasicImage = useSelector((state) => state.postBasicImage);
   const [check, setCheck] = useState(""); // check 상태 추가
   const dispatch = useDispatch();
@@ -26,6 +28,32 @@ function WriteDetail() {
 
   //     const initialTodos = [];
 
+  //     querySnapshot.forEach((doc) => {
+  //       const data = {
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       };
+  //       initialTodos.push(data);
+  //     });
+  //     const checkuser = initialTodos.find((e) => e.id === check);
+  //     dispatch(initialization(checkuser));
+  //   };
+  //   fetchData();
+  // }, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCheck(user.uid); // onAuthStateChanged 내에서 check 값 설정
+    });
+    return () => unsubscribe(); // cleanup 함수
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const q = query(collection(db, "users"));
+      const querySnapshot = await getDocs(q);
+
+      const initialTodos = [];
+
       querySnapshot.forEach((doc) => {
         const data = {
           id: doc.id,
@@ -38,7 +66,6 @@ function WriteDetail() {
     };
     fetchData();
   }, [check, dispatch]); // check를 useEffect의 종속성으로 추가
-
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
@@ -77,7 +104,8 @@ function WriteDetail() {
     dateContainer();
     const newContent = {
       id: randomId,
-      nickname: user.nickname,
+      // nickname: user.nickname,
+      nickname: userInfo.nickname,
       userUid: check,
       title,
       quillValue,
