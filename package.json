@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react-oauth/google": "^0.12.1",
-    "xeger/quill-image-actions": "^0.7.2",
-    "xeger/quill-image-formats": "^0.7.2",
+    "@react-oauth/google": "^0.12.1",
+    "@xeger/quill-image-actions": "^0.7.2",
+    "@xeger/quill-image-formats": "^0.7.2",
     "bootstrap": "^5.3.2",
     "dompurify": "^3.0.8",
     "firebase": "^10.7.2",
@@ -30,9 +30,9 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "types/react": "^18.2.43",
-    "types/react-dom": "^18.2.17",
-    "vitejs/plugin-react": "^4.2.1",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.55.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
