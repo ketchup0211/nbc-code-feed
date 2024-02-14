@@ -32,8 +32,6 @@ function Detail() {
     fetchData();
   }, []);
   const selectedData = contents.find((item) => item.id === id);
-  console.log(contents);
-  console.log(selectedData);
   //직접 바꾸는 부분
   {
     /*

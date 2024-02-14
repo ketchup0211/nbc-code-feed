@@ -7,11 +7,13 @@ import { checkSearch } from "src/redux/modules/search";
 import { initialization } from "src/redux/modules/user";
 import { LinkStyle } from "src/util/Style";
 import { collection, getDocs, query } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 function HomeHeader() {
   const user = useSelector((state) => state.users.user);
   const search = useSelector((state) => state.search);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async (checkuid) => {
@@ -79,7 +81,7 @@ function HomeHeader() {
             <LinkStyle to={"/myPage"}>
               <UserDisplay>
                 <ProfileName>{user.nickname}</ProfileName>
-                <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
+                <ProfileImage src={user.profileImg} alt="프로필 사진입니다." />
               </UserDisplay>
             </LinkStyle>
             <LogOutBtn onClick={logOut}>Logout</LogOutBtn>

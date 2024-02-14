@@ -67,7 +67,7 @@ function SerchHead() {
         <LinkStyle to={"/myPage"}>
           <UserDisplay>
             <ProfileName>{user.nickname}</ProfileName>
-            <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
+            <ProfileImage src={user.profileImg} alt="프로필 사진입니다." />
           </UserDisplay>
         </LinkStyle>
         <LogOutBtn onClick={logOut}>Logout</LogOutBtn>

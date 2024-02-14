@@ -11,7 +11,7 @@ import { urlPatch } from "src/redux/modules/postBasicImage";
 import { useNavigate } from "react-router-dom";
 
 function WriteDetail() {
-  //const user = useSelector((state) => state.users.user);
+  const user = useSelector((state) => state.users.user);
   const postBasicImage = useSelector((state) => state.postBasicImage);
   const [check, setCheck] = useState(""); // check 상태 추가
   const dispatch = useDispatch();
@@ -26,18 +26,19 @@ function WriteDetail() {
 
   //     const initialTodos = [];
 
-  //     querySnapshot.forEach((doc) => {
-  //       const data = {
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       };
-  //       initialTodos.push(data);
-  //     });
-  //     const checkuser = initialTodos.find((e) => e.id === check);
-  //     dispatch(initialization(checkuser));
-  //   };
-  //   fetchData();
-  // }, []);
+      querySnapshot.forEach((doc) => {
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        initialTodos.push(data);
+      });
+      const checkuser = initialTodos.find((e) => e.id === check);
+      dispatch(initialization(checkuser));
+    };
+    fetchData();
+  }, [check, dispatch]); // check를 useEffect의 종속성으로 추가
+
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
@@ -76,7 +77,7 @@ function WriteDetail() {
     dateContainer();
     const newContent = {
       id: randomId,
-      // nickname: user.nickname,
+      nickname: user.nickname,
       userUid: check,
       title,
       quillValue,
