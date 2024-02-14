@@ -14,15 +14,18 @@ import { urlPatch } from "src/redux/modules/postBasicImage";
 import { useNavigate } from "react-router-dom";
 
 function WriteDetail() {
-  const user = useSelector((state) => state.users.user);
+  const userInfo = useSelector((state) => state.users.user);
   const postBasicImage = useSelector((state) => state.postBasicImage);
-  let check = "";
+  const [check, setCheck] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      check = user.uid;
+      setCheck(user.uid);
     });
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
@@ -30,17 +33,21 @@ function WriteDetail() {
       const initialTodos = [];
 
       querySnapshot.forEach((doc) => {
-        const data = {
-          id: doc.id,
-          ...doc.data(),
-        };
-        initialTodos.push(data);
+        if (doc.id === check) {
+          const data = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          initialTodos.push(data);
+        }
+        return;
       });
       const checkuser = initialTodos.find((e) => e.id === check);
       dispatch(initialization(checkuser));
     };
     fetchData();
-  }, []);
+  }, [check]);
+
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
@@ -79,7 +86,7 @@ function WriteDetail() {
     dateContainer();
     const newContent = {
       id: randomId,
-      nickname: user.nickname,
+      nickname: userInfo.nickname,
       userUid: check,
       title,
       quillValue,
