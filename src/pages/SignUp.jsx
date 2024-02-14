@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 //Authentication
 import {
   createUserWithEmailAndPassword,
@@ -21,6 +20,8 @@ import {
 import { db, auth } from "src/firebase";
 import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
 import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
+import { storage } from "src/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function SignUp() {
   const [signUp, setSignUp] = useState(false);
@@ -30,6 +31,18 @@ function SignUp() {
   const [username, setUserName] = useState("");
   const [agree, setAgree] = useState(false);
   const navigate = useNavigate();
+  const handleGetDefaultProfile = async () => {
+    const imagePath = "images/defaultProfile.jpg";
+
+    try {
+      const imageRef = ref(storage, imagePath);
+      const downloadUrl = await getDownloadURL(imageRef);
+      return downloadUrl;
+    } catch (error) {
+      console.error("이미지 다운로드 URL을 가져오는 중 오류 발생:", error);
+      throw error; // 오류를 다시 던져서 상위 레벨에서 처리할 수 있도록 합니다.
+    }
+  };
 
   const handleEmailSignUp = (event) => {
     event.preventDefault();
@@ -82,9 +95,11 @@ function SignUp() {
         email,
         password
       );
+      let defaultProfileUrl = await handleGetDefaultProfile();
       // update Account Profile
       updateProfile(auth.currentUser, {
         displayName: name,
+        photoURL: defaultProfileUrl,
       })
         .then(() => {
           alert("SUCCESS");
@@ -99,7 +114,7 @@ function SignUp() {
           nickname: username,
           email,
           agree,
-          profileImg: "image/basicavatar.jpg",
+          profileImg: defaultProfileUrl,
         };
         setDoc(doc(db, path), newUserInfo);
       } catch (error) {
@@ -144,9 +159,10 @@ function SignUp() {
         }
         // make new Account Infomation
         try {
+          let defaultProfileUrl = await handleGetDefaultProfile();
           updateProfile(auth.currentUser, {
             displayName: name,
-            photoURL: "image/basicavatar.jpg",
+            photoURL: defaultProfileUrl,
           })
             .then(() => {
               alert("SUCCESS");
@@ -159,7 +175,7 @@ function SignUp() {
             nickname: userCredential.user.displayName,
             email: userCredential.user.email,
             agree: true,
-            profileImg: "image/basicavatar.jpg",
+            profileImg: defaultProfileUrl,
           };
           setDoc(doc(db, path), newUserInfo);
           console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");
@@ -187,9 +203,10 @@ function SignUp() {
         }
         // make new Account Infomation
         try {
+          let defaultProfileUrl = await handleGetDefaultProfile();
           updateProfile(auth.currentUser, {
             displayName: name,
-            photoURL: "image/basicavatar.jpg",
+            photoURL: defaultProfileUrl,
           })
             .then(() => {
               alert("SUCCESS");
@@ -202,7 +219,7 @@ function SignUp() {
             nickname: userCredential.user.displayName,
             email: userCredential.user.email,
             agree: true,
-            profileImg: "image/basicavatar.jpg",
+            profileImg: defaultProfileUrl,
           };
           setDoc(doc(db, path), newUserInfo);
           console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");
