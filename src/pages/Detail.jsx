@@ -199,7 +199,11 @@ const Container = styled.div`
   align-items: center;
   padding: 20px;
 `;
-const Title = styled.div``;
+const Title = styled.div`
+  text-align: left;
+  padding: 20px 10px;
+  margin: 10px;
+`;
 
 const AvatarImg = styled.img`
   float: left;

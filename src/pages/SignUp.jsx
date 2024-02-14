@@ -13,7 +13,6 @@ import {
   doc,
   setDoc,
   collection,
-  addDoc,
   query,
   where,
   onSnapshot,
