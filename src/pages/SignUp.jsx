@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 //Authentication
@@ -20,7 +20,7 @@ import { db, auth } from "src/firebase";
 import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
 import { gitProvider } from "src/components/LoginComponents/GitHubAuth";
 import { storage } from "src/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage";
 
 function SignUp() {
   const [signUp, setSignUp] = useState(false);

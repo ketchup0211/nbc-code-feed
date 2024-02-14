@@ -12,6 +12,7 @@ function Detail() {
   //const [selectedFile, setSelectedFile] = useState(null);
   //  const [edit, setEdit] = useState(true);
   const { id } = useParams();
+
   useEffect(() => {
     const fetchData = async () => {
       const q = query(collection(db, "posts"));
@@ -30,6 +31,7 @@ function Detail() {
   if (!selectedData) {
     return;
   }
+
   console.log(selectedData.image);
   return (
     <UpperContainer>

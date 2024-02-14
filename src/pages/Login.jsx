@@ -4,10 +4,6 @@ import { auth, db } from "src/firebase";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
-  sendPasswordResetEmail,
   updateProfile,
 } from "firebase/auth";
 import { googleProvider } from "src/components/LoginComponents/GoogleAuth";
@@ -22,7 +18,7 @@ import {
   where,
 } from "firebase/firestore";
 import { storage } from "src/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage";
 
 function Login() {
   const [login, setLogin] = useState("");

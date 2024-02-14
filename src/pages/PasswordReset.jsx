@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { auth, db } from "src/firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { onAuthStateChanged, sendPasswordResetEmail } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
