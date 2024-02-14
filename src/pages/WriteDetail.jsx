@@ -109,7 +109,7 @@ function WriteDetail() {
       </Nav>
       {/* <FilterCheck /> */}
       <LanguageFilter onClickedLanguage={handleSelectedLanguage} />
-      <div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <div>
           <InputTitle
             type="text"
@@ -216,6 +216,7 @@ export const DoneButtonDiv = styled.div`
   width: 50%;
   display: flex;
   margin: auto;
+  z-index: 1;
 `;
 export const DoneButton = styled.button`
   cursor: pointer;
