@@ -103,6 +103,7 @@ const NavList = styled.nav`
   padding: 5px;
   width: 100%;
   height: 50px;
+  overflow-x: hidden;
 `;
 
 const NavPage = styled.ul`

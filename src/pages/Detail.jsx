@@ -32,68 +32,7 @@ function Detail() {
     fetchData();
   }, []);
   const selectedData = contents.find((item) => item.id === id);
-  //직접 바꾸는 부분
-  {
-    /*
-  const handleEdit = async () => {
-    const updateContents = doc(db, "posts", `${id}`);
 
-    await updateDoc(updateContents, {
-      content: explanation,
-    });
-  };
-
-  const inputRef = useRef(null);
-
-  const storage = getStorage();
-
-  const handleFileChange = async (event) => {
-    event.stopPropagation();
-    const file = event.target.files[0];
-
-    console.log(file);
-    console.log(file.name);
-
-    setSelectedFile(file);
-    console.log(selectedFile);
-    const reader = new FileReader();
-
-    // reader.onload = (e) => {
-    //   // 읽어들인 이미지 URL을 출력하거나 다른 작업을 수행할 수 있습니다.
-    //   console.log("이미지 URL:", e.target.result);
-    // };
-    const imageRef = ref(storage, `file/${selectedFile.name}`);
-
-    await uploadBytes(imageRef, selectedFile).then((snapshot) => {
-      console.log(imageRef);
-      console.log(snapshot);
-      console.log("Uploaded a blob or file!");
-    });
-
-    getDownloadURL(ref(storage, `file/${selectedFile}`))
-      .then((url) => {
-        const xhr = new XMLHttpRequest();
-        xhr.responseType = "blob";
-        // xhr.onload = (event) => {
-        //   const blob = xhr.response;
-        // };
-        xhr.open("GET", url);
-        xhr.send();
-
-        // Or inserted into an <img> element
-        const img = document.getElementById("myimg");
-        img.setAttribute("src", url);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    if (file) {
-      reader.readAsDataURL(file); // 파일을 읽어들이고 onload 이벤트를 트리거합니다.
-    }
-  };
- */
-  }
   // 'file' comes from the Blob or File API
   const sanitizer = DOMPurify.sanitize;
 
@@ -181,30 +120,31 @@ function Detail() {
 export default Detail;
 
 const UpperContainer = styled.div`
-  position: relative;
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
   display: flex;
-  width: 1200px;
-  margin: 0px auto;
+  width: 80%;
+  margin: 30px auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  border: 2px solid #d1d1d1;
+  border-radius: 15px;
+  margin-top: 45px;
+  overflow-x: hidden;
 `;
 const Title = styled.div`
-  text-align: left;
-  padding: 20px 10px;
-  margin: 10px;
+  font-weight: 800;
+  font-size: 24px;
+  padding: 10px 0px;
 `;
 
 const WriteContainer = styled.div`
-  margin-top: 40px;
   width: 82%;
   padding: 30px;
-  border: 2px solid dimgray;
-  border-radius: 15px;
   display: flex;
   flex-direction: column;
   ql-align-center {
