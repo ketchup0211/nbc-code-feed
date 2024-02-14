@@ -16,8 +16,7 @@ function Home() {
 export default Home;
 
 const Background = styled.div`
-  background-color: whitesmoke;
+  background-color: #101820;
   height: 100vh;
-  box-sizing: border-box;
   overflow-x: hidden;
 `;

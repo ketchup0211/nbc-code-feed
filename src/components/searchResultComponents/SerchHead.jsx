@@ -6,6 +6,7 @@ import { auth, db } from "src/firebase";
 import { useEffect, useState } from "react";
 import { initialization } from "src/redux/modules/user";
 import { collection, getDocs, query } from "firebase/firestore";
+import CodeFeedLogo from "src/assets/CodeFeedLogo.svg";
 
 function SerchHead() {
   const { user } = useSelector((state) => state.users);
@@ -52,7 +53,7 @@ function SerchHead() {
     return (
       <HeadNav>
         <LinkStyle to={"/"}>
-          <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
+          <img src={CodeFeedLogo} alt="CodeFeedLogo" />
         </LinkStyle>
         <LinkStyle to={"/sign-up"}>로그인</LinkStyle>
       </HeadNav>
@@ -61,7 +62,7 @@ function SerchHead() {
   return (
     <HeadNav>
       <LinkStyle to={"/"}>
-        <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
+        <img src={CodeFeedLogo} alt="CodeFeedLogo" />
       </LinkStyle>
       <Profile>
         <LinkStyle to={"/myPage"}>
@@ -79,13 +80,12 @@ function SerchHead() {
 export default SerchHead;
 
 const HeadNav = styled.nav`
-  top: 0;
-  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  height: 60px;
-  padding: 10px;
+  padding: 0px 20px;
+  height: 110px;
+  overflow-x: hidden;
+  border-bottom: 1px solid #f2aa4c;
   & label {
     cursor: pointer;
   }
