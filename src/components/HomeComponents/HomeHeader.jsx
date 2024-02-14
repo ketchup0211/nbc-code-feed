@@ -1,13 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { auth, db } from "src/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { checkSearch } from "src/redux/modules/search";
-import { useEffect } from "react";
 import { initialization } from "src/redux/modules/user";
 import { LinkStyle } from "src/util/Style";
 import { collection, getDocs, query } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 function HomeHeader() {
   const user = useSelector((state) => state.users.user);
@@ -16,14 +16,7 @@ function HomeHeader() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let checkuid = "";
-    onAuthStateChanged(auth, (user) => {
-      if (auth.currentUser === null) {
-        return;
-      }
-      checkuid = user.uid;
-    });
-    const fetchData = async () => {
+    const fetchData = async (checkuid) => {
       const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
 
@@ -39,15 +32,20 @@ function HomeHeader() {
       const check = initialTodos.find((e) => e.id === checkuid);
       dispatch(initialization(check));
     };
-    fetchData();
-    onAuthStateChanged(auth, (user) => {
-      checkuid = user.uid;
-    });
-  }, []);
+
+    const authStateChangedCallback = (user) => {
+      if (user) {
+        fetchData(user.uid);
+      }
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, authStateChangedCallback);
+
+    return () => unsubscribe();
+  }, [dispatch]);
 
   const logOut = async (event) => {
     event.preventDefault();
-    navigate("/");
     await signOut(auth);
     dispatch(initialization(null));
   };
@@ -62,27 +60,6 @@ function HomeHeader() {
     dispatch(initialization(null));
   };
 
-  if (user === null || user === undefined)
-    return (
-      <NavList>
-        <NavPage>
-          <LinkStyle to={"/"}>
-            <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
-          </LinkStyle>
-        </NavPage>
-        <NavInformation>
-          <form onSubmit={SubmitHandler}>
-            <input
-              type="text"
-              placeholder="검색"
-              value={search}
-              onChange={inputChcange}
-            />
-          </form>
-          <LinkStyle to={"/login"}>Login</LinkStyle>
-        </NavInformation>
-      </NavList>
-    );
   return (
     <NavList>
       <NavPage>
@@ -99,15 +76,19 @@ function HomeHeader() {
             onChange={inputChcange}
           />
         </form>
-        <Profile>
-          <LinkStyle to={"/myPage"}>
-            <UserDisplay>
-              <ProfileName>{user.nickname}</ProfileName>
-              <ProfileImage src={user.photoURL} alt="프로필 사진입니다." />
-            </UserDisplay>
-          </LinkStyle>
-          <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
-        </Profile>
+        {user ? (
+          <Profile>
+            <LinkStyle to={"/myPage"}>
+              <UserDisplay>
+                <ProfileName>{user.nickname}</ProfileName>
+                <ProfileImage src={user.profileImg} alt="프로필 사진입니다." />
+              </UserDisplay>
+            </LinkStyle>
+            <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
+          </Profile>
+        ) : (
+          <LinkStyle to={"/login"}>Login</LinkStyle>
+        )}
       </NavInformation>
     </NavList>
   );
