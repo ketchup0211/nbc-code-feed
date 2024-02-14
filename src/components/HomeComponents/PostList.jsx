@@ -27,6 +27,7 @@ function PostList() {
         };
         initialTodos.push(data);
       });
+
       dispatch(addPost(initialTodos));
     };
     fetchData();

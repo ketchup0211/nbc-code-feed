@@ -90,6 +90,7 @@ function WriteDetail() {
       userUid: check,
       title,
       quillValue,
+
       dateNTime,
       language: selectedLanguage,
       image: postBasicImage,
