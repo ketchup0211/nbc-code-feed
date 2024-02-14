@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import LanguageFilter from "src/components/WriteDetailComponents/LanguageFilter";
-//import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
-// import DOMPurify from "dompurify";
 import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { auth, db } from "src/firebase";
 import { LinkStyle } from "src/util/Style";
@@ -16,13 +14,15 @@ import { useNavigate } from "react-router-dom";
 function WriteDetail() {
   const userInfo = useSelector((state) => state.users.user);
   const postBasicImage = useSelector((state) => state.postBasicImage);
-  const [check, setCheck] = useState();
+  const [check, setCheck] = useState(""); // check 상태 추가
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      setCheck(user.uid);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCheck(user.uid); // onAuthStateChanged 내에서 check 값 설정
     });
+    return () => unsubscribe(); // cleanup 함수
   }, []);
 
   useEffect(() => {
@@ -33,21 +33,17 @@ function WriteDetail() {
       const initialTodos = [];
 
       querySnapshot.forEach((doc) => {
-        if (doc.id === check) {
-          const data = {
-            id: doc.id,
-            ...doc.data(),
-          };
-          initialTodos.push(data);
-        }
-        return;
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        initialTodos.push(data);
       });
       const checkuser = initialTodos.find((e) => e.id === check);
       dispatch(initialization(checkuser));
     };
     fetchData();
-  }, [check]);
-
+  }, [check, dispatch]); // check를 useEffect의 종속성으로 추가
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
