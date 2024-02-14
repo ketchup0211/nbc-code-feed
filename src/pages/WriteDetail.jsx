@@ -46,7 +46,7 @@ function WriteDetail() {
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
-  const randomId = useSelector((state) => state.postImageid);
+  const { randomId } = useSelector((state) => state.postImageid);
   const [selectedLanguage, setSelectedLanguage] = useState("");
 
   let dateNTime = "";
