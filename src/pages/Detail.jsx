@@ -29,7 +29,7 @@ function Detail() {
     fetchData();
   }, []);
   const selectedData = contents.find((item) => item.id === id);
-
+  console.log(selectedData.quillValue);
   // 'file' comes from the Blob or File API
   const sanitizer = DOMPurify.sanitize;
 
