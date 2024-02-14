@@ -173,7 +173,7 @@ function Detail() {
           </>
         )}
       </Container>
-  */}
+      */}
 
       <button onClick={() => navigate("/WriteDetail")}>수정 페이지로</button>
     </UpperContainer>
@@ -214,33 +214,3 @@ const WriteContainer = styled.div`
     align-items: center;
   }
 `;
-// const ImageDiv = styled.div`
-//   margin-top: 40px;
-//   background-size: cover;
-//   height: 500px;
-//   border-radius: 8px;
-// `;
-
-// const ImageEditBtn = styled.button`
-//   margin-top: 5px;
-//   margin-right: 5px;
-//   float: right;
-// `;
-
-// const Description = styled.p`
-//   font-size: 18px;
-//   margin: 20px auto 0px auto;
-//   width: 600px;
-//   line-height: 1.5;
-// `;
-// const EditDescription = styled.textarea`
-//   font-size: 18px;
-//   margin: 20px auto 0px auto;
-//   width: 600px;
-//   line-height: 1.5;
-// `;
-// const EditBtn = styled.button`
-//   float: right;
-//   width: 80px;
-//   height: 30px;
-// `;
