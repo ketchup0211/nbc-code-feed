@@ -11,6 +11,7 @@ const imageHandler = (quillRef) => {
   const path = quillRef.current.props.randomId;
   const checked = quillRef.current.props.check;
   const dispatch = quillRef.current.props.dispatch;
+  const postBasicImage = quillRef.current.props.postBasicImage;
 
   input.setAttribute("type", "file");
   input.setAttribute("accept", "image/*");
@@ -27,11 +28,16 @@ const imageHandler = (quillRef) => {
       // Firebase Method : uploadBytes, getDownloadURL
       await uploadBytes(storageRef, file).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
-          dispatch(urlPatch(url));
           // 이미지 URL 에디터에 삽입
           editor.insertEmbed(range.index, "image", url);
           // URL 삽입 후 커서를 이미지 뒷 칸으로 이동
           editor.setSelection(range.index + 1);
+        });
+        getDownloadURL(snapshot.ref).then((url) => {
+          if (postBasicImage) {
+            return;
+          }
+          dispatch(urlPatch(url));
         });
       });
     } catch (error) {

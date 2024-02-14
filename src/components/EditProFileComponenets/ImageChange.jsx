@@ -33,10 +33,10 @@ function ImageChange({ user, dispatchUser }) {
     const postRef = doc(db, "users", `${user.id}`);
     const downloadUrl = await getDownloadURL(imageRef);
     await updateDoc(postRef, {
-      photoURL: downloadUrl,
+      profileImg: downloadUrl,
     });
 
-    dispatchUser({ ...user, photoURL: downloadUrl });
+    dispatchUser({ ...user, profileImg: downloadUrl });
     setSelectedFile([]);
     setPreviewImg([]);
   };
@@ -45,7 +45,7 @@ function ImageChange({ user, dispatchUser }) {
     <>
       <p>Image Change</p>
       <ImageChangeSection>
-        <ImageStyle src={user.photoURL} />
+        <ImageStyle src={user.profileImg} />
         <ChangeBtn onClick={handClick}>Image Upload</ChangeBtn>
         {previewImg.length === 0 ? false : <ImageStyle src={previewImg} />}
         <InputStyle type="file" ref={hiddenFileInput} onChange={fileChange} />
