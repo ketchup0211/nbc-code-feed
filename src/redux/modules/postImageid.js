@@ -1,4 +1,6 @@
-const initialState = { randomId: crypto.randomUUID() };
+const initialState = {
+  randomId: crypto.randomUUID(),
+};
 const postImageid = (state = initialState, action) => {
   switch (action.type) {
     default:
