@@ -44,7 +44,7 @@ function CheckPost() {
                   <img src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
                 </div>
-                <p>{e.name}</p>
+                <p>{e.nickname}</p>
               </PostCard>
             </LinkStyle>
           );
@@ -57,7 +57,6 @@ function CheckPost() {
         .filter((i) => {
           return (
             i.language.replace(/\s/g, "").toUpperCase().includes(searchCheck) ||
-            i.name.replace(/\s/g, "").toUpperCase().includes(searchCheck) ||
             i.title.replace(/\s/g, "").toUpperCase().includes(searchCheck)
           );
         })
