@@ -29,9 +29,7 @@ function WriteDetail() {
     const fetchData = async () => {
       const q = query(collection(db, "users"));
       const querySnapshot = await getDocs(q);
-
       const initialTodos = [];
-
       querySnapshot.forEach((doc) => {
         const data = {
           id: doc.id,
@@ -44,6 +42,7 @@ function WriteDetail() {
     };
     fetchData();
   }, [check, dispatch]); // check를 useEffect의 종속성으로 추가
+
   const [quillValue, setQuillValue] = useState("");
   const [title, setTitle] = useState("");
   const [userContents, setUserContents] = useState([]);
@@ -86,7 +85,6 @@ function WriteDetail() {
       userUid: check,
       title,
       quillValue,
-
       dateNTime,
       language: selectedLanguage,
       image: postBasicImage,
@@ -97,14 +95,11 @@ function WriteDetail() {
     // setTitle("");
     // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
     const collectionRef = collection(db, "posts"); // 추후에 {auth.id} 로 변경하면 될 듯?
-
     await addDoc(collectionRef, newContent);
     dispatch(urlPatch(""));
     navigate(`/detail/${newContent.id}`);
   };
-
   // const sanitizer = DOMPurify.sanitize;
-
   return (
     <div>
       <Nav>
@@ -146,7 +141,6 @@ function WriteDetail() {
     </div>
   );
 }
-
 export default WriteDetail;
 
 export const Nav = styled.nav`
@@ -163,19 +157,15 @@ export const GoHome = styled.h2`
   font-size: 28px;
   font-weight: bold;
 `;
-
 export const UploadImageContainer = styled.div`
   display: flex;
   margin: auto;
-
   align-content: center;
   flex-wrap: wrap;
 `;
-
 export const InputImage = styled.input`
   display: none;
 `;
-
 export const UploadBox = styled.label`
   width: 750px;
   height: 100px;
@@ -190,13 +180,11 @@ export const UploadBox = styled.label`
   align-items: center;
   cursor: pointer;
 `;
-
 export const PriviewImgBox = styled.img`
   width: 180px;
   display: flex;
   margin: auto;
 `;
-
 export const InputTitle = styled.input`
   width: 60%;
   height: 50px;
@@ -213,7 +201,6 @@ export const InputTitle = styled.input`
   font-weight: 600;
   margin-top: 30px;
 `;
-
 export const InputContent = styled.textarea`
   width: 50%;
   height: 500px;
@@ -225,13 +212,11 @@ export const InputContent = styled.textarea`
   align-items: center;
   border-radius: 15px;
 `;
-
 export const DoneButtonDiv = styled.div`
   width: 50%;
   display: flex;
   margin: auto;
 `;
-
 export const DoneButton = styled.button`
   cursor: pointer;
   display: flex;
