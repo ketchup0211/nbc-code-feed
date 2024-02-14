@@ -20,19 +20,22 @@ export default function Post() {
 
   useEffect(() => {
     if (currentUser) {
-      const fetchPosts = async () => {
-        const postQuery = query(
-          collection(db, "posts")
-          // where('author', '==', currentUser.uid)
-        );
-        const postsSnapshot = await getDocs(postQuery);
-        const postList = postsSnapshot.docs.map((doc) => ({
-          ...doc.data(),
-        }));
-        setPosts(postList);
-      };
+      const fetchData = async () => {
+        const q = query(collection(db, "posts"));
+        const querySnapshot = await getDocs(q);
 
-      fetchPosts();
+        const initialTodos = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = {
+            ...doc.data(),
+          };
+          initialTodos.push(data);
+        });
+        const check = initialTodos.filter((e) => e.userUid === currentUser.uid);
+        setPosts(check);
+      };
+      fetchData();
     }
   }, [currentUser]);
 

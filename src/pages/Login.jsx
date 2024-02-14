@@ -21,11 +21,26 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import { storage } from "src/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function Login() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const handleGetDefaultProfile = async () => {
+    const imagePath = "images/defaultProfile.jpg";
+
+    try {
+      const imageRef = ref(storage, imagePath);
+      const downloadUrl = await getDownloadURL(imageRef);
+      return downloadUrl;
+    } catch (error) {
+      console.error("이미지 다운로드 URL을 가져오는 중 오류 발생:", error);
+      throw error; // 오류를 다시 던져서 상위 레벨에서 처리할 수 있도록 합니다.
+    }
+  };
+
   const updateInput = (event) => {
     switch (event.target.name) {
       case "login":
@@ -79,13 +94,23 @@ function Login() {
         }
         // make new Account Infomation
         try {
+          let defaultProfileUrl = await handleGetDefaultProfile();
+          console.log(`defaultProfileUrl : ${defaultProfileUrl}`);
+          updateProfile(auth.currentUser, {
+            photoURL: defaultProfileUrl,
+          })
+            .then(() => {
+              alert("SUCCESS");
+              navigate("/");
+            })
+            .catch((error) => alert(error));
           let path = `users/${userCredential.user.uid}`;
           const newUserInfo = {
             name: userCredential.user.displayName,
             nickname: userCredential.user.displayName,
             email: userCredential.user.email,
             agree: true,
-            profileImg: "image/basicavatar.jpg",
+            profileImg: defaultProfileUrl,
           };
           setDoc(doc(db, path), newUserInfo);
           console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");
@@ -113,13 +138,22 @@ function Login() {
         }
         // make new Account Infomation
         try {
+          let defaultProfileUrl = await handleGetDefaultProfile();
+          updateProfile(auth.currentUser, {
+            photoURL: defaultProfileUrl,
+          })
+            .then(() => {
+              alert("SUCCESS");
+              navigate("/");
+            })
+            .catch((error) => alert(error));
           let path = `users/${userCredential.user.uid}`;
           const newUserInfo = {
             name: userCredential.user.displayName,
             nickname: userCredential.user.displayName,
             email: userCredential.user.email,
             agree: true,
-            profileImg: "image/basicavatar.jpg",
+            profileImg: defaultProfileUrl,
           };
           setDoc(doc(db, path), newUserInfo);
           console.log("FIRESTORE : STORE_USR_DATA_SUCCESS");

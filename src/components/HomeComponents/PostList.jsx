@@ -80,7 +80,7 @@ export default PostList;
 const PostListMain = styled.ol`
   min-height: 400px;
   height: auto;
-  margin: 0% 3%;
+  margin: 3% 5%;
   display: grid;
   grid-gap: 36px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -98,16 +98,17 @@ const PostCard = styled.div`
   & span {
     position: relative;
     bottom: 100%;
-    height: 99%;
+    height: 100%;
     opacity: 0;
     visibility: none;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
     border-radius: 12px;
     color: white;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.56);
     transition: all 0.25s ease-in-out;
+    //margin-bottom: 10px;
   }
   & img {
     width: 100%;

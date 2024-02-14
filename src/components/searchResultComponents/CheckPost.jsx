@@ -1,10 +1,10 @@
-import { collection, getDocs, query } from "firebase/firestore";
-import { useEffect } from "react";
+import styled from "styled-components";
+import { LinkStyle } from "src/util/Style";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "src/firebase";
 import { addPost } from "src/redux/modules/postList";
-import { LinkStyle } from "src/util/Style";
-import styled from "styled-components";
+import { useEffect } from "react";
+import { collection, getDocs, query } from "firebase/firestore";
 import Loading from "../Loading";
 
 function CheckPost() {
