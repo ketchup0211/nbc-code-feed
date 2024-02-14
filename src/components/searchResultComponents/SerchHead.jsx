@@ -3,37 +3,45 @@ import { LinkStyle } from "src/util/Style";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "src/firebase";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { initialization } from "src/redux/modules/user";
 import { collection, getDocs, query } from "firebase/firestore";
 
 function SerchHead() {
   const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
+  const [checkuid, setCheckuid] = useState("");
 
   useEffect(() => {
-    let checkuid = "";
-    const fetchData = async () => {
-      const q = query(collection(db, "users"));
-      const querySnapshot = await getDocs(q);
-
-      const initialTodos = [];
-
-      querySnapshot.forEach((doc) => {
-        const data = {
-          id: doc.id,
-          ...doc.data(),
-        };
-        initialTodos.push(data);
-      });
-      const check = initialTodos.find((e) => e.id === checkuid);
-      dispatch(initialization(check));
-    };
-    fetchData();
-    onAuthStateChanged(auth, (user) => {
-      checkuid = user.uid;
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCheckuid(user.uid);
+      }
     });
-  }, [dispatch]);
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    if (checkuid) {
+      const fetchData = async () => {
+        const q = query(collection(db, "users"));
+        const querySnapshot = await getDocs(q);
+
+        const initialTodos = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          initialTodos.push(data);
+        });
+        const check = initialTodos.find((e) => e.id === checkuid);
+        dispatch(initialization(check));
+      };
+      fetchData();
+    }
+  }, [checkuid, dispatch]);
 
   const logOut = async (event) => {
     event.preventDefault();

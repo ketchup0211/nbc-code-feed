@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import LanguageFilter from "src/components/WriteDetailComponents/LanguageFilter";
-//import FilterCheck from "src/components/HomeComponents/FilterCheck";
 import QuillComponent from "src/components/WriteDetailComponents/ReactQuill";
-// import DOMPurify from "dompurify";
-import { collection, addDoc, query, getDocs } from "firebase/firestore";
-import { auth, db } from "src/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "src/firebase";
 import { LinkStyle } from "src/util/Style";
 import { useDispatch, useSelector } from "react-redux";
-import { onAuthStateChanged } from "firebase/auth";
-import { initialization } from "src/redux/modules/user";
+
 import { urlPatch } from "src/redux/modules/postBasicImage";
 import { useNavigate } from "react-router-dom";
 
 function WriteDetail() {
   //const user = useSelector((state) => state.users.user);
   const postBasicImage = useSelector((state) => state.postBasicImage);
-  let check = "";
+  const [check, setCheck] = useState(""); // check 상태 추가
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // useEffect(() => {
@@ -83,6 +80,7 @@ function WriteDetail() {
       userUid: check,
       title,
       quillValue,
+
       dateNTime,
       language: selectedLanguage,
       image: postBasicImage,
