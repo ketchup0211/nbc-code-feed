@@ -105,13 +105,13 @@ function Detail() {
   }
   console.log(selectedData.image);
   return (
-    <>
+    <UpperContainer>
       <HomeHeader />
+      <Fixed>
+        <AvatarImg src={wendy} />
+        <Fixedleft>{selectedData.name}</Fixedleft>
+      </Fixed>
       <Container key={selectedData.id}>
-        <Fixed>
-          <AvatarImg src={wendy} />
-          <Fixedleft>{selectedData.name}</Fixedleft>
-        </Fixed>
         <Title>{selectedData.title}</Title>
 
         <WriteContainer
@@ -180,11 +180,15 @@ function Detail() {
   */}
 
       <button onClick={() => navigate("/WriteDetail")}>수정 페이지로</button>
-    </>
+    </UpperContainer>
   );
 }
 
 export default Detail;
+
+const UpperContainer = styled.div`
+  position: relative;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -203,6 +207,9 @@ const AvatarImg = styled.img`
   margin-right: 10px;
   max-width: 100px;
   max-height: 30px;
+  position: absolute;
+  top: 20px;
+  left: calc(50% - 100px);
 `;
 
 const Fixed = styled.div`
@@ -222,8 +229,11 @@ const WriteContainer = styled.div`
   border: 2px solid dimgray;
   border-radius: 15px;
   display: flex;
-
   flex-direction: column;
+  ql-align-center {
+    justify-content: center;
+    align-items: center;
+  }
 `;
 // const ImageDiv = styled.div`
 //   margin-top: 40px;
