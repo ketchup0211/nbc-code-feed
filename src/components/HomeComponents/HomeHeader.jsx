@@ -8,6 +8,7 @@ import { initialization } from "src/redux/modules/user";
 import { LinkStyle } from "src/util/Style";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import CodeFeedLogo from "src/assets/CodeFeedLogo.svg";
 
 function HomeHeader() {
   const user = useSelector((state) => state.users.user);
@@ -64,7 +65,7 @@ function HomeHeader() {
     <NavList>
       <NavPage>
         <LinkStyle to={"/"}>
-          <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
+          <img src={CodeFeedLogo} alt="CodeFeedLogo" />
         </LinkStyle>
       </NavPage>
       <NavInformation>
@@ -79,12 +80,10 @@ function HomeHeader() {
         </form>
         {user ? (
           <Profile>
-            <LinkStyle to={"/myPage"}>
-              <UserDisplay>
-                <ProfileName>{user.nickname}</ProfileName>
-                <ProfileImage src={user.profileImg} alt="프로필 사진입니다." />
-              </UserDisplay>
-            </LinkStyle>
+            <UserDisplay onClick={() => navigate("/myPage")}>
+              <ProfileName>{user.nickname}</ProfileName>
+              <ProfileImage src={user.profileImg} alt="프로필 사진입니다." />
+            </UserDisplay>
             <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
           </Profile>
         ) : (
@@ -104,7 +103,6 @@ export default HomeHeader;
 
 const NavList = styled.nav`
   display: flex;
-  gap: 10px;
   align-items: center;
   padding: 0px 20px;
   height: 100px;
@@ -125,7 +123,7 @@ const SvgImage = styled.img`
 
 const NavInformation = styled.ul`
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
   text-align: center;
   gap: 20px;
   align-items: center;
@@ -135,30 +133,48 @@ const NavInformation = styled.ul`
 
 const Profile = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
 `;
 
 const UserDisplay = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  cursor: pointer;
+  &:hover {
+    & * {
+      color: #f2aa4c;
+    }
+  }
 `;
 
 const ProfileName = styled.label`
-  cursor: pointer;
+  font-weight: 500;
+  color: white;
 `;
 
 const ProfileImage = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 `;
 
 const LogOutBtn = styled.button`
+  font-weight: "400";
+  color: white;
+  background-color: transparent;
   border: none;
-  height: 30px;
+  border-radius: 25px;
+  line-height: 10px;
+  padding: 20px;
   margin: 8px;
-  font-size: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  &:hover {
+    color: #f2aa4c;
+  }
 `;
 
 //cham

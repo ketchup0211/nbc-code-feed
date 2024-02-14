@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "src/firebase";
@@ -12,6 +12,7 @@ function PostList() {
   const post = useSelector((state) => state.postList.post);
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,28 +34,26 @@ function PostList() {
     fetchData();
   }, []);
 
-  if (post === null) return <Loading />;
-  if (id === undefined)
-    return (
-      <PostsContainer>
-        <PostListMain>
-          {post.map((e) => {
-            return (
-              <div>
-                <PostCard>
-                  <div>
-                    <PostImage src={e.image} alt="게시글 이미지 입니다." />
-                    <span>{e.title}</span>
-                  </div>
-                  <p style={{ fontWeight: "400" }}>{e.nickname}</p>
-                </PostCard>
-              </div>
-            );
-          })}
-        </PostListMain>
-      </PostsContainer>
-    );
-  return (
+  if (!post) return <Loading />;
+  return !id ? (
+    <PostsContainer>
+      <PostListMain>
+        {post.map((e) => {
+          return (
+            <div>
+              <PostCard key={e.id} onClick={() => navigate(`/detail/${e.id}`)}>
+                <div>
+                  <PostImage src={e.image} alt="게시글 이미지 입니다." />
+                  <span>{e.title}</span>
+                </div>
+                <p style={{ fontWeight: "400" }}>{e.nickname}</p>
+              </PostCard>
+            </div>
+          );
+        })}
+      </PostListMain>
+    </PostsContainer>
+  ) : (
     <PostsContainer>
       <PostListMain>
         {post
@@ -63,15 +62,16 @@ function PostList() {
           })
           .map((e) => {
             return (
-              <LinkStyle key={e.id} to={`/detail/${e.id}`}>
-                <PostCard>
-                  <div style={{ display: "flex" }}>
-                    <image src={e.image} alt="게시글 이미지 입니다." />
-                    <span>{e.title}</span>
-                  </div>
-                  <p>{e.nickname}</p>
-                </PostCard>
-              </LinkStyle>
+              <PostCard
+                key={(e, id)}
+                onClick={() => navigate(`/detail/${e.id}`)}
+              >
+                <div style={{ display: "flex" }}>
+                  <image src={e.image} alt="게시글 이미지 입니다." />
+                  <span>{e.title}</span>
+                </div>
+                <p style={{ fontWeight: "400" }}>{e.nickname}</p>
+              </PostCard>
             );
           })}
       </PostListMain>
@@ -82,7 +82,6 @@ function PostList() {
 export default PostList;
 
 const PostListMain = styled.ol`
-  min-height: 400px;
   padding: 0px 20px;
   display: grid;
   place-items: stretch;
