@@ -105,7 +105,7 @@ const NavList = styled.nav`
   display: flex;
   align-items: center;
   padding: 0px 20px;
-  height: 100px;
+  height: 110px;
   overflow-x: hidden;
   border-bottom: 1px solid #f2aa4c;
 `;

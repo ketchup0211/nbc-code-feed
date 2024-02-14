@@ -40,15 +40,13 @@ function PostList() {
       <PostListMain>
         {post.map((e) => {
           return (
-            <div>
-              <PostCard key={e.id} onClick={() => navigate(`/detail/${e.id}`)}>
-                <div>
-                  <PostImage src={e.image} alt="게시글 이미지 입니다." />
-                  <span>{e.title}</span>
-                </div>
-                <p style={{ fontWeight: "400" }}>{e.nickname}</p>
-              </PostCard>
-            </div>
+            <PostCard key={e.id} onClick={() => navigate(`/detail/${e.id}`)}>
+              <div>
+                <PostImage src={e.image} alt="게시글 이미지 입니다." />
+                <span>{e.title}</span>
+              </div>
+              <p style={{ fontWeight: "400" }}>{e.nickname}</p>
+            </PostCard>
           );
         })}
       </PostListMain>
@@ -142,7 +140,6 @@ const PostsContainer = styled.div`
   margin: 20px 0px;
   padding: 16px 0px;
   height: 100%;
-  overflow-y: scroll;
 `;
 
 const PostImage = styled.img`
