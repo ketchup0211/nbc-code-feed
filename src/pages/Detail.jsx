@@ -1,4 +1,3 @@
-import wendy from "../assets/img/wendy.png";
 import DOMPurify from "dompurify";
 import HomeHeader from "src/components/HomeComponents/HomeHeader";
 import { useNavigate, useParams } from "react-router-dom";
@@ -107,10 +106,7 @@ function Detail() {
   return (
     <UpperContainer>
       <HomeHeader />
-      <Fixed>
-        <AvatarImg src={wendy} />
-        <Fixedleft>{selectedData.name}</Fixedleft>
-      </Fixed>
+
       <Container key={selectedData.id}>
         <Title>{selectedData.title}</Title>
 
@@ -203,27 +199,6 @@ const Title = styled.div`
   text-align: left;
   padding: 20px 10px;
   margin: 10px;
-`;
-
-const AvatarImg = styled.img`
-  float: left;
-  border-radius: 50%;
-  margin-right: 10px;
-  max-width: 100px;
-  max-height: 30px;
-  position: absolute;
-  top: 20px;
-  left: calc(50% - 100px);
-`;
-
-const Fixed = styled.div`
-  margin-top: 20px;
-  width: 1100px;
-  position: fixed;
-`;
-
-const Fixedleft = styled.div`
-  float: left;
 `;
 
 const WriteContainer = styled.div`
