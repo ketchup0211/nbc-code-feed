@@ -69,11 +69,12 @@ function HomeHeader() {
       </NavPage>
       <NavInformation>
         <form onSubmit={SubmitHandler}>
-          <input
+          <SearchInput
             type="text"
             placeholder="검색"
             value={search}
             onChange={inputChcange}
+            style={{ backgroundColor: "#f2f2f3" }}
           />
         </form>
         {user ? (
@@ -87,7 +88,12 @@ function HomeHeader() {
             <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
           </Profile>
         ) : (
-          <LinkStyle to={"/login"}>Login</LinkStyle>
+          <LinkStyle
+            to={"/login"}
+            style={{ fontWeight: "500", color: "#F2AA4C" }}
+          >
+            Login
+          </LinkStyle>
         )}
       </NavInformation>
     </NavList>
@@ -98,17 +104,17 @@ export default HomeHeader;
 
 const NavList = styled.nav`
   display: flex;
+  gap: 10px;
   align-items: center;
-  margin: 5px;
-  padding: 5px;
-  width: 100%;
-  height: 50px;
+  padding: 0px 20px;
+  height: 100px;
   overflow-x: hidden;
+  border-bottom: 1px solid #f2aa4c;
 `;
 
 const NavPage = styled.ul`
-  display: flex;
   align-items: center;
+  padding: 6px;
 `;
 
 const SvgImage = styled.img`
@@ -119,16 +125,12 @@ const SvgImage = styled.img`
 
 const NavInformation = styled.ul`
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
+  text-align: center;
+  gap: 20px;
   align-items: center;
   width: 100%;
   margin: 10px;
-  & input {
-    border: none;
-    height: 40px;
-    border-radius: 25px;
-    padding: 10px;
-  }
 `;
 
 const Profile = styled.div`
@@ -157,4 +159,16 @@ const LogOutBtn = styled.button`
   height: 30px;
   margin: 8px;
   font-size: 12px;
+`;
+
+//cham
+const SearchInput = styled.input`
+  background-color: #f2f2f3;
+  padding: 20px;
+  border: none;
+  border-radius: 25px;
+  height: 15px;
+  &:focus {
+    outline: none;
+  }
 `;

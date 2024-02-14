@@ -11,7 +11,7 @@ function FilterCheck() {
           <FilterLinkStyle
             to={`/${e.language}`}
             key={e.id}
-            $backgroundColor={id === e.language ? "gray" : "whitesmoke"}
+            $backgroundColor={id === e.language ? "#F2AA4C" : "white"}
           >
             <label>{e.language}</label>
           </FilterLinkStyle>
@@ -24,20 +24,30 @@ function FilterCheck() {
 export default FilterCheck;
 
 const FilterCheckMain = styled.section`
-  margin: 5px;
+  margin-top: 20px;
+  padding: 16px 30px 0px;
   height: 50px;
   display: flex;
-  justify-content: space-evenly;
+  gap: 30px;
+  justify-content: space-around;
   align-items: center;
 `;
 
 const FilterLinkStyle = styled(Link)`
   text-decoration: none;
-  color: black;
+  text-align: center;
+  line-height: 25px;
+  width: 110px;
+  height: 45px;
+  color: #101820;
   background-color: ${(props) => props.$backgroundColor};
   padding: 10px;
   border-radius: 25px;
+  &:hover {
+    background-color: #f2aa4c;
+  }
   & label {
     cursor: pointer;
+    font-weight: 600;
   }
 `;
