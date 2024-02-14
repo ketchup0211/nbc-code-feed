@@ -224,6 +224,9 @@ const WriteContainer = styled.div`
   display: flex;
 
   flex-direction: column;
+  ql-align-center {
+    text-align: center;
+  }
 `;
 // const ImageDiv = styled.div`
 //   margin-top: 40px;
