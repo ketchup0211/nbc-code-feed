@@ -9,9 +9,8 @@
 
 ## 2. 기능 구상
 
-<img width="1648" alt="스크린샷 2024-02-15 오후 5 33 43" src="https://github.com/monkeyhurray/react-first/assets/96379015/ffcf1e49-5355-4fb6-afd6-1f463fd8efc5">
-
 ### Detail Page
+<img width="1648" alt="스크린샷 2024-02-15 오후 5 33 43" src="https://github.com/monkeyhurray/react-first/assets/96379015/ffcf1e49-5355-4fb6-afd6-1f463fd8efc5">
   - [x] 홈에서 클릭한 게시된 이미지에 따라 상세 정보를 얻을 수 있도록 만들었습니다.
   - [x] 상세 페이지에서 볼 수 있는 것인 유저가 입력한 제목, 사진, 내용입니다.
   - [x] 자신이 만든 게시물은 삭제가 가능하며, 삭제버튼을 확인할 수 있습니다.
