@@ -3,7 +3,7 @@ import SignUpReducer from "../modules/SignUpReducer";
 import postList from "../modules/postList";
 import users from "../modules/user";
 import search from "../modules/search";
-import postImageid from "../modules/postImageId";
+import postImageid from "../modules/postImageid";
 import postBasicImage from "../modules/postBasicImage";
 
 const RootReducer = combineReducers({
