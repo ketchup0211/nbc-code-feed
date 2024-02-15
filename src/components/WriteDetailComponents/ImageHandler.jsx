@@ -32,9 +32,9 @@ const imageHandler = (quillRef) => {
         });
         getDownloadURL(snapshot.ref).then((url) => {
           if (postBasicImage === "") {
-            return;
-          } else {
             dispatch(urlPatch(url));
+          } else {
+            return;
           }
         });
       });
