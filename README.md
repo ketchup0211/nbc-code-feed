@@ -1,4 +1,5 @@
 # nbc-code-feed
+
 2024.02.07 ~ 2024.02.14
 
 ## 1. Git & GitHub
@@ -10,6 +11,7 @@
 ## 2. 기능 구상
 
 ### Detail Page
+
 <img width="1648" alt="스크린샷 2024-02-15 오후 5 33 43" src="https://github.com/monkeyhurray/react-first/assets/96379015/ffcf1e49-5355-4fb6-afd6-1f463fd8efc5">
   - [x] 홈에서 클릭한 게시된 이미지에 따라 상세 정보를 얻을 수 있도록 만들었습니다.
   - [x] 상세 페이지에서 볼 수 있는 것인 유저가 입력한 제목, 사진, 내용입니다.
@@ -23,6 +25,7 @@
 3. checkUid는 인증 정보가 저장되어 있습니다.
 
 ### MyPage
+
 ![image](https://github.com/ketchup0211/nbc-code-feed/assets/154851474/8a601da9-2051-4e6c-a0c6-3a5b97004f59)
 **기능구현**
 마이페이지는 사용자의 정보를 받아와 이름, 가입한 이메일을 띄웁니다.
@@ -64,7 +67,7 @@ MyPage 브랜치에서 작업했습니다.
 search page는 검색(input)에서 엔터를 누르면 이동합니다.
 
 > 검색 페이지 화면입니다.
-> ![검색 페이지 화면입니다.](/src/assets/markdown%20image/로그인%20전%20홈%20화면.PNG)
+> ![검색 페이지 화면입니다.](/src/assets/markdown%20image/검색%20페이지.PNG)
 > 여기서도 새로고침을 할시 파이어베이스에서 데이터를 가져와 게시글을 세팅하고 검색에 맞는 게시글을 렌더링 합니다.
 > 그리고 검색어를 바로 적용하여 거기에 맞는 제목이나 언어를 포함한 게시글을 보여줍니다.
 
@@ -87,4 +90,3 @@ Firebase를 활용하였습니다.
 - styled-components 를 사용하여 css를 디자인하였습니다.
 - reset.css 코드를 적용하였습니다.
 - react-router-dom 을 이용해 홈화면과 상세 페이지에서 홈으로 이동이 가능하도록 만들었습니다.
-
