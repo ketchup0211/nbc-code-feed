@@ -66,7 +66,7 @@ const PostContainer = styled.div`
 const PostBox = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: black;
   height: 300px;
 `;
 const PostItem = styled.div`

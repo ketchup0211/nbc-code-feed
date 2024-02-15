@@ -65,7 +65,7 @@ function Detail() {
             <Editor>{selectedData.nickname}</Editor>
             <EditTime>{selectedData.dateNTime} 작성</EditTime>
             {checkUid === selectedData.userUid ? (
-              <button onClick={deleteBtn}>삭제하기</button>
+              <DeleteButton onClick={deleteBtn}>삭제하기</DeleteButton>
             ) : (
               false
             )}
@@ -170,4 +170,15 @@ const EditTime = styled.p`
 const Editor = styled.p`
   margin-top: 25px;
   font-size: 15px;
+`;
+
+const DeleteButton = styled.button`
+  background-color: white;
+  float: right;
+  position: relative;
+  top: -27px;
+  color: black;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
 `;

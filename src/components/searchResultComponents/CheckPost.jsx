@@ -80,6 +80,7 @@ function CheckPost() {
 export default CheckPost;
 
 const PostListMain = styled.ol`
+  display: grid;
   height: auto;
   margin: 1%;
   display: grid;

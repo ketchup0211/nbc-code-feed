@@ -40,10 +40,10 @@ function PostList() {
         {post.map((e) => {
           return (
             <PostCard key={e.id} onClick={() => navigate(`/detail/${e.id}`)}>
-              <div>
+              <PostPreview>
                 <PostImage src={e.image} alt="게시글 이미지 입니다." />
                 <span>{e.title}</span>
-              </div>
+              </PostPreview>
               <p style={{ fontWeight: "400" }}>{e.nickname}</p>
             </PostCard>
           );
@@ -60,10 +60,10 @@ function PostList() {
           .map((e) => {
             return (
               <PostCard key={e.id} onClick={() => navigate(`/detail/${e.id}`)}>
-                <div style={{ display: "flex" }}>
+                <PostPreview style={{ display: "flex" }}>
                   <PostImage src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
-                </div>
+                </PostPreview>
                 <p style={{ fontWeight: "400" }}>{e.nickname}</p>
               </PostCard>
             );
@@ -122,6 +122,7 @@ const PostCard = styled.li`
     width: 100%;
     height: 100%;
     border-radius: 12px;
+    object-fit: cover;
   }
   :hover {
     & span {
@@ -129,6 +130,12 @@ const PostCard = styled.li`
       visibility: visible;
     }
   }
+`;
+
+//shyang
+const PostPreview = styled.div`
+  width: 100%;
+  height: 100%;
 `;
 
 //cham
