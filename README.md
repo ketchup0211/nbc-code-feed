@@ -12,7 +12,10 @@
 
 ## Search Page
 
-search page는 검색 인풋에서 엔터를 누르면 이동합니다.
+search page는 검색(input)에서 엔터를 누르면 이동합니다.
+
+> 검색 페이지 화면입니다.
+> ![검색 페이지 화면입니다.](/src/assets/markdown%20image/로그인%20전%20홈%20화면.PNG)
 
 ## detail
 
