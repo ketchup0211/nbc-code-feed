@@ -38,14 +38,11 @@ function Detail() {
     return () => unsubscribe();
   }, []);
   const selectedData = contents.find((item) => item.id === id);
-
-  console.log(contents);
-
   // 'file' comes from the Blob or File API
   const sanitizer = DOMPurify.sanitize;
 
   const deleteBtn = async () => {
-    let result = confirm("정말삭제하시겠습니까?");
+    let result = confirm("정말 삭제하시겠습니까?");
 
     if (result) {
       await deleteDoc(doc(db, "posts", selectedData.postId));
@@ -68,7 +65,7 @@ function Detail() {
             <Editor>{selectedData.nickname}</Editor>
             <EditTime>{selectedData.dateNTime} 작성</EditTime>
             {checkUid === selectedData.userUid ? (
-              <button onClick={deleteBtn}>삭제하기</button>
+              <DeleteButton onClick={deleteBtn}>삭제하기</DeleteButton>
             ) : (
               false
             )}
@@ -173,4 +170,15 @@ const EditTime = styled.p`
 const Editor = styled.p`
   margin-top: 25px;
   font-size: 15px;
+`;
+
+const DeleteButton = styled.button`
+  background-color: white;
+  float: right;
+  position: relative;
+  top: -27px;
+  color: black;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
 `;

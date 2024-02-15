@@ -21,7 +21,11 @@ export default function MyPages() {
   );
 }
 
-const MyPageContainer = styled.div``;
+const MyPageContainer = styled.div`
+  background-color: black;
+  color: white;
+  height: 97vh;
+`;
 const SubContainer = styled.div`
   display: flex;
   align-items: center;
