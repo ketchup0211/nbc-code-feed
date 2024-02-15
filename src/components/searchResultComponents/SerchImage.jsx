@@ -4,8 +4,8 @@ function SerchImage() {
   return (
     <header>
       <HeadPosition>
-        <TitleStyle>Search CodeFeed</TitleStyle>
-        <ImageStyle src={serchImage} />
+        {/* <TitleStyle>Search CodeFeed</TitleStyle> */}
+        {/* <ImageStyle src={serchImage} /> */}
       </HeadPosition>
     </header>
   );

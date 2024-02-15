@@ -115,12 +115,6 @@ const NavPage = styled.ul`
   padding: 6px;
 `;
 
-const SvgImage = styled.img`
-  width: 10vh;
-  border-radius: 12px;
-  opacity: 0.8;
-`;
-
 const NavInformation = styled.ul`
   display: flex;
   justify-content: space-between;
