@@ -85,6 +85,7 @@ const HeadNav = styled.nav`
   padding: 0px 20px;
   height: 110px;
   overflow-x: hidden;
+  justify-content: space-between;
   border-bottom: 1px solid #f2aa4c;
   & label {
     cursor: pointer;
