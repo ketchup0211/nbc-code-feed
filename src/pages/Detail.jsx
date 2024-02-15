@@ -1,4 +1,3 @@
-import wendy from "../assets/img/wendy.png";
 import DOMPurify from "dompurify";
 import HomeHeader from "src/components/HomeComponents/HomeHeader";
 import { useNavigate, useParams } from "react-router-dom";
@@ -38,8 +37,6 @@ function Detail() {
     return () => unsubscribe();
   }, []);
   const selectedData = contents.find((item) => item.id === id);
-
-  console.log(contents);
 
   // 'file' comes from the Blob or File API
   const sanitizer = DOMPurify.sanitize;
@@ -116,24 +113,6 @@ const Title = styled.div`
   font-size: 36px;
   padding: 10px 0px;
   width: 100%;
-`;
-
-const AvatarImg = styled.img`
-  float: left;
-  border-radius: 50%;
-  margin-right: 10px;
-  max-width: 100px;
-  max-height: 30px;
-`;
-
-const Fixed = styled.div`
-  margin-top: 20px;
-  width: 1100px;
-  position: fixed;
-`;
-
-const Fixedleft = styled.div`
-  float: left;
 `;
 
 const WriteContainer = styled.div`
