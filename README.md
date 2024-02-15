@@ -3,10 +3,6 @@
 
 ## 1. Git & GitHub
 
-### 1-1. 브랜치 관리
-
-브랜치는 detail과 detail2를 활용하였습니다.
-
 ## 2. 기능 구상
 
 ### Detail Page
@@ -17,10 +13,14 @@
   - [x] 마이페이지의 Posting 버튼을 통해 게시물을 동록할 수 있습니다.
   - [x] 삭제하기 버튼을 누른다면 "정말삭제하시겠습니까?" 라는 글이 창에 뜨고, 유저는 취소와 확인 버튼을 통해 게시물 처리를 할 수 있습니다.
   <br>
+  
 **state 정보**
 1. const [contents, setContents] = useState([])와 const [checkUid, setCheckUid] = useState(null)를 이용하였으며,
 2. contents에는 유저가 저장한 제목, 사진, 내용이 저장되어 있습니다.
 3. checkUid는 인증 정보가 저장되어 있습니다.
+
+**브랜치**
+브랜치는 detail과 detail2를 활용하였습니다.
 
 ### MyPage
 ![image](https://github.com/ketchup0211/nbc-code-feed/assets/154851474/8a601da9-2051-4e6c-a0c6-3a5b97004f59)
