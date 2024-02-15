@@ -33,6 +33,10 @@ export default function Post() {
           initialTodos.push(data);
         });
         const check = initialTodos.filter((e) => e.userUid === currentUser.uid);
+        check.sort(
+          (a, b) =>
+            new Date(b.dateNTime).getTime() - new Date(a.dateNTime).getTime()
+        );
         setPosts(check);
       };
       fetchData();
