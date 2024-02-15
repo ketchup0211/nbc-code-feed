@@ -35,7 +35,6 @@ function PostList() {
     };
     fetchData();
   }, []);
-  console.log(post);
 
   if (!post) return <Loading />;
   return !id ? (
