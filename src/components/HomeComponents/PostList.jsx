@@ -27,7 +27,10 @@ function PostList() {
         };
         initialTodos.push(data);
       });
-
+      initialTodos.sort(
+        (a, b) =>
+          new Date(b.dateNTime).getTime() - new Date(a.dateNTime).getTime()
+      );
       dispatch(addPost(initialTodos));
     };
     fetchData();
