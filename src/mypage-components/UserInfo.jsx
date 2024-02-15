@@ -24,7 +24,7 @@ export default function UserInfo() {
 
   return (
     <UserInfoContainer>
-      <NameItem>{user.displayName}</NameItem>
+      <NameItem>{user.name}</NameItem>
       <EmailItem>{user.email}</EmailItem>
       <EditButton></EditButton>
     </UserInfoContainer>

@@ -95,6 +95,7 @@ function WriteDetail() {
     // setTitle("");
     // Firestore에서 'todos' 컬렉션에 대한 참조 생성하기
     const collectionRef = collection(db, "posts"); // 추후에 {auth.id} 로 변경하면 될 듯?
+    console.log(newContent);
     await addDoc(collectionRef, newContent);
     dispatch(urlPatch(""));
     navigate(`/detail/${newContent.id}`);
@@ -109,7 +110,7 @@ function WriteDetail() {
       </Nav>
       {/* <FilterCheck /> */}
       <LanguageFilter onClickedLanguage={handleSelectedLanguage} />
-      <div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <div>
           <InputTitle
             type="text"

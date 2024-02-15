@@ -3,5 +3,6 @@ import { Link } from "react-router-dom";
 
 export const LinkStyle = styled(Link)`
   text-decoration: none;
-  color: black;
+  color: white;
+  width: 10%;
 `;

@@ -18,7 +18,7 @@ function SearchResult() {
 export default SearchResult;
 
 const Background = styled.div`
-  background-color: whitesmoke;
+  background-color: #101820;
   min-height: 100vh;
   height: auto;
 `;
