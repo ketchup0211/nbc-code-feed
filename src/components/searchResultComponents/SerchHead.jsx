@@ -100,27 +100,47 @@ const SvgImage = styled.img`
 
 const Profile = styled.div`
   display: flex;
+  gap: 65px;
+  align-items: center;
+  width: 17%;
 `;
 
 const UserDisplay = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  cursor: pointer;
+  &:hover {
+    & * {
+      color: #f2aa4c;
+    }
+  }
 `;
 
 const ProfileName = styled.label`
-  cursor: pointer;
+  font-weight: 500;
+  color: white;
 `;
 
 const ProfileImage = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 `;
 
 const LogOutBtn = styled.button`
+  font-weight: "400";
+  color: white;
+  background-color: transparent;
   border: none;
-  height: 30px;
+  border-radius: 25px;
+  line-height: 10px;
+  padding: 20px;
   margin: 8px;
-  font-size: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  &:hover {
+    color: #f2aa4c;
+  }
 `;
