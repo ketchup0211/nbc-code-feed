@@ -4,14 +4,17 @@ import HomeHeader from "src/components/HomeComponents/HomeHeader";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, query } from "firebase/firestore";
 //import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db } from "src/firebase";
+import { auth, db } from "src/firebase";
+import Loading from "src/components/Loading";
+import { onAuthStateChanged } from "@firebase/auth";
 
 function Detail() {
   const navigate = useNavigate();
   const [contents, setContents] = useState([]);
   const { id } = useParams();
+  const [checkUid, setCheckUid] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,21 +23,36 @@ function Detail() {
 
       const initialTodos = [];
       querySnapshot.forEach((doc) => {
-        initialTodos.push({ id: doc.id, ...doc.data() });
+        initialTodos.push({ postId: doc.id, ...doc.data() });
       });
 
       setContents(initialTodos);
     };
-
     fetchData();
+    const authStateChangedCallback = (user) => {
+      if (user) {
+        setCheckUid(user.uid);
+      }
+    };
+    const unsubscribe = onAuthStateChanged(auth, authStateChangedCallback);
+    return () => unsubscribe();
   }, []);
   const selectedData = contents.find((item) => item.id === id);
-
   // 'file' comes from the Blob or File API
   const sanitizer = DOMPurify.sanitize;
 
-  if (!selectedData) {
+  const deleteBtn = async () => {
+    let result = confirm("정말삭제하시겠습니까?");
+
+    if (result) {
+      await deleteDoc(doc(db, "posts", selectedData.postId));
+      navigate("/mypage");
+    }
     return;
+  };
+
+  if (!selectedData) {
+    return <Loading />;
   }
   //console.log(selectedData.quillValue);
   return (
@@ -43,11 +61,17 @@ function Detail() {
       <Container key={selectedData.id}>
         <TitleHeader>
           <Title>{selectedData.title}</Title>
-          <Editor>{selectedData.nickname}</Editor>
-          <EditTime>{selectedData.dateNTime} 작성</EditTime>
+          <div>
+            <Editor>{selectedData.nickname}</Editor>
+            <EditTime>{selectedData.dateNTime} 작성</EditTime>
+            {checkUid === selectedData.userUid ? (
+              <button onClick={deleteBtn}>삭제하기</button>
+            ) : (
+              false
+            )}
+          </div>
           <HrDivider />
         </TitleHeader>
-
         <WriteContainer
           dangerouslySetInnerHTML={{
             __html: sanitizer(selectedData.quillValue),
