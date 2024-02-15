@@ -58,7 +58,6 @@ export default function Post() {
 const PostContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background-color: #e0e0e0;
   flex-shrink: 0;
   width: 100%;
   gap: 0.5px;

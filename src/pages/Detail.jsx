@@ -42,7 +42,7 @@ function Detail() {
   const sanitizer = DOMPurify.sanitize;
 
   const deleteBtn = async () => {
-    let result = confirm("정말삭제하시겠습니까?");
+    let result = confirm("정말 삭제하시겠습니까?");
 
     if (result) {
       await deleteDoc(doc(db, "posts", selectedData.postId));
