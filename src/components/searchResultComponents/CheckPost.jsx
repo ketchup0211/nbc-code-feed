@@ -64,11 +64,11 @@ function CheckPost() {
           return (
             <LinkStyle key={e.id} to={`/detail/${e.id}`}>
               <PostCard>
-                <div>
+                <ImgDiv>
                   <img src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
-                </div>
-                <p>{e.name}</p>
+                </ImgDiv>
+                <p>{e.nickname}</p>
               </PostCard>
             </LinkStyle>
           );
@@ -121,4 +121,9 @@ const PostCard = styled.div`
       visibility: visible;
     }
   }
+`;
+
+const ImgDiv = styled.div`
+  max-height: 100%;
+  margin-bottom: 15px;
 `;
