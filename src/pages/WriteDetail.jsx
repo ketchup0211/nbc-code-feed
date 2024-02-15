@@ -234,6 +234,7 @@ export const DoneButtonDiv = styled.div`
 export const DoneButton = styled.button`
   cursor: pointer;
   display: flex;
+  z-index: 1;
   border-radius: 15px;
   background-color: black;
   color: white;
