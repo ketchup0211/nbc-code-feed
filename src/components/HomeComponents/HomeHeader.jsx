@@ -8,6 +8,7 @@ import { initialization } from "src/redux/modules/user";
 import { LinkStyle } from "src/util/Style";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import CodeFeedLogo from "src/assets/CodeFeedLogo.svg";
 
 function HomeHeader() {
   const user = useSelector((state) => state.users.user);
@@ -64,30 +65,34 @@ function HomeHeader() {
     <NavList>
       <NavPage>
         <LinkStyle to={"/"}>
-          <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
+          <img src={CodeFeedLogo} alt="CodeFeedLogo" />
         </LinkStyle>
       </NavPage>
       <NavInformation>
         <form onSubmit={SubmitHandler}>
-          <input
+          <SearchInput
             type="text"
             placeholder="검색"
             value={search}
             onChange={inputChcange}
+            style={{ backgroundColor: "#f2f2f3" }}
           />
         </form>
         {user ? (
           <Profile>
-            <LinkStyle to={"/myPage"}>
-              <UserDisplay>
-                <ProfileName>{user.nickname}</ProfileName>
-                <ProfileImage src={user.profileImg} alt="프로필 사진입니다." />
-              </UserDisplay>
-            </LinkStyle>
+            <UserDisplay onClick={() => navigate("/myPage")}>
+              <ProfileName>{user.nickname}</ProfileName>
+              <ProfileImage src={user.profileImg} alt="프로필 사진입니다." />
+            </UserDisplay>
             <LogOutBtn onClick={logOut}>Logout</LogOutBtn>
           </Profile>
         ) : (
-          <LinkStyle to={"/login"}>Login</LinkStyle>
+          <LinkStyle
+            to={"/login"}
+            style={{ fontWeight: "500", color: "#F2AA4C" }}
+          >
+            Login
+          </LinkStyle>
         )}
       </NavInformation>
     </NavList>
@@ -99,62 +104,81 @@ export default HomeHeader;
 const NavList = styled.nav`
   display: flex;
   align-items: center;
-  margin: 5px;
-  padding: 5px;
-  width: 100%;
-  height: 50px;
+  padding: 0px 20px;
+  height: 110px;
   overflow-x: hidden;
+  border-bottom: 1px solid #f2aa4c;
 `;
 
 const NavPage = styled.ul`
-  display: flex;
   align-items: center;
-`;
-
-const SvgImage = styled.img`
-  width: 10vh;
-  border-radius: 12px;
-  opacity: 0.8;
+  padding: 6px;
 `;
 
 const NavInformation = styled.ul`
   display: flex;
   justify-content: space-between;
+  text-align: center;
+  gap: 20px;
   align-items: center;
   width: 100%;
   margin: 10px;
-  & input {
-    border: none;
-    height: 40px;
-    border-radius: 25px;
-    padding: 10px;
-  }
 `;
 
 const Profile = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
 `;
 
 const UserDisplay = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  cursor: pointer;
+  &:hover {
+    & * {
+      color: #f2aa4c;
+    }
+  }
 `;
 
 const ProfileName = styled.label`
-  cursor: pointer;
+  font-weight: 500;
+  color: white;
 `;
 
 const ProfileImage = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 `;
 
 const LogOutBtn = styled.button`
+  font-weight: "400";
+  color: white;
+  background-color: transparent;
   border: none;
-  height: 30px;
+  border-radius: 25px;
+  line-height: 10px;
+  padding: 20px;
   margin: 8px;
-  font-size: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  &:hover {
+    color: #f2aa4c;
+  }
+`;
+
+//cham
+const SearchInput = styled.input`
+  background-color: #f2f2f3;
+  padding: 20px;
+  border: none;
+  border-radius: 25px;
+  height: 15px;
+  &:focus {
+    outline: none;
+  }
 `;

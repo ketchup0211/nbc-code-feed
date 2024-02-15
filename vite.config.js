@@ -12,4 +12,8 @@ export default defineConfig({
       shared: "/src/shared",
     },
   },
+  build: {
+    chunkSizeWarningLimit: 1050, // 크기를 kB 단위로 설정
+    outDir: "build",
+  },
 });

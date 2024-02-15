@@ -33,6 +33,10 @@ export default function Post() {
           initialTodos.push(data);
         });
         const check = initialTodos.filter((e) => e.userUid === currentUser.uid);
+        check.sort(
+          (a, b) =>
+            new Date(b.dateNTime).getTime() - new Date(a.dateNTime).getTime()
+        );
         setPosts(check);
       };
       fetchData();
@@ -47,7 +51,7 @@ export default function Post() {
             $imageUrl={post.image}
             onClick={() => navigate(`/mypage/detail/${post.id}`)}
           />
-          <h1>title : {post.title}</h1>
+          <PostTitle>제목 : {post.title}</PostTitle>
           <PostContent>{post.content}</PostContent>
         </PostBox>
       ))}
@@ -58,16 +62,15 @@ export default function Post() {
 const PostContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background-color: #e0e0e0;
   flex-shrink: 0;
   width: 100%;
   gap: 0.5px;
-  margin-top: 60px;
+  margin: 60px 50px 0px 50px;
 `;
 const PostBox = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: black;
   height: 300px;
 `;
 const PostItem = styled.div`
@@ -86,4 +89,8 @@ const PostContent = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const PostTitle = styled.h1`
+  margin-top: 10px;
 `;

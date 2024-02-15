@@ -35,7 +35,6 @@ function EditProfile() {
 
       const check = initialTodos.find((e) => e.id === uid);
       dispatch(initialization(check));
-
     };
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -44,7 +43,7 @@ function EditProfile() {
     });
   }, []);
 
-  if (user === null)
+  if (user === null) {
     return (
       <BackgroundColor>
         <LoadingMain>
@@ -55,6 +54,7 @@ function EditProfile() {
         </LoadingMain>
       </BackgroundColor>
     );
+  }
   return (
     <BackgroundColor>
       <HomeHeader />

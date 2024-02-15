@@ -6,6 +6,7 @@ import { auth, db } from "src/firebase";
 import { useEffect, useState } from "react";
 import { initialization } from "src/redux/modules/user";
 import { collection, getDocs, query } from "firebase/firestore";
+import CodeFeedLogo from "src/assets/CodeFeedLogo.svg";
 
 function SerchHead() {
   const { user } = useSelector((state) => state.users);
@@ -52,7 +53,7 @@ function SerchHead() {
     return (
       <HeadNav>
         <LinkStyle to={"/"}>
-          <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
+          <img src={CodeFeedLogo} alt="CodeFeedLogo" />
         </LinkStyle>
         <LinkStyle to={"/sign-up"}>로그인</LinkStyle>
       </HeadNav>
@@ -61,7 +62,7 @@ function SerchHead() {
   return (
     <HeadNav>
       <LinkStyle to={"/"}>
-        <SvgImage src="/CodeFeed.svg" alt="CodeFeed SVG" />
+        <img src={CodeFeedLogo} alt="CodeFeedLogo" />
       </LinkStyle>
       <Profile>
         <LinkStyle to={"/myPage"}>
@@ -79,13 +80,13 @@ function SerchHead() {
 export default SerchHead;
 
 const HeadNav = styled.nav`
-  top: 0;
-  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  height: 60px;
-  padding: 10px;
+  padding: 0px 20px;
+  height: 110px;
+  overflow-x: hidden;
+  justify-content: space-between;
+  border-bottom: 1px solid #f2aa4c;
   & label {
     cursor: pointer;
   }
@@ -99,27 +100,47 @@ const SvgImage = styled.img`
 
 const Profile = styled.div`
   display: flex;
+  gap: 65px;
+  align-items: center;
+  width: 17%;
 `;
 
 const UserDisplay = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  cursor: pointer;
+  &:hover {
+    & * {
+      color: #f2aa4c;
+    }
+  }
 `;
 
 const ProfileName = styled.label`
-  cursor: pointer;
+  font-weight: 500;
+  color: white;
 `;
 
 const ProfileImage = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 `;
 
 const LogOutBtn = styled.button`
+  font-weight: "400";
+  color: white;
+  background-color: transparent;
   border: none;
-  height: 30px;
+  border-radius: 25px;
+  line-height: 10px;
+  padding: 20px;
   margin: 8px;
-  font-size: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  &:hover {
+    color: #f2aa4c;
+  }
 `;
