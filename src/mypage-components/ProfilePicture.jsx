@@ -8,7 +8,11 @@ export default function ProfilePicture() {
 
   return (
     <ProfileContainer>
-      <ProfileImage src={user?.profileImg || defaultImage} alt="Profile" />
+      {user ? (
+        <ProfileImage src={user.profileImg} alt="Profile" />
+      ) : (
+        <ProfileImage src={defaultImage} alt="Profile" />
+      )}
     </ProfileContainer>
   );
 }

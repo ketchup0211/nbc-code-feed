@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import EditButton from "./common/EditButton";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { initialization } from "src/redux/modules/user";
+import { collection, getDocs, query } from "firebase/firestore";
 
 export default function UserInfo() {
   const dispatch = useDispatch();
@@ -12,9 +13,32 @@ export default function UserInfo() {
 
   useEffect(() => {
     if (!user) {
-      onAuthStateChanged(auth, (authenticatedUser) => {
-        dispatch(initialization(authenticatedUser));
-      });
+      const fetchData = async (checkuid) => {
+        const q = query(collection(db, "users"));
+        const querySnapshot = await getDocs(q);
+
+        const initialTodos = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          initialTodos.push(data);
+        });
+        const check = initialTodos.find((e) => e.id === checkuid);
+        dispatch(initialization(check));
+      };
+
+      const authStateChangedCallback = (user) => {
+        if (user) {
+          fetchData(user.uid);
+        }
+      };
+
+      const unsubscribe = onAuthStateChanged(auth, authStateChangedCallback);
+
+      return () => unsubscribe();
     }
   }, [dispatch, user]);
 
