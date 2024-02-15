@@ -5,7 +5,6 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "src/redux/modules/postList";
-import { LinkStyle } from "src/util/Style";
 import Loading from "../Loading";
 
 function PostList() {
@@ -60,12 +59,9 @@ function PostList() {
           })
           .map((e) => {
             return (
-              <PostCard
-                key={(e, id)}
-                onClick={() => navigate(`/detail/${e.id}`)}
-              >
+              <PostCard key={e.id} onClick={() => navigate(`/detail/${e.id}`)}>
                 <div style={{ display: "flex" }}>
-                  <image src={e.image} alt="게시글 이미지 입니다." />
+                  <PostImage src={e.image} alt="게시글 이미지 입니다." />
                   <span>{e.title}</span>
                 </div>
                 <p style={{ fontWeight: "400" }}>{e.nickname}</p>
