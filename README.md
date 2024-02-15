@@ -23,13 +23,10 @@
 3. checkUid는 인증 정보가 저장되어 있습니다.
 
 ### MyPage
-
-
+![image](https://github.com/ketchup0211/nbc-code-feed/assets/154851474/8a601da9-2051-4e6c-a0c6-3a5b97004f59)
 **기능구현**
 마이페이지는 사용자의 정보를 받아와 이름, 가입한 이메일을 띄웁니다.
 프로필 이미지는 기본 이미지로 바탕이 되어있고, 사용자가 Edit Profile 버튼을 누르면 프로필을 수정 할 수 있습니다.
-
-![image](https://github.com/ketchup0211/nbc-code-feed/assets/154851474/8a601da9-2051-4e6c-a0c6-3a5b97004f59)
 
 상단 탭에는 홈버튼과 게시글을 올릴 수 있는 포스팅 탭이 존재합니다.
 또한, 검색창도 배치되어 사용자가 원하는 게시글을 쉽게 찾아볼 수 있습니다.
